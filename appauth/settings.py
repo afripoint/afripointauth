@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # custom
     "pages",
+    "users",
+    "applogger",
     # external
     "allauth",
     "rest_framework",
@@ -37,8 +39,10 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "dj_rest_auth",
     "dj_rest_auth.registration",
-    "users",
-    "applogger",
+    "drf_yasg",
+    "common",
+    "kyc",
+    "profiles",
 ]
 
 MIDDLEWARE = [
@@ -159,7 +163,7 @@ REST_AUTH = {
     "USE_JWT": True,
     "JWT_AUTH_COOKIE": "appauth-token",
     "JWT_AUTH_REFRESH_COOKIE": "appauth-refresh-token",
-    # "REGISTER_SERIALIZER": "users.serializers.UserSerializer",
+    "REGISTER_SERIALIZER": "users.serializers.CustomUserSerializer",
 }
 
 AUTHENTICATION_BACKENDS = [
