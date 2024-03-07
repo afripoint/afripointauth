@@ -3,6 +3,8 @@ from django.urls import include, path, re_path
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from dj_rest_auth.views import PasswordResetConfirmView
+from users.views import CustomUserDetailView
 
 
 schema_view = get_schema_view(
@@ -31,6 +33,14 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("", include("pages.urls")),
+    path("api/v1/auth/user/", CustomUserDetailView.as_view(), name="user_details"),
+    path("api/v1/auth/", include("dj_rest_auth.urls")),
+    path(
+        "api/v1/auth/password/reset/confirm/<uidb64>/<token>/",
+        PasswordResetConfirmView.as_view(),
+        name="password_reset_confirm",
+    ),
+    path("api/v1/auth/registration/", include("dj_rest_auth.registration.urls")),
 ]
 
 admin.site.site_header = "Afripoint Authentication"
