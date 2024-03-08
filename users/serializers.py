@@ -1,8 +1,8 @@
 from dj_rest_auth.registration.serializers import RegisterSerializer
-from allauth.account.adapters import get_adapter
+from allauth.account.adapter import get_adapter
 from allauth.account.utils import setup_user_email
 from rest_framework import serializers
-from django_countries.serializers_fields import CountryField
+from django_countries.serializer_fields import CountryField
 from phonenumber_field.serializerfields import PhoneNumberField
 from django.contrib.auth import get_user_model
 
@@ -11,7 +11,8 @@ User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
     gender = serializers.CharField(source="profile.gender")
-    phone = PhoneNumberField(source="profile.phone")
+    first_name = serializers.CharField(source="profile.first_name")
+    last_name = serializers.CharField(source="profile.last_name")
     picture = serializers.ReadOnlyField(source="profile.picture.url")
     country = CountryField(source="profile.country")
     city = serializers.CharField(source="profile.city")
@@ -38,9 +39,8 @@ class UserSerializer(serializers.ModelSerializer):
         return representation
 
 
-class CustomUserSerializer(RegisterSerializer):
+class CustomRegisterSerializer(RegisterSerializer):
     username = None
-    phone = PhoneNumberField(required=True)
     email = serializers.EmailField(required=True)
     password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
@@ -51,19 +51,16 @@ class CustomUserSerializer(RegisterSerializer):
             "email": self.validated_data.get("email", ""),
             "password1": self.validated_data.get("password1", ""),
             "password2": self.validated_data.get("password2", ""),
-            "phone": self.validated_data.get("phone", ""),
         }
 
     def save(self, request):
         adapter = get_adapter()
         user = adapter.new_user(request)
-        self.cleaned_data["username"] = self.cleaned_data["phone"]
+        self.cleaned_data = self.get_cleaned_data()
         adapter.save_user(request, user, self)
         user.save()
 
         setup_user_email(request, user, [])
         user.email = self.cleaned_data["email"]
         user.password = self.cleaned_data["password1"]
-        user.phone = self.cleaned_data["phone"]
-
         return user

@@ -34,7 +34,7 @@ class Profiles(TimeStampedModel):
     picture = models.ImageField(upload_to="kyc/", blank=True, null=True)
 
     def __str__(self):
-        return f"{self.user.email} Profile"
+        return f"{self.user.email }'s Profile"
 
     class Meta:
         verbose_name = "Profiles"

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from .serializers import UserSerializer
-from rest_framework.generics import RestrieveUpdateAPIView
+from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import get_user_model
 
@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-class CustomUserDetailView(RestrieveUpdateAPIView):
+class CustomUserDetailView(RetrieveUpdateAPIView):
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated,)
 

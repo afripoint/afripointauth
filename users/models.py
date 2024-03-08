@@ -6,17 +6,18 @@ from django.contrib.auth.models import (
     Permission,
 )
 from django.utils.translation import gettext_lazy as _
-from users.custom_manager_email_or_phone import CustomUserManagerWithEmailOrPhone
+from users.manager import CustomUserManager
 import uuid
+from django.contrib.auth import get_user_model
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     pkid = models.BigAutoField(primary_key=True, editable=False)
     id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    email = models.EmailField(_("email address"), db_index=True, unique=True, null=True)
-    phone = models.CharField(
-        _("phone number"), max_length=15, unique=True, null=True, blank=True
+    email = models.EmailField(
+        _("email address"), db_index=True, unique=True, null=True, blank=True
     )
+    phone = models.CharField(_("phone number"), max_length=15, null=True, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
@@ -41,7 +42,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         related_query_name="custom_user",
     )
 
-    objects = CustomUserManagerWithEmailOrPhone()
+    objects = CustomUserManager()
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -50,5 +51,5 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         verbose_name = _("user")
         verbose_name_plural = _("users")
 
-    def __str__(self):
-        return self.email if self.email else self.phone
+    # def __str__(self):
+    #     return self.email if self.email else self.phone

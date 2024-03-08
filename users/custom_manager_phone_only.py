@@ -4,7 +4,7 @@ from django.contrib.auth.models import (
 
 
 class CustomUserManagerWithPhoneOnly(BaseUserManager):
-    def create_user(self, password=None, phone=None, **extra_fields):
+    def create_user(self, email=None, password=None, phone=None, **extra_fields):
         """
         Create and return a regular user with an email (if provided) and password.
         """

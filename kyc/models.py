@@ -19,7 +19,7 @@ class KYCModel(TimeStampedModel):
     nin = models.PositiveIntegerField(_("NIN"), blank=True, null=True, unique=True)
 
     def __str__(self):
-        return f"{self.user.email} KYC"
+        return f"{self.user.email }'s KYC"
 
     class Meta:
         verbose_name = "KYC"

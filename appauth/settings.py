@@ -163,7 +163,7 @@ REST_AUTH = {
     "USE_JWT": True,
     "JWT_AUTH_COOKIE": "appauth-token",
     "JWT_AUTH_REFRESH_COOKIE": "appauth-refresh-token",
-    "REGISTER_SERIALIZER": "users.serializers.CustomUserSerializer",
+    "REGISTER_SERIALIZER": "users.serializers.CustomRegisterSerializer",
 }
 
 AUTHENTICATION_BACKENDS = [
