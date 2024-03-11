@@ -5,6 +5,8 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from dj_rest_auth.views import PasswordResetConfirmView
 from users.views import CustomUserDetailView
+from otpauth.views import UserViewSet
+from rest_framework.routers import DefaultRouter
 
 
 schema_view = get_schema_view(
@@ -19,6 +21,9 @@ schema_view = get_schema_view(
     public=True,
     permission_classes=(permissions.AllowAny,),
 )
+
+router = DefaultRouter()
+router.register("user/otp", UserViewSet, basename="user_otp")
 
 urlpatterns = [
     path(
@@ -41,6 +46,7 @@ urlpatterns = [
         name="password_reset_confirm",
     ),
     path("api/v1/auth/registration/", include("dj_rest_auth.registration.urls")),
+    path("otp/", include("rest_framework.urls")),
 ]
 
 admin.site.site_header = "Afripoint Authentication"
