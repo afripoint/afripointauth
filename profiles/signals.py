@@ -1,15 +1,16 @@
 import logging
-
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from appauth.settings import AUTH_USER_MODEL
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 from .models import Profiles
 
 logger = logging.getLogger(__name__)
 
 
-@receiver(post_save, sender=AUTH_USER_MODEL)
+@receiver(post_save, sender=User)
 def create_user_kyc(sender, instance, created, **kwargs):
     if created:
         Profiles.objects.create(user=instance)

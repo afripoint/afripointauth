@@ -6,7 +6,7 @@ from django.contrib.auth.models import (
     Permission,
 )
 from django.utils.translation import gettext_lazy as _
-from users.manager import CustomUserManager
+from .manager import CustomUserManager
 import uuid
 from django.contrib.auth import get_user_model
 
@@ -14,10 +14,10 @@ from django.contrib.auth import get_user_model
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     pkid = models.BigAutoField(primary_key=True, editable=False)
     id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    email = models.EmailField(
-        _("email address"), db_index=True, unique=True, null=True, blank=True
+    email = models.EmailField(_("email address"), db_index=True, null=True, blank=True)
+    phone = models.CharField(
+        _("phone number"), unique=True, max_length=15, null=True, blank=True
     )
-    phone = models.CharField(_("phone number"), max_length=15, null=True, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
@@ -44,8 +44,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     objects = CustomUserManager()
 
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
+    USERNAME_FIELD = "phone"
+    REQUIRED_FIELDS = ["email"]
 
     class Meta:
         verbose_name = _("user")

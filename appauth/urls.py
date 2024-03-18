@@ -3,9 +3,9 @@ from django.urls import include, path, re_path
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-from dj_rest_auth.views import PasswordResetConfirmView
-from users.views import CustomUserDetailView
-from otpauth.views import UserViewSet
+
+# from users.views import CustomUserDetailView
+from users.views import UserViewSet
 from rest_framework.routers import DefaultRouter
 
 
@@ -23,9 +23,14 @@ schema_view = get_schema_view(
 )
 
 router = DefaultRouter()
-router.register("user/otp", UserViewSet, basename="user_otp")
+router.register("user-otp", UserViewSet, basename="user-otp"),
+# router.register("verify-otp/", OTPVerificationView, basename="otp-verification")
+
 
 urlpatterns = [
+    path("backoffice/", admin.site.urls),
+    path("api/v1/auth/", include("djoser.urls")),
+    path("api/v1/auth/", include("djoser.urls.jwt")),
     path(
         "swagger<format>/", schema_view.without_ui(cache_timeout=0), name="schema-json"
     ),
@@ -35,19 +40,9 @@ urlpatterns = [
         name="schema-swagger-ui",
     ),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
-    path("admin/", admin.site.urls),
-    path("accounts/", include("allauth.urls")),
-    path("", include("pages.urls")),
-    path("api/v1/auth/user/", CustomUserDetailView.as_view(), name="user_details"),
-    path("api/v1/auth/", include("dj_rest_auth.urls")),
-    path(
-        "api/v1/auth/password/reset/confirm/<uidb64>/<token>/",
-        PasswordResetConfirmView.as_view(),
-        name="password_reset_confirm",
-    ),
-    path("api/v1/auth/registration/", include("dj_rest_auth.registration.urls")),
-    path("otp/", include("rest_framework.urls")),
 ]
+
+urlpatterns += router.urls
 
 admin.site.site_header = "Afripoint Authentication"
 admin.site.site_title = "Afripoint Authentication Portal"

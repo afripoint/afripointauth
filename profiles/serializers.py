@@ -5,7 +5,7 @@ from .models import Profile
 
 class ProfileSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(source="user.email")
-    phone = serializers.CharField(source="user.phone")
+    phone_number = serializers.CharField(source="user.phone_number")
     full_name = serializers.SerializerMethodField(read_only=True)
     country = CountryField(name_only=True)
 
@@ -20,7 +20,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "picture",
             "gender",
             "country",
-            "phone",
+            "phone_number",
             "address",
         ]
 
