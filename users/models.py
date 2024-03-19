@@ -14,12 +14,15 @@ from django.contrib.auth import get_user_model
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     pkid = models.BigAutoField(primary_key=True, editable=False)
     id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    email = models.EmailField(_("email address"), db_index=True, null=True, blank=True)
+    email = models.EmailField(
+        _("email address"), unique=True, db_index=True, null=True, blank=True
+    )
     phone = models.CharField(
         _("phone number"), unique=True, max_length=15, null=True, blank=True
     )
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    is_anonymous = models.BooleanField(default=False)
 
     date_joined = models.DateTimeField(auto_now_add=True)
 
@@ -44,12 +47,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     objects = CustomUserManager()
 
-    USERNAME_FIELD = "phone"
-    REQUIRED_FIELDS = ["email"]
+    USERNAME_FIELD = "email"
+    # REQUIRED_FIELDS = ["email"]
 
     class Meta:
         verbose_name = _("user")
         verbose_name_plural = _("users")
 
-    # def __str__(self):
-    #     return self.email if self.email else self.phone
+    def __str__(self):
+        return self.email if self.email else self.phone

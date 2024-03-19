@@ -1,8 +1,10 @@
 from rest_framework import serializers
 from django_countries.serializer_fields import CountryField
-from phonenumber_field.serializerfields import PhoneNumberField
 from django.contrib.auth import get_user_model
 from djoser.serializers import UserCreateSerializer
+from django.core.exceptions import ValidationError
+
+from users.models import CustomUser
 
 User = get_user_model()
 
@@ -37,7 +39,23 @@ class UserSerializer(serializers.ModelSerializer):
         return representation
 
 
-class CreateUserSerializer(UserCreateSerializer):
+from djoser.serializers import UserCreateSerializer
+from rest_framework import serializers
+
+
+class CustomUserCreateSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
-        model = User
-        fields = ["id", "email", "phone", "password"]
+        model = CustomUser
+        fields = ("id", "email", "phone", "password")
+
+    def validate(self, data):
+        email = data.get("email")
+        phone = data.get("phone")
+
+        if not email and not phone:
+            raise ValidationError("An email address or phone number must be provided.")
+        if email and phone:
+            raise ValidationError(
+                "Please provide only one contact method: email or phone."
+            )
+        return data

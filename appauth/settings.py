@@ -170,6 +170,12 @@ MIN_PASSWORD_LENGTH = 3
 D7_NETWORK_SECRET_KEY = str(config("D7_NETWORK_SECRET_KEY"))
 
 
+AUTHENTICATION_BACKENDS = [
+    "users.backend.CustomAuthenticationBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,

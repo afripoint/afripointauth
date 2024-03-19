@@ -1,16 +1,10 @@
-from django.contrib.auth.models import (
-    BaseUserManager,
-)
-from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import BaseUserManager
 
 
 class CustomUserManager(BaseUserManager):
-    def create_user(self, email, phone=None, password=None, **extra_fields):
-        """
-        Create and return a regular user with an email (if provided) and password.
-        """
-        if not email and not phone:
-            raise ValueError(_("Email or Phone is required"))
+    def create_user(self, email=None, phone=None, password=None, **extra_fields):
+        # if not email and not phone:
+        #     raise ValueError("The Email or Phone number must be set")
         if email:
             email = self.normalize_email(email)
             user = self.model(email=email, **extra_fields)
@@ -20,19 +14,13 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, phone, password=None, **extra_fields):
-        """
-        Create and return a superuser with an email (not phone) and password.
-        """
+    def create_superuser(self, email=None, phone=None, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
 
         if extra_fields.get("is_staff") is not True:
-            raise ValueError(_("Superuser must have is_staff=True."))
+            raise ValueError("Superuser must have is_staff=True.")
         if extra_fields.get("is_superuser") is not True:
-            raise ValueError(_("Superuser must have is_superuser=True."))
+            raise ValueError("Superuser must have is_superuser=True.")
 
-        user = self.create_user(email, phone, password, **extra_fields)
-        user.save(using=self._db)
-
-        return user
+        return self.create_user(email, phone, password, **extra_fields)
