@@ -129,25 +129,22 @@ class CustomLoginSerializer(serializers.Serializer):
         password = attrs.get("password")
         user = None
 
-        # Check if the login is an email
-        try:
-            validate_email(login)
-            is_email = True
-        except ValidationError:
-            is_email = False
+        # Try to authenticate assuming login is a phone number first
+        user = authenticate(
+            request=self.context.get("request"), phone_number=login, password=password
+        )
 
-        # Authenticate based on whether it's an email or assumed to be a phone number
-        if is_email:
-            user = authenticate(
-                request=self.context.get("request"), email=login, password=password
-            )
-        else:
-            # If not an email, treat as a phone number
-            user = authenticate(
-                request=self.context.get("request"),
-                phone_number=login,
-                password=password,
-            )
+        # If authentication failed, check if the login is an email and try to authenticate
+        if not user:
+            try:
+                validate_email(login)
+                # If login is a valid email, attempt to authenticate with email
+                user = authenticate(
+                    request=self.context.get("request"), email=login, password=password
+                )
+            except ValidationError:
+                # If login is neither a valid phone number nor email, or authentication failed
+                pass
 
         if not user:
             msg = _("Unable to log in with provided credentials.")
