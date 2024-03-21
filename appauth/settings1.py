@@ -20,21 +20,14 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # custom
     "pages",
-    # "users",
+    "users",
     "applogger",
     # external
-    "allauth",
-    "rest_framework",
-    "rest_framework.authtoken",
-    "allauth.account",
-    "allauth.socialaccount",
-    "dj_rest_auth",
-    "dj_rest_auth.registration",
     "drf_yasg",
     "common",
     "kyc",
     # "profiles",
-    "otpauth",
+    # "otpauth",
 ]
 
 MIDDLEWARE = [
@@ -45,7 +38,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "appauth.urls"
@@ -108,7 +100,7 @@ EMAIL_HOST_PASSWORD = str(config("email_host_password"))
 EMAIL_USE_TLS = str(config("email_use_tls"))
 
 
-AUTH_USER_MODEL = "otpauth.CustomUserOTP"
+AUTH_USER_MODEL = "users.CustomUser"
 
 MAX_OTP_TRY = 3
 
@@ -137,9 +129,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    # "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
 }
 
@@ -153,39 +145,35 @@ SIMPLE_JWT = {
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.token.AccessToken"),
 }
 
-
-# SIMPLE_JWT = {
-#     "AUTH_HEADER_TYPES": ("Bearer",),
-#     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
-#     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-#     "ROTATE_REFRESH_TOKENS": True,
-#     "SIGNING_KEY": config("SIGNING_KEY"),
-#     "USER_ID_FIELD": "id",
-#     "USER_ID_CLAIM": "user_id",
-# }
-
-# REST_AUTH = {
-#     "USE_JWT": True,
-#     "JWT_AUTH_COOKIE": "appauth-token",
-#     "JWT_AUTH_REFRESH_COOKIE": "appauth-refresh-token",
-#     "REGISTER_SERIALIZER": "otpauth.serializers.OTPRegisterSerializer",
-# }
-
-AUTHENTICATION_BACKENDS = [
-    "allauth.account.auth_backends.AuthenticationBackend",
-    "django.contrib.auth.backends.ModelBackend",
-]
-
-ACCOUNT_AUTHENTICATION_METHOD = "phone_number"
-ACCOUNT_EMAIL_REQUIRED = False
-ACCOUNT_EMAIL_VERIFICATION = "none"
-ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_USERNAME_REQUIRED = False
+DJOSER = {
+    # "LOGIN_FIELD": "phone",
+    "USER_CREATE_PASSWORD_RETYPE": True,
+    "USERNAME_CHANGED_EMAIL_CONFIRMATION": True,
+    "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
+    "SEND_CONFIRMATION_EMAIL": True,
+    "PASSWORD_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",
+    "SET_PASSWORD_RETYPE": True,
+    "PASSWORD_RESET_CONFIRM_RETYPE": True,
+    "USERNAME_RESET_CONFIRM_URL": "email/reset/confirm/{uid}/{token}",
+    "ACTIVATION_URL": "activate/{uid}/{token}",
+    "SEND_ACTIVATION_EMAIL": True,
+    "SERIALIZERS": {
+        "user_create": "users.serializers.CreateUserSerializer,",
+        "user": "users.serializers.UserSerializer",
+        "current_user": "users.serializers.UserSerializer",
+        "user_delete": "djoser.serializers.UserDeleteSerializer",
+    },
+}
 
 MIN_PASSWORD_LENGTH = 3
 
 D7_NETWORK_SECRET_KEY = str(config("D7_NETWORK_SECRET_KEY"))
+
+
+AUTHENTICATION_BACKENDS = [
+    "users.backend.CustomAuthenticationBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
 
 
 LOGGING = {

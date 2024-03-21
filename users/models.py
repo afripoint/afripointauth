@@ -8,17 +8,14 @@ from django.contrib.auth.models import (
 from django.utils.translation import gettext_lazy as _
 from .manager import CustomUserManager
 import uuid
-from django.contrib.auth import get_user_model
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     pkid = models.BigAutoField(primary_key=True, editable=False)
     id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    email = models.EmailField(
-        _("email address"), unique=True, db_index=True, null=True, blank=True
-    )
+    email = models.EmailField(_("email address"), unique=True, null=True, blank=True)
     phone = models.CharField(
-        _("phone number"), unique=True, max_length=15, null=True, blank=True
+        _("phone number"), unique=True, max_length=25, null=True, blank=True
     )
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
