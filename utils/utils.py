@@ -1,6 +1,7 @@
 import threading
 import http.client
 import json
+import random
 
 # from infobip_channels.sms.channel import SMSChannel
 from django.core.mail import EmailMessage
@@ -45,3 +46,15 @@ def infobip_send_sms(phone_number, message):
     res = conn.getresponse()
     data = res.read()
     print(data.decode("utf-8"))
+
+
+class UniqueOtpGenerator:
+    def __init__(self):
+        self.generated_otps = set()
+
+    def generate_otp(self):
+        while True:
+            otp = random.randint(10000000, 99999999)
+            if otp not in self.generated_otps:
+                self.generated_otps.add(otp)
+                return otp

@@ -9,15 +9,27 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from otpauth.models import OTPUpdate
 from utils.utils import send_html_email
-from .serializers import UserSerializer
+from .serializers import OTPVerifySerializer, UserSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
-from .serializers import OTPVerificationSerializer
+
+# from .serializers import OTPVerificationSerializer
 from rest_framework.permissions import AllowAny
 
 client = Client(api_token=settings.D7_NETWORK_SECRET_KEY)
 
 User = get_user_model()
+
+
+# class OTPVerificationView(APIView):
+#     def post(self, request, *args, **kwargs):
+#         serializer = OTPVerifySerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(
+#                 {"message": "OTP verified successfully!"}, status=status.HTTP_200_OK
+#             )
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -86,7 +98,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class OTPVerificationView(APIView):
     permission_classes = (AllowAny,)
-    serializer_class = OTPVerificationSerializer
+    serializer_class = OTPVerifySerializer
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)

@@ -72,12 +72,35 @@ WSGI_APPLICATION = "appauth.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+        "ENGINE": "django.db.backends.postgresql",
+        "USER": "postgres",
+        "NAME": "afriauthdb",
+        "PASSWORD": "afripoint",
+        "HOST": "localhost",
+        "PORT": 5432,
+    },
 }
+
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": config("engine"),
+#         "USER": config("db_user"),
+#         "NAME": config("db_name"),
+#         "PASSWORD": config("db_password"),
+#         "HOST": config("db_host"),
+#         "PORT": config("db_port"),
+#     },
+# }
 
 
 # Password validation

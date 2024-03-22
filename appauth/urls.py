@@ -9,7 +9,7 @@ from dj_rest_auth.views import PasswordResetConfirmView
 # from users.views import UserViewSet
 from rest_framework.routers import DefaultRouter
 
-from otpauth.views import OTPVerificationView, UserViewSet
+from otpauth.views import OTPVerificationView
 
 
 # from users.views import CustomUserDetailView
@@ -30,7 +30,7 @@ schema_view = get_schema_view(
 
 router = DefaultRouter()
 # router.register("user-otp", UserViewSet, basename="user-otp"),
-# router.register("verify-otp/", OTPVerificationView, basename="otp-verification")
+# router.register("verify/", OTPVerificationView, basename="verify")
 
 
 urlpatterns = [
