@@ -13,6 +13,7 @@ ALLOWED_HOSTS = ["*"]
 
 
 INSTALLED_APPS = [
+    "jazzmin",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -81,16 +82,16 @@ WSGI_APPLICATION = "appauth.wsgi.application"
 #     }
 # }
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "USER": "postgres",
-        "NAME": "afriauthdb",
-        "PASSWORD": "afripoint",
-        "HOST": "localhost",
-        "PORT": 5432,
-    },
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "USER": "postgres",
+#         "NAME": "afriauthdb",
+#         "PASSWORD": "afripoint",
+#         "HOST": "localhost",
+#         "PORT": 5432,
+#     },
+# }
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
@@ -107,16 +108,16 @@ STATICFILES_DIRS = [
 ]
 
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": config("engine"),
-#         "USER": config("db_user"),
-#         "NAME": config("db_name"),
-#         "PASSWORD": config("db_password"),
-#         "HOST": config("db_host"),
-#         "PORT": config("db_port"),
-#     },
-# }
+DATABASES = {
+    "default": {
+        "ENGINE": config("engine"),
+        "USER": config("db_user"),
+        "NAME": config("db_name"),
+        "PASSWORD": config("db_password"),
+        "HOST": config("db_host"),
+        "PORT": config("db_port"),
+    },
+}
 
 
 # Password validation
@@ -269,4 +270,45 @@ LOGGING = {
         "handlers": ["console", "mail_admins", "db"],
         "level": "INFO",
     },
+}
+
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Admin",
+    "site_header": "Admin",
+    "site_brand": "Admin",
+    "site_logo": "images/logo.png",
+    "site_logo_classes": "img-circle",
+    "site_icon": None,
+    "sidebar": "sidebar-light-warning",
+    "welcome_sign": "Communityfundme",
+    "copyright": "Communityfundme",
+    "search_model": "auth.User",
+    "user_avatar": None,
+    "topmenu_links": [
+        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"model": "auth.User"},
+        {"app": ""},
+    ],
+    "show_sidebar": True,
+    "navigation_expanded": False,
+    "hide_apps": ["django_summernote"],
+    "hide_models": [],
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+    },
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-circle",
+    "related_modal_active": False,
+    "custom_css": None,
+    "custom_js": None,
+    "show_ui_builder": False,
+    "changeform_format": "horizontal_tabs",
+    "changeform_format_overrides": {
+        "auth.user": "collapsible",
+        "auth.group": "vertical_tabs",
+    },
+    "language_chooser": False,
 }
