@@ -79,28 +79,28 @@ WSGI_APPLICATION = "appauth.wsgi.application"
 #     }
 # }
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "USER": "postgres",
-        "NAME": "afriauthdb",
-        "PASSWORD": "afripoint",
-        "HOST": "localhost",
-        "PORT": 5432,
-    },
-}
-
-
 # DATABASES = {
 #     "default": {
-#         "ENGINE": config("engine"),
-#         "USER": config("db_user"),
-#         "NAME": config("db_name"),
-#         "PASSWORD": config("db_password"),
-#         "HOST": config("db_host"),
-#         "PORT": config("db_port"),
+#         "ENGINE": "django.db.backends.postgresql",
+#         "USER": "postgres",
+#         "NAME": "afriauthdb",
+#         "PASSWORD": "afripoint",
+#         "HOST": "localhost",
+#         "PORT": 5432,
 #     },
 # }
+
+
+DATABASES = {
+    "default": {
+        "ENGINE": config("engine"),
+        "USER": config("db_user"),
+        "NAME": config("db_name"),
+        "PASSWORD": config("db_password"),
+        "HOST": config("db_host"),
+        "PORT": config("db_port"),
+    },
+}
 
 
 # Password validation
