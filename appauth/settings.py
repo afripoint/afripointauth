@@ -1,6 +1,7 @@
 from datetime import timedelta
 from pathlib import Path
 from decouple import config
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -80,31 +81,42 @@ WSGI_APPLICATION = "appauth.wsgi.application"
 #     }
 # }
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "USER": "postgres",
-#         "NAME": "afriauthdb",
-#         "PASSWORD": "afripoint",
-#         "HOST": "localhost",
-#         "PORT": 5432,
-#     },
-# }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "USER": "postgres",
+        "NAME": "afriauthdb",
+        "PASSWORD": "afripoint",
+        "HOST": "localhost",
+        "PORT": 5432,
+    },
+}
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
+STATIC_URL = "/static/"
 
-DATABASES = {
-    "default": {
-        "ENGINE": config("engine"),
-        "USER": config("db_user"),
-        "NAME": config("db_name"),
-        "PASSWORD": config("db_password"),
-        "HOST": config("db_host"),
-        "PORT": config("db_port"),
-    },
-}
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
+
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": config("engine"),
+#         "USER": config("db_user"),
+#         "NAME": config("db_name"),
+#         "PASSWORD": config("db_password"),
+#         "HOST": config("db_host"),
+#         "PORT": config("db_port"),
+#     },
+# }
 
 
 # Password validation

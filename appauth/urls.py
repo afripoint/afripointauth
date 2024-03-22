@@ -4,6 +4,8 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from dj_rest_auth.views import PasswordResetConfirmView
+from django.conf import settings
+from django.conf.urls.static import static
 
 # from users.views import CustomUserDetailView
 # from users.views import UserViewSet
@@ -56,6 +58,11 @@ urlpatterns = [
 ]
 
 urlpatterns += router.urls
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 
 admin.site.site_header = "Afripoint Authentication"
 admin.site.site_title = "Afripoint Authentication Portal"
