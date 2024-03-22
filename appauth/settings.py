@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "kyc",
     # "profiles",
     "otpauth",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -89,6 +90,9 @@ WSGI_APPLICATION = "appauth.wsgi.application"
 #         "PORT": 5432,
 #     },
 # }
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 
 DATABASES = {
