@@ -274,15 +274,15 @@ LOGGING = {
 
 
 JAZZMIN_SETTINGS = {
-    "site_title": "Admin",
-    "site_header": "Admin",
-    "site_brand": "Admin",
+    "site_title": "Afripoint Auth Admin",
+    "site_header": "Afripoint Auth Admin",
+    "site_brand": "Afripoint AuthAdmin",
     "site_logo": "images/logo.png",
     "site_logo_classes": "img-circle",
     "site_icon": None,
     "sidebar": "sidebar-light-warning",
-    "welcome_sign": "Communityfundme",
-    "copyright": "Communityfundme",
+    "welcome_sign": "Afripoint Auth",
+    "copyright": "Afripoint Auth",
     "search_model": "auth.User",
     "user_avatar": None,
     "topmenu_links": [
