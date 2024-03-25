@@ -213,7 +213,7 @@ REST_AUTH = {
 }
 
 AUTHENTICATION_BACKENDS = [
-    "otpauth.backend.EmailOrPhoneBackend",
+    "otpauth.backend.CustomAuthenticationBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
     "django.contrib.auth.backends.ModelBackend",
 ]
