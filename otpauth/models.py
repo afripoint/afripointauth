@@ -16,9 +16,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(unique=True, max_length=100, blank=True, null=True)
     email = models.EmailField(unique=True, blank=True, null=True)
     otp = models.CharField(max_length=20, blank=True, null=True)
-    otp_expiry = models.DateTimeField(blank=True, null=True)
-    otp_max_out = models.DateTimeField(blank=True, null=True)
-    max_otp_try = models.CharField(max_length=5, default=settings.MAX_OTP_TRY)
+
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     createdAt = models.DateTimeField(auto_now_add=True)
@@ -35,12 +33,3 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def has_module_perms(self, app_label):
         return self.is_staff
-
-
-class OTPUpdate(models.Model):
-    phone_number = models.CharField(max_length=255, blank=True, null=True)
-    otp_code = models.CharField(max_length=255, blank=True, null=True)
-    otp_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-
-    def __str__(self):
-        return self.phone_number

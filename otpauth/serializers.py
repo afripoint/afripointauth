@@ -12,7 +12,7 @@ from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model, authenticate
-from otpauth.models import OTPUpdate
+from OTP.models import MFATable
 from utils.utils import infobip_send_sms
 from rest_framework.exceptions import AuthenticationFailed
 from django.utils.translation import gettext_lazy as _
@@ -83,8 +83,6 @@ class OTPRegisterSerializer(RegisterSerializer):
             "email": self.validated_data.get("email"),
             "password1": self.validated_data.get("password1"),
             "password2": self.validated_data.get("password2"),
-            "otp": self.otp,
-            "otp_expiry": self.otp_expiry,
         }
 
     def save(self, request):
@@ -110,7 +108,7 @@ class OTPRegisterSerializer(RegisterSerializer):
         print("phone number", user.phone_number)
         # print("otp_obj", otp_obj)
 
-        OTPUpdate.objects.create(
+        MFATable.objects.create(
             phone_number=user.phone_number,
             otp_code=user.otp,
             # otp_id=otp_obj["otp_id"],
@@ -154,48 +152,3 @@ class CustomLoginSerializer(serializers.Serializer):
 
         attrs["user"] = user
         return attrs
-
-
-class OTPVerifySerializer(serializers.Serializer):
-    phone_number = serializers.CharField(required=True)
-    otp = serializers.CharField(required=True)
-
-    def validate(self, data):
-        phone_number = data.get("phone_number")
-        otp = data.get("otp")
-
-        # Retrieve the latest OTPUpdate record for the given phone_number
-        try:
-            otp_update = (
-                OTPUpdate.objects.filter(phone_number=phone_number)
-                .order_by("-id")
-                .first()
-            )
-            if not otp_update:
-                raise ValidationError("No OTP record found for this phone number.")
-        except OTPUpdate.DoesNotExist:
-            raise serializers.ValidationError(
-                "No OTP record found for this phone number."
-            )
-
-        # Retrieve the user by phone_number
-        try:
-            user = User.objects.get(phone_number=phone_number)
-        except User.DoesNotExist:
-            raise serializers.ValidationError(
-                "User with this phone number does not exist."
-            )
-
-        # Check if OTP is correct and not expired
-        # Assuming you have a way to validate the otp expiry from OTPUpdate or elsewhere
-        if otp_update.otp_code != otp:
-            raise serializers.ValidationError("Invalid OTP.")
-
-        # After successful verification, you might want to update the user and OTPUpdate record accordingly
-        user.is_active = True  # Optionally activate the user account after successful OTP verification
-        user.save()
-
-        # Optionally reset or delete the OTPUpdate record to prevent reuse
-        # otp_update.delete()  # For example, if you want to delete it
-
-        return data

@@ -2,8 +2,9 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 
+from otpauth.models import CustomUser
+
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import CustomUser, OTPUpdate
 
 
 # class UserAdmin(BaseUserAdmin):
@@ -83,4 +84,3 @@ from .models import CustomUser, OTPUpdate
 
 
 admin.site.register(CustomUser)
-admin.site.register(OTPUpdate)

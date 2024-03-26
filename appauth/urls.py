@@ -11,7 +11,10 @@ from django.conf.urls.static import static
 # from users.views import UserViewSet
 from rest_framework.routers import DefaultRouter
 
-from otpauth.views import OTPVerificationView
+from OTP.views import (
+    PhoneNumberValidationView,
+    PhoneNumberVerificationView,
+)
 
 
 # from users.views import CustomUserDetailView
@@ -31,14 +34,13 @@ schema_view = get_schema_view(
 )
 
 router = DefaultRouter()
-# router.register("user-otp", UserViewSet, basename="user-otp"),
-# router.register("verify/", OTPVerificationView, basename="verify")
+router.register("", PhoneNumberValidationView, basename="send_otp")
+router.register("", PhoneNumberVerificationView, basename="verfiy_otp")
 
 
 urlpatterns = [
     path("backoffice/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
-    # path("api/v1/auth/user/", CustomUserDetailView.as_view(), name="user_details"),
     path("api/v1/auth/", include("dj_rest_auth.urls")),
     path("api/v1/auth/registration/", include("dj_rest_auth.registration.urls")),
     path(
@@ -55,9 +57,10 @@ urlpatterns = [
         name="schema-swagger-ui",
     ),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
+    path("otp/", include(router.urls)),
 ]
 
-urlpatterns += router.urls
+# urlpatterns += router.urls
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
