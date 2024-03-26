@@ -71,16 +71,20 @@ class OTPRegisterSerializer(RegisterSerializer):
     # username = None
     email = serializers.EmailField(required=False)
     phone_number = serializers.CharField(required=True)
+    first_name = serializers.CharField(required=False)
+    last_name = serializers.CharField(required=False)
+    dob = serializers.DateTimeField(required=True)
     password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
-    otp_expiry = datetime.now() + timedelta(minutes=10)
-    otp = otp_generator.generate_otp()
 
     def get_cleaned_data(self):
         super().get_cleaned_data()
         return {
             "phone_number": self.validated_data.get("phone_number"),
             "email": self.validated_data.get("email"),
+            "first_name": self.validated_data.get("first_name"),
+            "last_name": self.validated_data.get("last_name"),
+            "dob": self.validated_data.get("dob"),
             "password1": self.validated_data.get("password1"),
             "password2": self.validated_data.get("password2"),
         }
@@ -92,31 +96,20 @@ class OTPRegisterSerializer(RegisterSerializer):
         adapter.save_user(request, user, self, commit=False)
         user.phone_number = self.cleaned_data["phone_number"]
         user.email = self.cleaned_data["email"]
-        user.otp = self.otp
-        user.otp_expiry = self.otp_expiry
-        user.is_active = False
+        user.first_name = self.cleaned_data["first_name"]
+        user.last_name = self.cleaned_data["last_name"]
+        user.dob = self.cleaned_data["dob"]
+        user.is_active = True
+        user.save()
+
         try:
             adapter.clean_password(self.cleaned_data["password1"], user=user)
 
         except ValidationError as e:
             raise serializers.ValidationError(detail=serializers.as_serializer_error(e))
 
-        user.save()
-
-        # otp_obj = getOTPInfo(self, user.phone_number)
-        infobip_send_sms(user.phone_number, f"Your OTP is {user.otp}")
-        print("phone number", user.phone_number)
-        # print("otp_obj", otp_obj)
-
-        MFATable.objects.create(
-            phone_number=user.phone_number,
-            otp_code=user.otp,
-            # otp_id=otp_obj["otp_id"],
-        )
-
         self.custom_signup(request, user)
         setup_user_email(request, user, [])
-
         return user
 
 
@@ -129,21 +122,17 @@ class CustomLoginSerializer(serializers.Serializer):
         password = attrs.get("password")
         user = None
 
-        # Try to authenticate assuming login is a phone number first
         user = authenticate(
             request=self.context.get("request"), phone_number=login, password=password
         )
 
-        # If authentication failed, check if the login is an email and try to authenticate
         if not user:
             try:
                 validate_email(login)
-                # If login is a valid email, attempt to authenticate with email
                 user = authenticate(
                     request=self.context.get("request"), email=login, password=password
                 )
             except ValidationError:
-                # If login is neither a valid phone number nor email, or authentication failed
                 pass
 
         if not user:
