@@ -43,7 +43,7 @@ class CustomUserChangeForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ("phone_number", "password", "is_active", "is_staff")
+        fields = ("phone_number", "email", "password", "is_active", "is_staff")
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.

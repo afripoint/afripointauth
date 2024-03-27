@@ -25,13 +25,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     objects = CustomUserManager()
 
-    USERNAME_FIELD = "phone_number"
+    USERNAME_FIELD = "email"
 
     def _str_(self):
-        return self.email if self.email else self.phone_number
-
-    def has_perm(self, perm, obj=None):
-        return self.is_staff
-
-    def has_module_perms(self, app_label):
-        return self.is_staff
+        return self.email

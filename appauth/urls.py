@@ -14,6 +14,8 @@ from rest_framework.routers import DefaultRouter
 from OTP.views import (
     PhoneNumberValidationView,
     PhoneNumberVerificationView,
+    EmailValidationView,
+    EmailVerificationView,
 )
 
 
@@ -34,8 +36,10 @@ schema_view = get_schema_view(
 )
 
 router = DefaultRouter()
-router.register("", PhoneNumberValidationView, basename="send_otp")
-router.register("", PhoneNumberVerificationView, basename="verfiy_otp")
+router.register("mobile", PhoneNumberValidationView, basename="send_otp")
+router.register("mobile", PhoneNumberVerificationView, basename="verfiy_otp")
+router.register("web", EmailValidationView, basename="send_otp")
+router.register("web", EmailVerificationView, basename="verfiy_otp")
 
 
 urlpatterns = [
