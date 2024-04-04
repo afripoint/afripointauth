@@ -28,4 +28,4 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = "email"
 
     def _str_(self):
-        return "Hello"
+        return self.email if self.email else self.phone
