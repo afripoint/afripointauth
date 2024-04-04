@@ -7,8 +7,7 @@ from dj_rest_auth.views import PasswordResetConfirmView
 from django.conf import settings
 from django.conf.urls.static import static
 
-# from users.views import CustomUserDetailView
-# from users.views import UserViewSet
+from otpauth.views import CustomUserDetailsView
 from rest_framework.routers import DefaultRouter
 
 from OTP.views import (
@@ -17,10 +16,6 @@ from OTP.views import (
     EmailValidationView,
     EmailVerificationView,
 )
-
-
-# from users.views import CustomUserDetailView
-
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -47,6 +42,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path("api/v1/auth/", include("dj_rest_auth.urls")),
     path("api/v1/auth/registration/", include("dj_rest_auth.registration.urls")),
+    path("api/v1/auth/user/", CustomUserDetailsView.as_view(), name="user_details"),
     path(
         "api/v1/auth/password/reset/confirm/<uidb64>/<token>/",
         PasswordResetConfirmView.as_view(),

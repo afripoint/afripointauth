@@ -1,5 +1,3 @@
-from datetime import datetime, timedelta
-import random
 from django.conf import settings
 from rest_framework import serializers
 from direct7 import Client
@@ -12,7 +10,7 @@ from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model, authenticate
-from OTP.models import MFATable, OTPSettings
+from OTP.models import MFATable
 from utils.utils import infobip_send_sms
 from rest_framework.exceptions import AuthenticationFailed
 from django.utils.translation import gettext_lazy as _
@@ -45,34 +43,23 @@ def get_mfa(userId):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    password1 = serializers.CharField(
-        write_only=True,
-        min_length=settings.MIN_PASSWORD_LENGTH,
-        error_messages={
-            "min_length": "Password must be longer than {} characters".format(
-                settings.MIN_PASSWORD_LENGTH
-            )
-        },
-    )
-    password2 = serializers.CharField(
-        write_only=True,
-        min_length=settings.MIN_PASSWORD_LENGTH,
-        error_messages={
-            "min_length": "Password must be longer than {} characters".format(
-                settings.MIN_PASSWORD_LENGTH
-            )
-        },
-    )
+    # render_class = [SingleUserJSONRenderer]
 
     class Meta:
         model = User
-        fields = ("id", "phone_number", "email", "password1", "password2")
-        read_only_fields = ("id",)
+        fields = [
+            "id",
+            "email",
+            "first_name",
+            "last_name",
+            "phone_number",
+        ]
 
-    def validate(self, data):
-        if data["password1"] != data["password2"]:
-            raise serializers.ValidationError("Passwords do not match")
-        return data
+    def to_representation(self, instance):
+        representation = super(UserSerializer, self).to_representation(instance)
+        if instance.is_superuser:
+            representation["admin"] = True
+        return representation
 
 
 class OTPRegisterSerializer(RegisterSerializer):
@@ -144,30 +131,6 @@ class OTPRegisterSerializer(RegisterSerializer):
         setup_user_email(request, user, [])
 
         return user
-
-    # def save(self, request):
-    #     adapter = get_adapter()
-    #     user = adapter.new_user(request)
-    #     self.cleaned_data = self.get_cleaned_data()
-    #     adapter.save_user(request, user, self, commit=False)
-    #     user.phone_number = self.cleaned_data["phone_number"]
-    #     user.email = self.cleaned_data["email"]
-    #     user.first_name = self.cleaned_data["first_name"]
-    #     user.last_name = self.cleaned_data["last_name"]
-    #     user.dob = self.cleaned_data["dob"]
-    #     user.is_active = False
-    #     user.save()
-    #     registration_type = self.cleaned_data["registration_type"]
-
-    #     try:
-    #         adapter.clean_password(self.cleaned_data["password1"], user=user)
-
-    #     except ValidationError as e:
-    #         raise serializers.ValidationError(detail=serializers.as_serializer_error(e))
-
-    #     self.custom_signup(request, user)
-    #     setup_user_email(request, user, [])
-    #     return user
 
 
 class CustomLoginSerializer(serializers.Serializer):

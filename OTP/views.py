@@ -14,6 +14,7 @@ from OTP.serializers import (
 )
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import AllowAny
+from django.template.loader import render_to_string
 
 
 client = Client(api_token=settings.D7_NETWORK_SECRET_KEY)
@@ -119,8 +120,15 @@ class EmailValidationView(viewsets.ViewSet):
             mfa.save()
 
             send_html_email(
-                "Your OTP", f"Your OTP is {otp}", settings.DEFAULT_FROM_EMAIL, [email]
+                "Your OTP",
+                render_to_string("emails/otp.html", {"otp": otp}),
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
             )
+
+            # send_html_email(
+            #     "Your OTP", f"Your OTP is {otp}", settings.DEFAULT_FROM_EMAIL, [email]
+            # )
             return Response("OTP sent successfully.", status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
