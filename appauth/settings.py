@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "users",
     "corsheaders",
     "OTP",
+    "accounts",
 ]
 
 MIDDLEWARE = [
