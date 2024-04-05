@@ -2,8 +2,9 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 
+from users.models import CustomUser
+
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import CustomUser
 
 
 class UserAdmin(BaseUserAdmin):
@@ -15,14 +16,14 @@ class UserAdmin(BaseUserAdmin):
         "pkid",  # Ensure your CustomUser model has this field or remove it if it doesn't
         "id",
         "email",
-        "phone",
+        "phone_number",
         "is_staff",
         "is_active",
     ]
-    list_display_links = ["id", "email", "phone"]
+    list_display_links = ["id", "email", "phone_number"]
     list_filter = [
         "email",
-        "phone",
+        "phone_number",
         "is_staff",
         "is_active",
     ]  # Assuming 'is_active' is a field in your model
@@ -31,7 +32,7 @@ class UserAdmin(BaseUserAdmin):
             _("Login Credentials"),
             {
                 "fields": (
-                    "email",
+                    "phone_number",
                     "password",
                 ),
             },
@@ -39,7 +40,9 @@ class UserAdmin(BaseUserAdmin):
         (
             _("Personal Information"),
             {
-                "fields": ("phone",),  # Remove the duplicate 'email' field from here
+                "fields": (
+                    "phone_number",
+                ),  # Remove the duplicate 'email' field from here
             },
         ),
         (
@@ -68,7 +71,7 @@ class UserAdmin(BaseUserAdmin):
                 "classes": ("wide",),
                 "fields": (
                     "email",
-                    "phone",
+                    "phone_number",
                     "password1",
                     "password2",
                     "is_staff",
@@ -77,7 +80,7 @@ class UserAdmin(BaseUserAdmin):
             },
         ),
     )
-    search_fields = ["email", "phone"]
+    search_fields = ["email", "phone_number"]
 
 
-admin.site.register(CustomUser, UserAdmin)
+admin.site.register(CustomUser)

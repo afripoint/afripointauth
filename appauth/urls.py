@@ -7,7 +7,7 @@ from dj_rest_auth.views import PasswordResetConfirmView
 from django.conf import settings
 from django.conf.urls.static import static
 
-from otpauth.views import CustomUserDetailsView
+from users.views import CustomUserDetailsView
 from rest_framework.routers import DefaultRouter
 
 from OTP.views import (

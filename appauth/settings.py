@@ -13,7 +13,7 @@ ALLOWED_HOSTS = ["*"]
 
 
 INSTALLED_APPS = [
-    # "jazzmin",
+    "jazzmin",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -22,7 +22,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # custom
     "pages",
-    # "users",
     "applogger",
     # external
     "allauth",
@@ -36,7 +35,7 @@ INSTALLED_APPS = [
     "common",
     "kyc",
     # "profiles",
-    "otpauth",
+    "users",
     "corsheaders",
     "OTP",
 ]
@@ -83,16 +82,16 @@ WSGI_APPLICATION = "appauth.wsgi.application"
 #     }
 # }
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "USER": "postgres",
-#         "NAME": "afriauthdb",
-#         "PASSWORD": "afripoint",
-#         "HOST": "localhost",
-#         "PORT": 5432,
-#     },
-# }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "USER": "postgres",
+        "NAME": "afriauthdb",
+        "PASSWORD": "afripoint",
+        "HOST": "localhost",
+        "PORT": 5432,
+    },
+}
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
@@ -109,16 +108,16 @@ STATICFILES_DIRS = [
 ]
 
 
-DATABASES = {
-    "default": {
-        "ENGINE": config("engine"),
-        "USER": config("db_user"),
-        "NAME": config("db_name"),
-        "PASSWORD": config("db_password"),
-        "HOST": config("db_host"),
-        "PORT": config("db_port"),
-    },
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": config("engine"),
+#         "USER": config("db_user"),
+#         "NAME": config("db_name"),
+#         "PASSWORD": config("db_password"),
+#         "HOST": config("db_host"),
+#         "PORT": config("db_port"),
+#     },
+# }
 
 
 # Password validation
@@ -149,7 +148,7 @@ EMAIL_HOST_PASSWORD = str(config("email_host_password"))
 EMAIL_USE_TLS = str(config("email_use_tls"))
 
 
-AUTH_USER_MODEL = "otpauth.CustomUser"
+AUTH_USER_MODEL = "users.CustomUser"
 
 MAX_OTP_TRY = 3
 
@@ -209,12 +208,12 @@ REST_AUTH = {
     "USE_JWT": True,
     "JWT_AUTH_COOKIE": "appauth-token",
     "JWT_AUTH_REFRESH_COOKIE": "appauth-refresh-token",
-    "REGISTER_SERIALIZER": "otpauth.serializers.OTPRegisterSerializer",
-    "LOGIN_SERIALIZER": "otpauth.serializers.CustomLoginSerializer",
+    "REGISTER_SERIALIZER": "users.serializers.OTPRegisterSerializer",
+    "LOGIN_SERIALIZER": "users.serializers.CustomLoginSerializer",
 }
 
 AUTHENTICATION_BACKENDS = [
-    "otpauth.backend.CustomAuthenticationBackend",
+    "users.backend.CustomAuthenticationBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
     "django.contrib.auth.backends.ModelBackend",
 ]

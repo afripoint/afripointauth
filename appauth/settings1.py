@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     "common",
     "kyc",
     # "profiles",
-    # "otpauth",
+    # "users",
 ]
 
 MIDDLEWARE = [
