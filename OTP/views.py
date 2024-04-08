@@ -5,6 +5,7 @@ from django.conf import settings
 from django.utils import timezone
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.response import Response
 from OTP.models import MFATable, OTPSettings
 from OTP.renderers import PhoneNumberJSONRenderer
@@ -17,6 +18,7 @@ from OTP.serializers import (
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import AllowAny
 from django.template.loader import render_to_string
+from drf_yasg.utils import swagger_auto_schema
 
 
 client = Client(api_token=settings.D7_NETWORK_SECRET_KEY)
@@ -30,12 +32,13 @@ User = get_user_model()
 # Phone number validation OTP
 class PhoneNumberValidationView(viewsets.ViewSet):
     """
-    Endpoint for sending OTP to the phone number.
+    Endpoint for sending OTP to phone number.
     """
 
     permission_classes = [AllowAny]
     renderer_classes = [PhoneNumberJSONRenderer]
 
+    @swagger_auto_schema(request_body=PhoneNumberValidationSerializer)
     @action(detail=False, methods=["post"])
     def send_otp(self, request):
         serializer = PhoneNumberValidationSerializer(data=request.data)
@@ -65,9 +68,14 @@ class PhoneNumberValidationView(viewsets.ViewSet):
 
 
 class PhoneNumberVerificationView(viewsets.ViewSet):
+    """
+    Endpoint to verify phone number OTP.
+    """
+
     permission_classes = [AllowAny]
     renderer_classes = [JSONRenderer, BrowsableAPIRenderer]
 
+    @swagger_auto_schema(request_body=PhoneNumberVerificationSerializer)
     @action(detail=False, methods=["post"])
     def verifyOtp(self, request):
         serializer = PhoneNumberVerificationSerializer(data=request.data)
@@ -102,8 +110,13 @@ class PhoneNumberVerificationView(viewsets.ViewSet):
 
 # Email validation OTP
 class EmailValidationView(viewsets.ViewSet):
+    """
+    Email OTP generation endpoint.
+    """
+
     permission_classes = [AllowAny]
 
+    @swagger_auto_schema(request_body=EmailValidationSerializer)
     @action(detail=False, methods=["post"])
     def send_email_otp(self, request):
         serializer = EmailValidationSerializer(data=request.data)
@@ -142,8 +155,13 @@ class EmailValidationView(viewsets.ViewSet):
 
 
 class EmailVerificationView(viewsets.ViewSet):
+    """
+    Email OTP verification endpoint.
+    """
+
     permission_classes = [AllowAny]
 
+    @swagger_auto_schema(request_body=EmailVerificationSerializer)
     @action(detail=False, methods=["post"])
     def verify_email_otp(self, request):
         serializer = EmailVerificationSerializer(data=request.data)
