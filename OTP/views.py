@@ -29,6 +29,10 @@ User = get_user_model()
 
 # Phone number validation OTP
 class PhoneNumberValidationView(viewsets.ViewSet):
+    """
+    Endpoint for sending OTP to the phone number.
+    """
+
     permission_classes = [AllowAny]
     renderer_classes = [PhoneNumberJSONRenderer]
 

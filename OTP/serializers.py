@@ -3,6 +3,10 @@ from rest_framework import serializers
 
 # Phone Serializers
 class PhoneNumberValidationSerializer(serializers.Serializer):
+    """
+    Endpoint for sending OTP to the phone number.
+    """
+
     phone_number = serializers.CharField(required=True)
 
 
