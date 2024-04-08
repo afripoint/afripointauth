@@ -32,10 +32,10 @@ schema_view = get_schema_view(
 )
 
 router = DefaultRouter()
-router.register("Mobile Send OTP", PhoneNumberValidationView, basename="send_otp")
-router.register("Mobile Verify OTP", PhoneNumberVerificationView, basename="verfiy_otp")
-router.register("Web Send OTP", EmailValidationView, basename="send_otp")
-router.register("Web Verify OTP", EmailVerificationView, basename="verfiy_otp")
+router.register("mobile", PhoneNumberValidationView, basename="send_otp")
+router.register("mobile", PhoneNumberVerificationView, basename="verfiy_otp")
+router.register("web", EmailValidationView, basename="send_otp")
+router.register("web", EmailVerificationView, basename="verfiy_otp")
 
 router.register("accounts/type", AccountTypeViewSet, basename="account_type")
 
