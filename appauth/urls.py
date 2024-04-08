@@ -43,11 +43,11 @@ router.register("accounts/type", AccountTypeViewSet, basename="account_type")
 urlpatterns = [
     path("backoffice/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
-    path("api/v1/auth/", include("dj_rest_auth.urls")),
-    path("api/v1/auth/registration/", include("dj_rest_auth.registration.urls")),
-    path("api/v1/auth/user/", CustomUserDetailsView.as_view(), name="user_details"),
+    path("api/", include("dj_rest_auth.urls")),
+    path("api/registration/", include("dj_rest_auth.registration.urls")),
+    path("api/auth/user/", CustomUserDetailsView.as_view(), name="user_details"),
     path(
-        "api/v1/auth/password/reset/confirm/<uidb64>/<token>/",
+        "api/password/reset/confirm/<uidb64>/<token>/",
         PasswordResetConfirmView.as_view(),
         name="password_reset_confirm",
     ),
@@ -60,7 +60,7 @@ urlpatterns = [
         name="schema-swagger-ui",
     ),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
-    path("", include(router.urls)),
+    path("api/", include(router.urls)),
 ]
 
 # urlpatterns += router.urls
