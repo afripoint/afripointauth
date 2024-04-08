@@ -7,8 +7,9 @@ from dj_rest_auth.views import PasswordResetConfirmView
 from django.conf import settings
 from django.conf.urls.static import static
 
+from accounts.views import AccountTypeViewSet
 from users.views import CustomUserDetailsView
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import DefaultRouter, SimpleRouter
 
 from OTP.views import (
     PhoneNumberValidationView,
@@ -36,6 +37,8 @@ router.register("mobile", PhoneNumberVerificationView, basename="verfiy_otp")
 router.register("web", EmailValidationView, basename="send_otp")
 router.register("web", EmailVerificationView, basename="verfiy_otp")
 
+router.register("accounts/type", AccountTypeViewSet, basename="account_type")
+
 
 urlpatterns = [
     path("backoffice/", admin.site.urls),
@@ -57,7 +60,7 @@ urlpatterns = [
         name="schema-swagger-ui",
     ),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
-    path("otp/", include(router.urls)),
+    path("", include(router.urls)),
 ]
 
 # urlpatterns += router.urls

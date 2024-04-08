@@ -1,4 +1,5 @@
 from direct7 import Client
+from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 
 from django.conf import settings
 from django.utils import timezone
@@ -6,6 +7,7 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from OTP.models import MFATable, OTPSettings
+from OTP.renderers import PhoneNumberJSONRenderer
 from OTP.serializers import (
     EmailValidationSerializer,
     EmailVerificationSerializer,
@@ -28,6 +30,7 @@ User = get_user_model()
 # Phone number validation OTP
 class PhoneNumberValidationView(viewsets.ViewSet):
     permission_classes = [AllowAny]
+    renderer_classes = [PhoneNumberJSONRenderer]
 
     @action(detail=False, methods=["post"])
     def send_otp(self, request):
@@ -59,6 +62,7 @@ class PhoneNumberValidationView(viewsets.ViewSet):
 
 class PhoneNumberVerificationView(viewsets.ViewSet):
     permission_classes = [AllowAny]
+    renderer_classes = [JSONRenderer, BrowsableAPIRenderer]
 
     @action(detail=False, methods=["post"])
     def verifyOtp(self, request):
