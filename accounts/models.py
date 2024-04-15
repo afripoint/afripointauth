@@ -2,6 +2,8 @@ from django.db import models
 import uuid
 from django.contrib.auth import get_user_model
 
+from kyc.models import KYCModel
+
 User = get_user_model()
 
 
@@ -13,17 +15,13 @@ class AccountName(models.Model):
 
 
 def get_default_account_name():
-    # This function tries to get an AccountName instance with a specific name
-    # If it doesn't exist, it creates it and returns it
     account_name, created = AccountName.objects.get_or_create(name="wallet")
     return account_name.pk
 
 
 class AccountTypeTable(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    accountTypeId = models.CharField(
-        max_length=25, unique=True, blank=True, null=True
-    )  # What will be the nature of this field
+    accountTypeId = models.CharField(max_length=25, unique=True, blank=True, null=True)
     accountTypeName = models.ForeignKey(
         AccountName, on_delete=models.CASCADE, default=get_default_account_name
     )
@@ -39,20 +37,22 @@ class AccountTypeTable(models.Model):
     def __str__(self):
         return self.accountTypeName.name
 
-
-class Kyc(models.Model):
-    pass
+    class Meta:
+        verbose_name = "AccountTypeTable"
+        verbose_name_plural = "AccountTypeTables"
 
 
 class AccountTable(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    accountNo = models.CharField(max_length=25)
+    accountNo = models.CharField(max_length=25, blank=True, null=True)
     accountName = models.CharField(max_length=100, blank=True, null=True)
     userId = models.ForeignKey(User, on_delete=models.CASCADE)
     accountType = models.CharField(max_length=50, blank=True, null=True)
-    accountTypeId = models.ForeignKey(AccountTypeTable, on_delete=models.CASCADE)
-    kycId = models.ForeignKey(Kyc, on_delete=models.CASCADE)
-    kycStatus = models.BooleanField()
+    accountTypeId = models.ForeignKey(
+        AccountTypeTable, on_delete=models.CASCADE, blank=True, null=True
+    )
+    kycId = models.ForeignKey(KYCModel, on_delete=models.CASCADE, blank=True, null=True)
+    kycStatus = models.BooleanField(default=False)
     createdBy = models.CharField(max_length=25, blank=True, null=True)
     dateCreated = models.DateField(auto_now_add=True)
     modifiedBy = models.CharField(max_length=25, blank=True, null=True)
@@ -62,7 +62,7 @@ class AccountTable(models.Model):
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.accountName
+        return self.userId.email
 
 
 class AccountActivity(models.Model):
@@ -70,9 +70,7 @@ class AccountActivity(models.Model):
     accountNo = models.CharField(max_length=25, blank=True, null=True)
     accountName = models.CharField(max_length=100, blank=True, null=True)
     activityType = models.CharField(max_length=50, blank=True, null=True)
-    userId = models.CharField(
-        max_length=25, blank=True, null=True
-    )  # This should be a foreign key to the user
+    userId = models.CharField(max_length=25, blank=True, null=True)
     dateCreated = models.DateField(auto_now_add=True)
 
     def __str__(self):
