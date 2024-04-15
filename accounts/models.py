@@ -1,7 +1,6 @@
 from django.db import models
 import uuid
 from django.contrib.auth import get_user_model
-
 from kyc.models import KYCModel
 
 User = get_user_model()
