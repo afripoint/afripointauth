@@ -3,7 +3,6 @@ from django.contrib.auth.models import BaseUserManager
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email=None, phone_number=None, password=None, **extra_fields):
-        print(f"Creating user with email: {email}, phone: {phone_number}")
         if not email and not phone_number:
             raise ValueError("The Email or Phone number must be set")
         if email:

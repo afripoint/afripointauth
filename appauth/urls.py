@@ -7,7 +7,12 @@ from dj_rest_auth.views import PasswordResetConfirmView
 from django.conf import settings
 from django.conf.urls.static import static
 
-from accounts.views import AccountTypeDetail, AccountTypeViewSet
+from accounts.views import (
+    AccountDetail,
+    AccountTypeDetail,
+    AccountTypeViewSet,
+    AccountView,
+)
 from users.views import CustomUserDetailsView
 from rest_framework.routers import DefaultRouter, SimpleRouter
 
@@ -66,6 +71,12 @@ urlpatterns = [
         "api/accounts/<int:pk>/type",
         AccountTypeDetail.as_view(),
         name="single_account_type",
+    ),
+    path("api/accounts/", AccountView.as_view(), name="account_type"),
+    path(
+        "api/accounts/<int:pk>",
+        AccountDetail.as_view(),
+        name="acount_detail",
     ),
 ]
 

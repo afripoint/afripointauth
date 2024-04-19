@@ -1,6 +1,5 @@
 from django.conf import settings
 from rest_framework import serializers
-from direct7 import Client
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import setup_user_email
 from dj_rest_auth.registration.serializers import RegisterSerializer
@@ -20,21 +19,9 @@ from utils.utils import send_html_email
 from django.utils import timezone
 
 
-client = Client(api_token=settings.D7_NETWORK_SECRET_KEY)
 User = get_user_model()
 
 otp_generator = UniqueOtpGenerator()
-
-
-def getOTPInfo(self, phone_number):
-    otp_info = client.verify.send_otp(
-        originator="SignOTP",
-        recipient=phone_number,
-        content="Your OTP code is: {}",
-        expiry=120,
-        data_coding="text",
-    )
-    return otp_info
 
 
 def get_mfa(userId):
@@ -143,7 +130,7 @@ class CustomLoginSerializer(serializers.Serializer):
         user = None
 
         user = authenticate(
-            request=self.context.get("request"), phone_number=login, password=password
+            request=self.context.get("request"), username=login, password=password
         )
 
         if not user:

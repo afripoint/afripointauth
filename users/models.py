@@ -5,6 +5,7 @@ from django.core.validators import RegexValidator
 from users.manager import CustomUserManager
 from django.conf import settings
 
+
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     pkid = models.BigAutoField(primary_key=True, editable=False)
     id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
@@ -22,5 +23,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = "email"
 
-    def _str_(self):
-        return self.email if self.email else self.phone
+    @property
+    def get_full_name(self):
+        # Use the first_name and last_name if available, otherwise return email or a placeholder
+        if self.first_name and self.last_name:
+            return f"{self.first_name} {self.last_name}"
+        return self.email or self.phone_number

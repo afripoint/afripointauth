@@ -255,20 +255,24 @@ LOGGING = {
             "class": "django.utils.log.AdminEmailHandler",
             "formatter": "verbose",
         },
-        "db": {
+        # "db": {
+        #     "level": "WARNING",
+        #     "class": "applogger.log_handler.DbLogHandler",
+        # },
+        "activitity": {
             "level": "WARNING",
-            "class": "applogger.log_handler.DbLogHandler",  # Replace with your actual handler path
+            "class": "accounts.activity_log_handler.AccountActivityLogHandler",
         },
     },
     "loggers": {
         "django": {
-            "handlers": ["console", "mail_admins", "db"],
+            "handlers": ["console", "mail_admins", "activitity"],
             "level": "INFO",
             "propagate": True,
         },
     },
     "root": {
-        "handlers": ["console", "mail_admins", "db"],
+        "handlers": ["console", "mail_admins", "activitity"],
         "level": "INFO",
     },
 }

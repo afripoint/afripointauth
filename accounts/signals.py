@@ -17,10 +17,7 @@ def create_user_account_type(sender, instance, created, **kwargs):
     if created:
         kyc = KYCModel.objects.get(user=instance)
         acct_type = AccountTypeTable.objects.get(accountTypeName__name="wallet")
-        AccountTable.objects.create(userId=instance, kycId=kyc, accountTypeId=acct_type)
-
-
-# @receiver(post_save, sender=AUTH_USER_MODEL)
-# def save_user_profile(sender, instance, **kwargs):
-#     instance.profile.save()
-#     logger.info(f"{instance}'s profile created")
+        full_name = instance.get_full_name()
+        AccountTable.objects.create(
+            userId=instance, kycId=kyc, accountTypeId=acct_type, accountName=full_name
+        )

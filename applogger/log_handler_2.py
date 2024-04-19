@@ -5,10 +5,9 @@ import logging
 
 class DbLogHandler(logging.Handler):
     def emit(self, record):
-        # Import your models here, inside the method
         from applogger.models import (
             LogEntry,
-        )  # Adjust 'yourapp.models' to the actual path
+        )
 
         try:
             # Now you can safely use your Django models
