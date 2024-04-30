@@ -1,4 +1,3 @@
-from django.conf import settings
 from rest_framework import serializers
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import setup_user_email
@@ -10,13 +9,11 @@ from rest_framework import serializers
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model, authenticate
 from OTP.models import MFATable
-from utils.utils import infobip_send_sms
 from rest_framework.exceptions import AuthenticationFailed
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import validate_email
 from utils.utils import UniqueOtpGenerator
-from utils.utils import send_html_email
-from django.utils import timezone
+from datetime import datetime, timedelta
 
 
 User = get_user_model()
@@ -55,7 +52,7 @@ class OTPRegisterSerializer(RegisterSerializer):
     phone_number = serializers.CharField(required=False)
     first_name = serializers.CharField(required=False)
     last_name = serializers.CharField(required=False)
-    dob = serializers.DateTimeField(required=True)
+    dob = serializers.DateField(required=True)
     password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
     registration_type = serializers.CharField(write_only=True)
@@ -66,6 +63,18 @@ class OTPRegisterSerializer(RegisterSerializer):
         # Check if an MFA record exists and if it's verified.
         if mfa is None or not mfa.verified:
             raise serializers.ValidationError(f"{userId} is not verified")
+
+    def validate_dob(self, value):
+        """
+        Validate that the user is 18 years old or above.
+        """
+        today = datetime.now().date()
+        age_limit = today - timedelta(days=365 * 18)
+
+        if value > age_limit:
+            raise ValidationError("Must be 18 years or older to register.")
+
+        return value
 
     def get_cleaned_data(self):
         super().get_cleaned_data()

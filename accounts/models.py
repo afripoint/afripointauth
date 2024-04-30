@@ -21,11 +21,10 @@ def get_default_account_name():
 class AccountTypeTable(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     accountTypeId = models.CharField(max_length=25, unique=True, blank=True, null=True)
-    accountTypeName = models.ForeignKey(
+    accountTypeName = models.OneToOneField(
         AccountName,
         on_delete=models.CASCADE,
         default=get_default_account_name,
-        unique=True,
     )
     descriptions = models.TextField(max_length=255, blank=True, null=True)
     createdBy = models.CharField(max_length=25, blank=True, null=True)
