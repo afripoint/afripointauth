@@ -4,7 +4,7 @@ from django.utils.timezone import now
 
 class AccountActivityLogHandler(logging.Handler):
     def emit(self, record):
-        from accounts.models import (
+        from customaccounts.models import (
             AccountActivity,
         )
 

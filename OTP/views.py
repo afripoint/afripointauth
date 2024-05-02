@@ -1,4 +1,3 @@
-from direct7 import Client
 from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 
 from django.conf import settings
@@ -21,7 +20,7 @@ from django.template.loader import render_to_string
 from drf_yasg.utils import swagger_auto_schema
 
 
-client = Client(api_token=settings.D7_NETWORK_SECRET_KEY)
+# client = Client(api_token=settings.D7_NETWORK_SECRET_KEY)
 from utils.utils import infobip_send_sms, send_html_email
 from utils.utils import UniqueOtpGenerator
 

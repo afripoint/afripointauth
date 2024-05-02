@@ -7,7 +7,7 @@ from dj_rest_auth.views import PasswordResetConfirmView
 from django.conf import settings
 from django.conf.urls.static import static
 
-from accounts.views import (
+from customaccounts.views import (
     AccountDetail,
     AccountTypeDetail,
     AccountTypeViewSet,
@@ -42,12 +42,12 @@ router.register("mobile", PhoneNumberVerificationView, basename="verfiy_otp")
 router.register("web", EmailValidationView, basename="send_otp")
 router.register("web", EmailVerificationView, basename="verfiy_otp")
 
-# router.register("accounts/type", AccountTypeViewSet, basename="account_type")
+# router.register("custom_accounts/type", AccountTypeViewSet, basename="account_type")
 
 
 urlpatterns = [
     path("backoffice/", admin.site.urls),
-    path("accounts/", include("allauth.urls")),
+    path("customaccounts/", include("allauth.urls")),
     path("api/", include("dj_rest_auth.urls")),
     path("api/registration/", include("dj_rest_auth.registration.urls")),
     path("api/auth/user/", CustomUserDetailsView.as_view(), name="user_details"),
@@ -66,15 +66,15 @@ urlpatterns = [
     ),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
     path("api/", include(router.urls)),
-    path("api/accounts/type", AccountTypeViewSet.as_view(), name="account_type"),
+    path("api/customaccounts/type", AccountTypeViewSet.as_view(), name="account_type"),
     path(
-        "api/accounts/<int:pk>/type",
+        "api/customaccounts/<int:pk>/type",
         AccountTypeDetail.as_view(),
         name="single_account_type",
     ),
-    path("api/accounts/", AccountView.as_view(), name="account_type"),
+    path("api/customaccounts/", AccountView.as_view(), name="account_type"),
     path(
-        "api/accounts/<int:pk>",
+        "api/customaccounts/<int:pk>",
         AccountDetail.as_view(),
         name="acount_detail",
     ),

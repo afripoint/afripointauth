@@ -1,6 +1,7 @@
 from django.db import models
 import uuid
 from django.contrib.auth import get_user_model
+from common.models import TimeStampedModel
 from kyc.models import KYCModel
 
 User = get_user_model()
@@ -18,8 +19,7 @@ def get_default_account_name():
     return account_name.pk
 
 
-class AccountTypeTable(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+class AccountTypeTable(TimeStampedModel):
     accountTypeId = models.CharField(max_length=25, unique=True, blank=True, null=True)
     accountTypeName = models.OneToOneField(
         AccountName,
@@ -27,12 +27,6 @@ class AccountTypeTable(models.Model):
         default=get_default_account_name,
     )
     descriptions = models.TextField(max_length=255, blank=True, null=True)
-    createdBy = models.CharField(max_length=25, blank=True, null=True)
-    dateCreated = models.DateField(auto_now_add=True)
-    modifiedBy = models.CharField(max_length=25, blank=True, null=True)
-    dateModified = models.DateField(auto_now=True)
-    approvedBy = models.CharField(max_length=25, blank=True, null=True)
-    approvedDate = models.DateField(blank=True, null=True)
     active = models.BooleanField(default=True)
 
     def __str__(self):

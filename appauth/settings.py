@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     "users",
     "corsheaders",
     "OTP",
-    "accounts",
+    "customaccounts",
 ]
 
 MIDDLEWARE = [
@@ -76,23 +76,29 @@ WSGI_APPLICATION = "appauth.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
 
 # DATABASES = {
 #     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "USER": "postgres",
-#         "NAME": "afriauthdb",
-#         "PASSWORD": "afripoint",
-#         "HOST": "localhost",
-#         "PORT": 5432,
+#         "ENGINE": config("engine"),
+#         "USER": config("db_user"),
+#         "NAME": config("db_name"),
+#         "PASSWORD": config("db_password"),
+#         "HOST": config("db_host"),
+#         "PORT": config("db_port"),
 #     },
 # }
+
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "USER": "postgres",
+        "NAME": "afriauthdb",
+        "PASSWORD": "afripoint",
+        "HOST": "localhost",
+        "PORT": 5432,
+    },
+}
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
@@ -107,18 +113,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-
-
-DATABASES = {
-    "default": {
-        "ENGINE": config("engine"),
-        "USER": config("db_user"),
-        "NAME": config("db_name"),
-        "PASSWORD": config("db_password"),
-        "HOST": config("db_host"),
-        "PORT": config("db_port"),
-    },
-}
 
 
 # Password validation
@@ -261,7 +255,7 @@ LOGGING = {
         # },
         "activitity": {
             "level": "WARNING",
-            "class": "accounts.activity_log_handler.AccountActivityLogHandler",
+            "class": "customaccounts.activity_log_handler.AccountActivityLogHandler",
         },
     },
     "loggers": {

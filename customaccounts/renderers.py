@@ -17,7 +17,9 @@ class AccountTypeJSONRenderer(JSONRenderer):
             else:
                 return json.dumps({"status_code": status_code, "account_type": data})
         elif isinstance(data, list):
-            return json.dumps({"status_code": status_code, "accounts_type": data})
+            return json.dumps(
+                {"status_code": status_code, "custom_accounts_type": data}
+            )
         else:
             return super().render(data)
 
@@ -37,6 +39,6 @@ class AccountTableJSONRenderer(JSONRenderer):
             else:
                 return json.dumps({"status_code": status_code, "account": data})
         elif isinstance(data, list):
-            return json.dumps({"status_code": status_code, "accounts": data})
+            return json.dumps({"status_code": status_code, "custom_accounts": data})
         else:
             return super().render(data)

@@ -7,9 +7,15 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 
 
-from accounts.models import AccountTable, AccountTypeTable
-from accounts.renderers import AccountTableJSONRenderer, AccountTypeJSONRenderer
-from accounts.serializers import AccountTableSerialzer, AccountTypeSerializer
+from customaccounts.models import AccountTable, AccountTypeTable
+from customaccounts.renderers import (
+    AccountTableJSONRenderer,
+    AccountTypeJSONRenderer,
+)
+from customaccounts.serializers import (
+    AccountTableSerialzer,
+    AccountTypeSerializer,
+)
 
 
 class AccountTypeViewSet(APIView):

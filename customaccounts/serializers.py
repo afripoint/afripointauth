@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
-from accounts.models import AccountName, AccountTable, AccountTypeTable
+from customaccounts.models import AccountName, AccountTable, AccountTypeTable
 from kyc.models import KYCModel
 
 User = get_user_model()
