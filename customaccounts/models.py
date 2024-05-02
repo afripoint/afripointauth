@@ -24,7 +24,7 @@ class AccountTypeTable(TimeStampedModel):
     accountTypeName = models.OneToOneField(
         AccountName,
         on_delete=models.CASCADE,
-        default=get_default_account_name,
+        default=get_default_account_name(),
     )
     descriptions = models.TextField(max_length=255, blank=True, null=True)
     active = models.BooleanField(default=True)
