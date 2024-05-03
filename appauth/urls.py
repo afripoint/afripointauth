@@ -8,6 +8,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from customaccounts.views import (
+    AccountActivityView,
     AccountDetail,
     AccountTypeDetail,
     AccountTypeViewSet,
@@ -77,6 +78,11 @@ urlpatterns = [
         "api/customaccounts/<int:pk>",
         AccountDetail.as_view(),
         name="acount_detail",
+    ),
+    path(
+        "api/account/activities/",
+        AccountActivityView.as_view(),
+        name="acount_activities",
     ),
 ]
 

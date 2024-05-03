@@ -5,14 +5,16 @@ from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import ListAPIView
 
 
-from customaccounts.models import AccountTable, AccountTypeTable
+from customaccounts.models import AccountActivity, AccountTable, AccountTypeTable
 from customaccounts.renderers import (
     AccountTableJSONRenderer,
     AccountTypeJSONRenderer,
 )
 from customaccounts.serializers import (
+    AccountActivitySerializer,
     AccountTableSerialzer,
     AccountTypeSerializer,
 )
@@ -145,3 +147,8 @@ class AccountDetail(APIView):
 
         item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class AccountActivityView(ListAPIView):
+    queryset = AccountActivity.objects.all()
+    serializer_class = AccountActivitySerializer

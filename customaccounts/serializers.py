@@ -1,7 +1,12 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
-from customaccounts.models import AccountName, AccountTable, AccountTypeTable
+from customaccounts.models import (
+    AccountActivity,
+    AccountName,
+    AccountTable,
+    AccountTypeTable,
+)
 from kyc.models import KYCModel
 
 User = get_user_model()
@@ -107,3 +112,18 @@ class AccountTableSerialzer(serializers.ModelSerializer):
         if "approvedBy" in validated_data:
             instance.modifiedBy = self.context["request"].user
         return super().update(instance, validated_data)
+
+
+class AccountActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AccountActivity
+        fields = [
+            "id",
+            "accountNo",
+            "accountName",
+            "ip_address",
+            "user_agent",
+            "activityType",
+            "userId",
+            "dateCreated",
+        ]
