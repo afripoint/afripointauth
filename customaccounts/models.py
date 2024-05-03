@@ -64,9 +64,14 @@ class AccountActivity(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     accountNo = models.CharField(max_length=25, blank=True, null=True)
     accountName = models.CharField(max_length=100, blank=True, null=True)
+    ip_address = models.CharField(max_length=255, blank=True, null=True)
+    user_agent = models.CharField(max_length=255, blank=True, null=True)
     activityType = models.CharField(max_length=50, blank=True, null=True)
-    userId = models.CharField(max_length=25, blank=True, null=True)
-    dateCreated = models.DateField(auto_now_add=True)
+    userId = models.CharField(max_length=255, blank=True, null=True)
+    dateCreated = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.accountNo} - {self.activityType}"
+        return f"{self.dateCreated} - {self.activityType}"
+
+    class Meta:
+        ordering = ["-dateCreated"]

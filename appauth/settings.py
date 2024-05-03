@@ -205,6 +205,7 @@ REST_AUTH = {
     "JWT_AUTH_REFRESH_COOKIE": "appauth-refresh-token",
     "REGISTER_SERIALIZER": "users.serializers.OTPRegisterSerializer",
     "LOGIN_SERIALIZER": "users.serializers.CustomLoginSerializer",
+    # "PASSWORD_CHANGE_SERIALIZER": "rest-auth/password/change/",
 }
 
 AUTHENTICATION_BACKENDS = [
@@ -253,20 +254,20 @@ LOGGING = {
         #     "level": "WARNING",
         #     "class": "applogger.log_handler.DbLogHandler",
         # },
-        "activitity": {
-            "level": "WARNING",
-            "class": "customaccounts.activity_log_handler.AccountActivityLogHandler",
-        },
+        # "activitity": {
+        #     "level": "WARNING",
+        #     "class": "customaccounts.activity_log_handler.AccountActivityLogHandler",
+        # },
     },
     "loggers": {
         "django": {
-            "handlers": ["console", "mail_admins", "activitity"],
+            "handlers": ["console", "mail_admins"],
             "level": "INFO",
             "propagate": True,
         },
     },
     "root": {
-        "handlers": ["console", "mail_admins", "activitity"],
+        "handlers": ["console", "mail_admins"],
         "level": "INFO",
     },
 }
