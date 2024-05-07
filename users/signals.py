@@ -125,7 +125,7 @@ def password_reset_token_created(
 
     msg = EmailMultiAlternatives(
         # title:
-        "Password Reset for {title}".format(title="Your Website Title"),
+        "Password Reset Email",
         # message:
         email_plaintext_message,
         # from:
