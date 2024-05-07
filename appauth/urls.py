@@ -53,10 +53,19 @@ urlpatterns = [
     path("api/registration/", include("dj_rest_auth.registration.urls")),
     path("api/auth/user/", CustomUserDetailsView.as_view(), name="user_details"),
     path(
-        "api/password/reset/confirm/<uidb64>/<token>/",
-        PasswordResetConfirmView.as_view(),
-        name="password_reset_confirm",
+        "api/password_reset/",
+        include("django_rest_passwordreset.urls", namespace="password_reset"),
     ),
+    # path(
+    #     "api/password/reset/confirm/<uidb64>/<token>/",
+    #     PasswordResetConfirmView.as_view(),
+    #     name="password_reset_confirm",
+    # ),
+    # path(
+    #     "password/reset/<uidb64>/<token>/",
+    #     PasswordResetConfirmView.as_view(),
+    #     name="password_reset_confirm",
+    # ),
     path(
         "swagger<format>/", schema_view.without_ui(cache_timeout=0), name="schema-json"
     ),
