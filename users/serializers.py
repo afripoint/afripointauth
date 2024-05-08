@@ -27,8 +27,6 @@ def get_mfa(userId):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    # render_class = [SingleUserJSONRenderer]
-
     class Meta:
         model = User
         fields = [

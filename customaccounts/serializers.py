@@ -8,24 +8,18 @@ from customaccounts.models import (
     AccountTypeTable,
 )
 from kyc.models import KYCModel
+from kyc.serializers import KYCSerializer
+from users.serializers import UserSerializer
 
 User = get_user_model()
 
 
-class UserSerializer(serializers.ModelSerializer):
-    full_name = serializers.CharField(source="get_full_name", read_only=True)
+# class UserSerializer(serializers.ModelSerializer):
+#     full_name = serializers.CharField(source="get_full_name", read_only=True)
 
-    class Meta:
-        model = User
-        fields = ("id", "full_name", "email")
-
-
-class KYCSerializer(serializers.ModelSerializer):
-    user = serializers.CharField(read_only=True)
-
-    class Meta:
-        model = KYCModel
-        fields = ("id", "user", "bvn", "nin")
+#     class Meta:
+#         model = User
+#         fields = ("id", "full_name", "email")
 
 
 class AccountTypeSerializer(serializers.ModelSerializer):

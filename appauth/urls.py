@@ -14,7 +14,8 @@ from customaccounts.views import (
     AccountTypeViewSet,
     AccountView,
 )
-from users.views import CustomUserDetailsView
+from kyc.views import KYCAPIView
+from users.views import CustomUserAPIView
 from rest_framework.routers import DefaultRouter, SimpleRouter
 
 from OTP.views import (
@@ -43,29 +44,17 @@ router.register("mobile", PhoneNumberVerificationView, basename="verfiy_otp")
 router.register("web", EmailValidationView, basename="send_otp")
 router.register("web", EmailVerificationView, basename="verfiy_otp")
 
-# router.register("custom_accounts/type", AccountTypeViewSet, basename="account_type")
-
-
 urlpatterns = [
     path("backoffice/", admin.site.urls),
     path("customaccounts/", include("allauth.urls")),
     path("api/", include("dj_rest_auth.urls")),
     path("api/registration/", include("dj_rest_auth.registration.urls")),
-    path("api/auth/user/", CustomUserDetailsView.as_view(), name="user_details"),
+    path("api/auth/user/", CustomUserAPIView.as_view(), name="user_details"),
+    path("api/kyc/<str:user_id>", KYCAPIView.as_view(), name="kyc_api_view"),
     path(
         "api/password_reset/",
         include("django_rest_passwordreset.urls", namespace="password_reset"),
     ),
-    # path(
-    #     "api/password/reset/confirm/<uidb64>/<token>/",
-    #     PasswordResetConfirmView.as_view(),
-    #     name="password_reset_confirm",
-    # ),
-    # path(
-    #     "password/reset/<uidb64>/<token>/",
-    #     PasswordResetConfirmView.as_view(),
-    #     name="password_reset_confirm",
-    # ),
     path(
         "swagger<format>/", schema_view.without_ui(cache_timeout=0), name="schema-json"
     ),

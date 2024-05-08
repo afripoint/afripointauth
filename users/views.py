@@ -9,7 +9,7 @@ User = get_user_model()
 from .serializers import UserSerializer
 
 
-class CustomUserDetailsView(RetrieveUpdateAPIView):
+class CustomUserAPIView(RetrieveUpdateAPIView):
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated,)
 

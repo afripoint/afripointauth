@@ -10,7 +10,7 @@ from datetime import timedelta
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     pkid = models.BigAutoField(primary_key=True, editable=False)
-    id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    id = models.UUIDField(default=uuid.uuid4, editable=True, unique=True)
     phone_number = models.CharField(unique=True, max_length=100, blank=True, null=True)
     email = models.EmailField(unique=True, blank=True, null=True)
     otp = models.CharField(max_length=20, blank=True, null=True)
