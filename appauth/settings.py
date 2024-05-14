@@ -78,28 +78,28 @@ WSGI_APPLICATION = "appauth.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": config("engine"),
-#         "USER": config("db_user"),
-#         "NAME": config("db_name"),
-#         "PASSWORD": config("db_password"),
-#         "HOST": config("db_host"),
-#         "PORT": config("db_port"),
-#     },
-# }
-
-
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "USER": "postgres",
-        "NAME": "afriauthdb",
-        "PASSWORD": "afripoint",
-        "HOST": "localhost",
-        "PORT": 5432,
+        "ENGINE": config("engine"),
+        "USER": config("db_user"),
+        "NAME": config("db_name"),
+        "PASSWORD": config("db_password"),
+        "HOST": config("db_host"),
+        "PORT": config("db_port"),
     },
 }
+
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "USER": "postgres",
+#         "NAME": "afriauthdb",
+#         "PASSWORD": "afripoint",
+#         "HOST": "localhost",
+#         "PORT": 5432,
+#     },
+# }
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
@@ -115,9 +115,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -161,13 +158,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
 STATIC_URL = "static/"
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

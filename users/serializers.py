@@ -14,7 +14,7 @@ from django.utils.translation import gettext_lazy as _
 from django.core.validators import validate_email
 from utils.utils import UniqueOtpGenerator
 from datetime import datetime, timedelta
-
+from django.db.models import Q
 
 User = get_user_model()
 
@@ -94,8 +94,10 @@ class OTPRegisterSerializer(RegisterSerializer):
         registration_type = self.cleaned_data["registration_type"]
         email = self.cleaned_data["email"]
 
-        # Perform the phone number state check early in the process.
-        # This will raise a ValidationError if the phone number is not verified, preventing further execution.
+        if User.objects.filter(Q(email=email) | Q(phone_number=phone_number)).exists():
+            raise serializers.ValidationError(
+                "User with this email or phone number already exists."
+            )
 
         if registration_type == "mobile":
             self.registration_type_check(registration_type, phone_number)
