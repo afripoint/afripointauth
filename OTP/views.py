@@ -43,6 +43,12 @@ class PhoneNumberValidationView(viewsets.ViewSet):
         serializer = PhoneNumberValidationSerializer(data=request.data)
         if serializer.is_valid():
             phone_number = serializer.validated_data["phone_number"]
+            user = User.objects.filter(phone_number=phone_number).first()
+            if user:
+                return Response(
+                    {"error": "There is an existing account with this phone number. "},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
             otp = otp_generator.generate_otp()
 
             otp_settings = OTPSettings.objects.first()
@@ -121,6 +127,12 @@ class EmailValidationView(viewsets.ViewSet):
         serializer = EmailValidationSerializer(data=request.data)
         if serializer.is_valid():
             email = serializer.validated_data["email"]
+            user = User.objects.filter(email=email).first()
+            if user:
+                return Response(
+                    {"error": "There is an existing account with this email "},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
             otp = otp_generator.generate_otp()
 
             otp_settings = OTPSettings.objects.first()
@@ -146,9 +158,6 @@ class EmailValidationView(viewsets.ViewSet):
                 [email],
             )
 
-            # send_html_email(
-            #     "Your OTP", f"Your OTP is {otp}", settings.DEFAULT_FROM_EMAIL, [email]
-            # )
             return Response("OTP sent successfully.", status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
