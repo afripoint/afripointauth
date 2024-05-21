@@ -17,7 +17,5 @@ def create_user_account_type(sender, instance, created, **kwargs):
     if created:
         kyc = KYCModel.objects.get(user=instance)
         acct_type = AccountTypeTable.objects.get(accountTypeName__name="wallet")
-        full_name = instance.get_full_name
-        AccountTable.objects.create(
-            userId=instance, kycId=kyc, accountTypeId=acct_type, accountName=full_name
-        )
+        # full_name = instance.get_full_name
+        AccountTable.objects.create(userId=instance, kycId=kyc, accountTypeId=acct_type)
