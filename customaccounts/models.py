@@ -16,11 +16,7 @@ class AccountName(models.Model):
 
 def get_default_account_name():
     account_name, created = AccountName.objects.get_or_create(name="wallet")
-    print("account_name", account_name)
     return account_name.pk
-
-
-get_default_account_name()
 
 
 class AccountTypeTable(TimeStampedModel):
