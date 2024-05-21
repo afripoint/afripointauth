@@ -1,5 +1,5 @@
 import logging
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_migrate
 from django.dispatch import receiver
 from django.contrib.auth import get_user_model
 from appauth.settings import AUTH_USER_MODEL
@@ -7,9 +7,17 @@ from kyc.models import KYCModel
 
 User = get_user_model()
 
-from .models import AccountTable, AccountTypeTable
+from .models import AccountTable, AccountTypeTable, get_default_account_name
 
 logger = logging.getLogger(__name__)
+
+
+@receiver(post_migrate)
+def create_default_account_name(sender, **kwargs):
+    if (
+        sender.name == "customaccounts"
+    ):  # replace 'customaccounts' with the name of your app
+        get_default_account_name()
 
 
 @receiver(post_save, sender=AUTH_USER_MODEL)
