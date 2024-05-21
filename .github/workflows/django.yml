@@ -1,0 +1,40 @@
+name: Afriauth CI
+
+on:
+  push:
+    branches: [ "main" ]
+
+concurrency:
+  group: "main"
+  cancel-in-progress: true
+
+jobs:
+  build:
+
+    runs-on: self-hosted
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.9]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run Tests
+      env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      run: |
+        cd /var/www/_work/afriauth/afriauth
+        git pull
+        source /var/www/_work/afriauth/afriauth/env/bin/activate
+        pip install -r requirements.txt
+        python manage.py makemigrations
+        python manage.py migrate
+        sudo service apache2 restart
