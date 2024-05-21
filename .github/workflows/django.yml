@@ -32,9 +32,9 @@ jobs:
         # python manage.py test
     - name: Install Dependencies
       run: |
-        cd /var/www/_work/afripointauth/afripointauth
+        cd /var/www/actions-runner/_work/afripointauth/afripointauth
         git pull
-        source /var/www/_work/afripointauth/afripointauth/env/bin/activate
+        source /var/www/actions-runner/_work/afripointauth/afripointauth/env/bin/activate
         pip install -r requirements.txt
         python manage.py makemigrations
         python manage.py migrate
