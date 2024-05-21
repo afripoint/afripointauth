@@ -25,6 +25,25 @@ jobs:
     - name: Get Secrets
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        EMAIL_BACKEND: ${{ secrets.EMAIL_BACKEND }}
+        EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
+        EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
+        EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
+        DEFAULT_FROM_EMAIL: ${{ secrets.DEFAULT_FROM_EMAIL }}
+        MAIL_HOST_PASSWORD: ${{ secrets.MAIL_HOST_PASSWORD }}
+        EMAIL_USE_TLS: ${{ secrets.EMAIL_USE_TLS }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_NAME: ${{ secrets.DB_NAME }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_HOST: ${{ secrets.DB_HOST }}
+        DB_PORT: ${{ secrets.DB_PORT }}
+        ENGINE: ${{ secrets.ENGINE }}
+        D7_NETWORK_SECRET_KEY: ${{ secrets.D7_NETWORK_SECRET_KEY }}
+        SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+
+        
+
+
       run: |
         echo "Get environmental variables from github"
         # Add commands to run tests here if needed, for example:

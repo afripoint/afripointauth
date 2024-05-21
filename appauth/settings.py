@@ -5,7 +5,7 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "django-insecure-eovw&k38ciy4*4n*!4502ft8*9*)0w+vhi7(3d&!58$vt9!0ub"
+SECRET_KEY = (config("SECRET_KEY"),)
 
 DEBUG = True
 
@@ -80,12 +80,12 @@ WSGI_APPLICATION = "appauth.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": config("engine"),
-        "USER": config("db_user"),
-        "NAME": config("db_name"),
-        "PASSWORD": config("db_password"),
-        "HOST": config("db_host"),
-        "PORT": config("db_port"),
+        "ENGINE": config("ENGINE"),
+        "USER": config("DB_USER"),
+        "NAME": config("DB_NAME"),
+        "PASSWORD": config("DB_PASSWORD"),
+        "HOST": config("DB_HOST"),
+        "PORT": config("DB_PORT"),
     },
 }
 
@@ -132,13 +132,13 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-EMAIL_BACKEND = str(config("email_backend"))
-EMAIL_HOST = str(config("email_host"))
-EMAIL_PORT = str(config("email_port"))
-EMAIL_HOST_USER = str(config("email_host_user"))
-DEFAULT_FROM_EMAIL = str(config("default_from_email"))
-EMAIL_HOST_PASSWORD = str(config("email_host_password"))
-EMAIL_USE_TLS = str(config("email_use_tls"))
+EMAIL_BACKEND = str(config("EMAIL_BACKEND"))
+EMAIL_HOST = str(config("EMAIL_HOST"))
+EMAIL_PORT = str(config("EMAIL_PORT"))
+EMAIL_HOST_USER = str(config("EMAIL_HOST_USER"))
+DEFAULT_FROM_EMAIL = str(config("DEFAULT_FROM_EMAIL"))
+EMAIL_HOST_PASSWORD = str(config("MAIL_HOST_PASSWORD"))
+EMAIL_USE_TLS = str(config("EMAIL_USE_TLS"))
 
 
 AUTH_USER_MODEL = "users.CustomUser"
