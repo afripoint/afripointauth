@@ -15,13 +15,20 @@ class AccountName(models.Model):
 
 
 def get_default_account_name():
-    return AccountName.objects.get_or_create(name="wallet")[0]
+    account_name, created = AccountName.objects.get_or_create(name="wallet")
+    print("account_name", account_name)
+    return account_name.pk
+
+
+get_default_account_name()
 
 
 class AccountTypeTable(TimeStampedModel):
     accountTypeId = models.CharField(max_length=25, unique=True, blank=True, null=True)
     accountTypeName = models.OneToOneField(
-        AccountName, on_delete=models.CASCADE, default=get_default_account_name
+        AccountName,
+        on_delete=models.CASCADE,
+        default=get_default_account_name,
     )
     descriptions = models.TextField(max_length=255, blank=True, null=True)
     active = models.BooleanField(default=True)
@@ -72,6 +79,3 @@ class AccountActivity(models.Model):
 
     class Meta:
         ordering = ["-dateCreated"]
-
-
-

@@ -14,9 +14,7 @@ logger = logging.getLogger(__name__)
 
 @receiver(post_migrate)
 def create_default_account_name(sender, **kwargs):
-    if (
-        sender.name == "customaccounts"
-    ):  # replace 'customaccounts' with the name of your app
+    if sender.name == "customaccounts":
         get_default_account_name()
 
 
