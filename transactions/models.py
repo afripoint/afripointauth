@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 import uuid
 from django.contrib.auth import get_user_model
+from django_cryptography.fields import encrypt
 
 User = get_user_model()
 
@@ -46,25 +47,21 @@ STATUS = (
 
 
 class Transaction(models.Model):
-    transaction_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    transaction_id = encrypt(
+        models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    )
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     transaction_type = models.CharField(max_length=50, choices=TRANSACTION_TYPE)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_method = models.CharField(max_length=50, choices=PAYMENT_METHOD)
-    transaction_status = models.CharField(max_length=10, choices=STATUS)
-    timestamp = models.DateTimeField(default=timezone.now)
+    amount = encrypt(models.DecimalField(max_digits=10, decimal_places=2))
+    payment_method = encrypt(models.CharField(max_length=50, choices=PAYMENT_METHOD))
+    transaction_status = encrypt(models.CharField(max_length=10, choices=STATUS))
+    timestamp = encrypt(models.DateTimeField(default=timezone.now))
     error_message = models.CharField(max_length=255, blank=True, null=True)
     additional_details = models.TextField(blank=True, null=True)
 
     class Meta:
         verbose_name = "Transaction"
         verbose_name_plural = "Transaction"
-        indexes = [
-            models.Index(fields=["user_id"]),
-            models.Index(fields=["transaction_type"]),
-            models.Index(fields=["transaction_status"]),
-            models.Index(fields=["timestamp"]),
-        ]
 
     def __str__(self):
         return f"Transaction {self.transaction_id} - {self.transaction_type}"
@@ -74,45 +71,34 @@ class TransactionDetails(models.Model):
     transaction = models.ForeignKey(
         Transaction, on_delete=models.CASCADE, related_name="details"
     )
-    vendor_id = models.IntegerField()
-    account_id = models.IntegerField()
-    invoice_id = models.IntegerField(blank=True, null=True)
-    transaction_description = models.TextField(blank=True, null=True)
+    vendor_id = encrypt(models.CharField(max_length=50))
+    account_id = encrypt(models.CharField(max_length=50))
+    invoice_id = encrypt(models.CharField(max_length=50))
+    transaction_description = encrypt(models.TextField(blank=True, null=True))
     transaction_reference = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         verbose_name = "Transaction Detail"
         verbose_name_plural = "Transaction Details"
-        indexes = [
-            models.Index(fields=["vendor_id"]),
-            models.Index(fields=["account_id"]),
-            models.Index(fields=["invoice_id"]),
-        ]
 
     def __str__(self):
         return f"Details for Transaction {self.transaction.transaction_id}"
 
 
 class TransactionLog(models.Model):
-    transaction_id = models.CharField(max_length=255)
+    transaction_id = encrypt(models.CharField(max_length=255))
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     transaction_type = models.CharField(max_length=50)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_method = models.CharField(max_length=50)
-    transaction_status = models.CharField(max_length=50)
-    timestamp = models.DateTimeField(default=timezone.now)
+    amount = encrypt(models.DecimalField(max_digits=10, decimal_places=2))
+    payment_method = encrypt(models.CharField(max_length=50))
+    transaction_status = encrypt(models.CharField(max_length=50))
+    timestamp = encrypt(models.DateTimeField(default=timezone.now))
     error_message = models.CharField(max_length=255, blank=True, null=True)
     additional_details = models.TextField(blank=True, null=True)
 
     class Meta:
         verbose_name = "Transaction Log"
         verbose_name_plural = "Transaction Logs"
-        indexes = [
-            models.Index(fields=["user_id"]),
-            models.Index(fields=["transaction_type"]),
-            models.Index(fields=["transaction_status"]),
-            models.Index(fields=["timestamp"]),
-        ]
 
     def __str__(self):
         return f"Encrypted Transaction {self.transaction_id} - {self.transaction_type}"

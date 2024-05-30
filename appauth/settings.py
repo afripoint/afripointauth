@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "customaccounts",
     "django_rest_passwordreset",
     "transactions",
+    "django_cryptography",
 ]
 
 MIDDLEWARE = [
