@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "OTP",
     "customaccounts",
     "django_rest_passwordreset",
+    "transactions",
 ]
 
 MIDDLEWARE = [
@@ -78,28 +79,28 @@ WSGI_APPLICATION = "appauth.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
-DATABASES = {
-    "default": {
-        "ENGINE": config("ENGINE"),
-        "USER": config("DB_USER"),
-        "NAME": config("DB_NAME"),
-        "PASSWORD": config("DB_PASSWORD"),
-        "HOST": config("DB_HOST"),
-        "PORT": config("DB_PORT"),
-    },
-}
-
-
 # DATABASES = {
 #     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "USER": "postgres",
-#         "NAME": "afriauthdb",
-#         "PASSWORD": "afripoint",
-#         "HOST": "localhost",
-#         "PORT": 5432,
+#         "ENGINE": config("ENGINE"),
+#         "USER": config("DB_USER"),
+#         "NAME": config("DB_NAME"),
+#         "PASSWORD": config("DB_PASSWORD"),
+#         "HOST": config("DB_HOST"),
+#         "PORT": config("DB_PORT"),
 #     },
 # }
+
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "USER": "postgres",
+        "NAME": "afriauthdb",
+        "PASSWORD": "afripoint",
+        "HOST": "localhost",
+        "PORT": 5432,
+    },
+}
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True

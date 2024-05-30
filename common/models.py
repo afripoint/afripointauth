@@ -4,7 +4,7 @@ import uuid
 
 class TimeStampedModel(models.Model):
     pkid = models.BigAutoField(primary_key=True, editable=False)
-    id = models.UUIDField(default=uuid.uuid4, editable=True, unique=True)
+    id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     createdBy = models.CharField(max_length=25, blank=True, null=True)
     dateCreated = models.DateField(auto_now_add=True)
     modifiedBy = models.CharField(max_length=25, blank=True, null=True)

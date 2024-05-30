@@ -25,6 +25,14 @@ from OTP.views import (
     EmailVerificationView,
 )
 
+from transactions.views import (
+    TransactionList,
+    TransactionDetail,
+    TransactionLogList,
+    TransactionLogDetail,
+    TransactionDetailsList,
+)
+
 schema_view = get_schema_view(
     openapi.Info(
         title="Afripoint Authentication API",
@@ -81,6 +89,37 @@ urlpatterns = [
         "api/account/activities/",
         AccountActivityView.as_view(),
         name="acount_activities",
+    ),
+    # path(
+    #     "api/transaction-status/",
+    #     TransactionStatusList.as_view(),
+    #     name="transactionstatus-list",
+    # ),
+    # path(
+    #     "api/transaction-status/<int:pk>/",
+    #     TransactionStatusDetail.as_view(),
+    #     name="transactionstatus-detail",
+    # ),
+    path("api/transactions/", TransactionList.as_view(), name="transaction-list"),
+    path(
+        "api/transactions/<int:pk>/",
+        TransactionDetail.as_view(),
+        name="transaction-detail",
+    ),
+    path(
+        "api/transaction-logs/",
+        TransactionLogList.as_view(),
+        name="transactionlog-list",
+    ),
+    path(
+        "api/transaction-logs/<int:pk>/",
+        TransactionLogDetail.as_view(),
+        name="transactionlog-detail",
+    ),
+    path(
+        "api/transaction-details/",
+        TransactionDetailsList.as_view(),
+        name="transactiondetails-list",
     ),
 ]
 
