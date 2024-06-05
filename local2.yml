@@ -9,7 +9,7 @@ services:
       - .:/app:z
       - ./staticfiles:/app/staticfiles
     ports:
-      - "8000:8000"
+      - "8080:8000"
     # expose:
     #   - "8000"
     env_file:
@@ -63,38 +63,16 @@ services:
       - afriauth_docker_network
 
   celeryworker:
-    build:
-      context: .
-      dockerfile: ./docker/local/django/Dockerfile
-    command: /start-celeryworker
-    container_name: afriauth_prod_celeryworker
+    <<: *api
     image: afriauth_prod_celeryworker
-    volumes:
-      - .:/app:z
-    env_file: ./.envs/.env
-    depends_on:
-      - redis
-      - postgres
-      - mailpit
-    networks:
-      - afriauth_docker_network
+    container_name: afriauth_prod_celeryworker
+    command: /start-celeryworker
 
   celerybeat:
-    build:
-      context: .
-      dockerfile: ./docker/local/django/Dockerfile
-    command: /start-celerybeat
-    container_name: afriauth_prod_celerybeat
+    <<: *api
     image: afriauth_prod_celerybeat
-    volumes:
-      - .:/app:z
-    env_file: ./.envs/.env
-    depends_on:
-      - redis
-      - postgres
-      - mailpit
-    networks:
-      - afriauth_docker_network
+    container_name: afriauth_prod_celerybeat
+    command: /start-celerybeat
 
   flower:
     <<: *api
@@ -103,22 +81,6 @@ services:
     ports:
       - "5555:5555"
     command: /start-flower
-
-  # nginx:
-  #   build:
-  #     context: ./docker/local/nginx
-  #     dockerfile: Dockerfile
-  #   restart: always
-  #   container_name: afriauth_nginx
-  #   ports:
-  #     - "8080:80"
-  #   volumes:
-  #     - ./staticfiles:/app/staticfiles
-  #     - logs_store:/var/log/nginx
-  #   depends_on:
-  #     - api
-  #   networks:
-  #     - afriauth_docker_network
 
 networks:
   afriauth_docker_network:
