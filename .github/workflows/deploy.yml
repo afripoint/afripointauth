@@ -1,10 +1,10 @@
 on:
   push:
     branches:
-      - master
+      - testing
   pull_request:
     branches:
-      - master
+      - testing
 
 name: Deploy backend-end service
 
@@ -24,4 +24,8 @@ jobs:
           args: --docker
         env:
           USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          PASSWORD: ${{ secrets.
+          PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKERFILE: "./docker/local/django/Dockerfile"
+          IMAGE_NAME: "afripoint/afriauth_backend"
+          LATEST: "true"
+          
