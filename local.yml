@@ -15,7 +15,7 @@ services:
     env_file:
       - ./.envs/.env
     depends_on:
-      - postgres
+      # - postgres
       - mailpit
       - redis
     command: /start
@@ -104,21 +104,21 @@ services:
       - "5555:5555"
     command: /start-flower
 
-  nginx:
-    build:
-      context: ./docker/local/nginx
-      dockerfile: Dockerfile
-    restart: always
-    container_name: afriauth_nginx
-    ports:
-      - "8080:80"
-    volumes:
-      - ./staticfiles:/app/staticfiles
-      - logs_store:/var/log/nginx
-    depends_on:
-      - api
-    networks:
-      - afriauth_docker_network
+  # nginx:
+  #   build:
+  #     context: ./docker/local/nginx
+  #     dockerfile: Dockerfile
+  #   restart: always
+  #   container_name: afriauth_nginx
+  #   ports:
+  #     - "8080:80"
+  #   volumes:
+  #     - ./staticfiles:/app/staticfiles
+  #     - logs_store:/var/log/nginx
+  #   depends_on:
+  #     - api
+  #   networks:
+  #     - afriauth_docker_network
 
 networks:
   afriauth_docker_network:
