@@ -18,7 +18,7 @@ services:
       - postgres
       - mailpit
       - redis
-    command: /start
+    command: /entrypoint
     networks:
       - afriauth_docker_network
 
