@@ -8,34 +8,34 @@ services:
     volumes:
       - .:/app:z
       - ./staticfiles:/app/staticfiles
-    # ports:
-    #   - "8000:8000"
-    expose:
-      - "8000"
+    ports:
+      - "8000:8000"
+    # expose:
+    #   - "8000"
     env_file:
       - ./.envs/.env
     depends_on:
-      # - postgres
+      - postgres
       - mailpit
       - redis
     command: /start
     networks:
       - afriauth_docker_network
 
-  # postgres:
-  #   build:
-  #     context: .
-  #     dockerfile: ./docker/local/postgres/Dockerfile
-  #   image: afriauth_prod_postgres
-  #   container_name: afriauth_prod_postgres
-  #   ports:
-  #     - "5432:5432"
-  #   volumes:
-  #     - afriauth_prod_postgres_data:/var/lib/postgresql/data
-  #   env_file:
-  #     - ./.envs/.env
-  #   networks:
-  #     - afriauth_docker_network
+  postgres:
+    build:
+      context: .
+      dockerfile: ./docker/local/postgres/Dockerfile
+    image: afriauth_prod_postgres
+    container_name: afriauth_prod_postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - afriauth_prod_postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.envs/.env
+    networks:
+      - afriauth_docker_network
 
   mailpit:
     image: docker.io/axllent/mailpit:v1.15
@@ -74,7 +74,7 @@ services:
     env_file: ./.envs/.env
     depends_on:
       - redis
-      # - postgres
+      - postgres
       - mailpit
     networks:
       - afriauth_docker_network
@@ -91,7 +91,7 @@ services:
     env_file: ./.envs/.env
     depends_on:
       - redis
-      # - postgres
+      - postgres
       - mailpit
     networks:
       - afriauth_docker_network
@@ -104,28 +104,28 @@ services:
       - "5555:5555"
     command: /start-flower
 
-  # nginx:
-  #   build:
-  #     context: ./docker/local/nginx
-  #     dockerfile: Dockerfile
-  #   restart: always
-  #   container_name: afriauth_nginx
-  #   ports:
-  #     - "8080:80"
-  #   volumes:
-  #     - ./staticfiles:/app/staticfiles
-  #     - logs_store:/var/log/nginx
-  #   depends_on:
-  #     - api
-  #   networks:
-  #     - afriauth_docker_network
+  nginx:
+    build:
+      context: ./docker/local/nginx
+      dockerfile: Dockerfile
+    restart: always
+    container_name: afriauth_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./staticfiles:/app/staticfiles
+      - logs_store:/var/log/nginx
+    depends_on:
+      - api
+    networks:
+      - afriauth_docker_network
 
 networks:
   afriauth_docker_network:
     external: true
 
 volumes:
-  # afriauth_prod_postgres_data: {}
+  afriauth_prod_postgres_data: {}
   afriauth_prod_mailpit_data: {}
   logs_store: {}
   afriauth_redis_prod_data: {}
