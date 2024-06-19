@@ -60,7 +60,7 @@ jobs:
           USERNAME: ${{ secrets.DOCKER_USERNAME }}
           PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           DOCKERFILE: "./docker/local/django/Dockerfile"
-          IMAGE_NAME: "afripoint/afriauth_beat"
+          IMAGE_NAME: "afripoint/afriauth_celerybeat"
           LATEST: "true"
 
       # - name: Deploy to server
