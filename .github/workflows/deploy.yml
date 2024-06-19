@@ -41,16 +41,27 @@ jobs:
           IMAGE_NAME: "afripoint/afriauth_postgres"
           LATEST: "true"
 
-      # - name: Docker Build & Push to Docker Hub
-      #   uses: opspresso/action-docker@master
-      #   with:
-      #     args: --docker
-      #   env:
-      #     USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      #     PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      #     DOCKERFILE: "./docker/local/nginx/Dockerfile"
-      #     IMAGE_NAME: "afripoint/afriauth_nginx"
-      #     LATEST: "true"
+      - name: Celery Worker Build & Push to Docker Hub
+        uses: opspresso/action-docker@master
+        with:
+          args: --docker
+        env:
+          USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKERFILE: "./docker/local/django/Dockerfile"
+          IMAGE_NAME: "afripoint/afriauth_celeryworker"
+          LATEST: "true"
+
+      - name: Celery Beat Build & Push to Docker Hub
+        uses: opspresso/action-docker@master
+        with:
+          args: --docker
+        env:
+          USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKERFILE: "./docker/local/django/Dockerfile"
+          IMAGE_NAME: "afripoint/afriauth_celeryworker"
+          LATEST: "true"
 
       # - name: Deploy to server
       #   uses: appleboy/ssh-action@master
