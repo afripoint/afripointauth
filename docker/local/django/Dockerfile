@@ -75,6 +75,6 @@ RUN chown django:django ${APP_HOME}
 
 USER django
 
-CMD [ "/start" ]
+CMD [ "/entrypoint" ]
 
 

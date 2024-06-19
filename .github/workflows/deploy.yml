@@ -29,6 +29,29 @@ jobs:
           IMAGE_NAME: "afripoint/afriauth_backend"
           LATEST: "true"
 
+
+      - name: Docker Build & Push to Docker Hub
+        uses: opspresso/action-docker@master
+        with:
+          args: --docker
+        env:
+          USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKERFILE: "./docker/local/postgres/Dockerfile"
+          IMAGE_NAME: "afripoint/afriauth_postgres"
+          LATEST: "true"
+
+      # - name: Docker Build & Push to Docker Hub
+      #   uses: opspresso/action-docker@master
+      #   with:
+      #     args: --docker
+      #   env:
+      #     USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      #     PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      #     DOCKERFILE: "./docker/local/nginx/Dockerfile"
+      #     IMAGE_NAME: "afripoint/afriauth_nginx"
+      #     LATEST: "true"
+
       - name: Deploy to server
         uses: appleboy/ssh-action@master
         with:
@@ -37,10 +60,10 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            cd /root/server_config
+            cd /home/afripoint/server_config
             git checkout testing
             git reset --hard HEAD
             git pull origin testing
-            docker stack deploy -c /root/server_configuration/docker-compose.yml afripointauth 
+            docker stack deploy -c /home/afripoint/server_configuration/docker-compose.yml afripointauth 
 
           
