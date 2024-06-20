@@ -71,10 +71,10 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            cd /home/afripoint/server_config
+            cd /root/server_config
             git checkout testing
             git reset --hard HEAD
             git pull origin testing
-            docker stack deploy -c /home/afripoint/server_configuration/docker-compose.yml afripointauth 
+            docker stack deploy -c /root/server_configuration/docker-compose.yml afripointauth 
 
           
