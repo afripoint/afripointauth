@@ -30,51 +30,51 @@ jobs:
           LATEST: "true"
 
 
-      - name: Docker Build & Push to Docker Hub
-        uses: opspresso/action-docker@master
-        with:
-          args: --docker
-        env:
-          USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          DOCKERFILE: "./docker/local/postgres/Dockerfile"
-          IMAGE_NAME: "afripoint/afriauth_postgres"
-          LATEST: "true"
-
-      - name: Celery Worker Build & Push to Docker Hub
-        uses: opspresso/action-docker@master
-        with:
-          args: --docker
-        env:
-          USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          DOCKERFILE: "./docker/local/django/Dockerfile"
-          IMAGE_NAME: "afripoint/afriauth_celeryworker"
-          LATEST: "true"
-
-      - name: Celery Beat Build & Push to Docker Hub
-        uses: opspresso/action-docker@master
-        with:
-          args: --docker
-        env:
-          USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          DOCKERFILE: "./docker/local/django/Dockerfile"
-          IMAGE_NAME: "afripoint/afriauth_celerybeat"
-          LATEST: "true"
-
-      # - name: Deploy to server
-      #   uses: appleboy/ssh-action@master
+      # - name: Docker Build & Push to Docker Hub
+      #   uses: opspresso/action-docker@master
       #   with:
-      #     host: ${{ secrets.SSH_TEST_HOST }}
-      #     username: ${{ secrets.SSH_USERNAME }}
-      #     port: ${{ secrets.SSH_PORT }}
-      #     password: ${{ secrets.SSH_PASSWORD }}
-      #     script: |
-      #       cd /home/afripoint/server_config
-      #       git checkout testing
-      #       git reset --hard HEAD
-      #       git pull origin testing
-      #       docker stack deploy -c /home/afripoint/server_configuration/docker-compose.yml afripointauth 
+      #     args: --docker
+      #   env:
+      #     USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      #     PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      #     DOCKERFILE: "./docker/local/postgres/Dockerfile"
+      #     IMAGE_NAME: "afripoint/afriauth_postgres"
+      #     LATEST: "true"
+
+      # - name: Celery Worker Build & Push to Docker Hub
+      #   uses: opspresso/action-docker@master
+      #   with:
+      #     args: --docker
+      #   env:
+      #     USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      #     PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      #     DOCKERFILE: "./docker/local/django/Dockerfile"
+      #     IMAGE_NAME: "afripoint/afriauth_celeryworker"
+      #     LATEST: "true"
+
+      # - name: Celery Beat Build & Push to Docker Hub
+      #   uses: opspresso/action-docker@master
+      #   with:
+      #     args: --docker
+      #   env:
+      #     USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      #     PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      #     DOCKERFILE: "./docker/local/django/Dockerfile"
+      #     IMAGE_NAME: "afripoint/afriauth_celerybeat"
+      #     LATEST: "true"
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_TEST_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: ${{ secrets.SSH_PORT }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            cd /home/afripoint/server_config
+            git checkout testing
+            git reset --hard HEAD
+            git pull origin testing
+            docker stack deploy -c /home/afripoint/server_configuration/docker-compose.yml afripointauth 
 
           
