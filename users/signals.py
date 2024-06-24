@@ -112,7 +112,7 @@ def password_reset_token_created(
         # "reset_password_url": instance.request.build_absolute_uri(
         #     reverse("password_reset:reset-password-confirm")
         # )
-        "reset_password_url": f"http://onenairapay.com{reverse('password_reset:reset-password-confirm')}"
+        "reset_password_url": f"http://backend.onenairapay.com{reverse('password_reset:reset-password-confirm')}"
         + "?token="
         + reset_password_token.key,
     }

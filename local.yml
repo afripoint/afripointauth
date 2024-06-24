@@ -37,6 +37,22 @@ services:
     networks:
       - afriauth_docker_network
 
+  client:
+    build:
+      context: ./client
+      dockerfile: ./docker/Dockerfile
+    container_name: client_container
+    image: client_image
+    ports:
+      - "4200:4200"
+    # expose:
+    #   - "3000"
+    volumes:
+      - ./client:/app/client
+      - /app/client/node_modules
+    networks:
+      - afriauth_docker_network
+
   # mailpit:
   #   image: docker.io/axllent/mailpit:v1.15
   #   container_name: afriauth_prod_mailpit
