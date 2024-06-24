@@ -7,7 +7,7 @@ FROM base as node-build-stage
 ARG APP_HOME=/app
 WORKDIR ${APP_HOME}
 
-COPY package.json package-lock.json* ./
+COPY client/package.json client/package-lock.json* ./
 
 RUN npm ci
 
