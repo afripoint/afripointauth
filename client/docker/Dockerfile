@@ -4,7 +4,7 @@ FROM base as node-build-stage
 
 # RUN apk add --no-cache libc6-compat
 
-COPY client/package.json client/package-lock.json* ./
+COPY client/package.json client/package-lock.json* ./client/
 
 RUN npm ci
 
