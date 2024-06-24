@@ -14,10 +14,10 @@ services:
     #   - "8000"
     env_file:
       - ./.envs/.env
-    depends_on:
-      - postgres
-      # - mailpit
-      # - redis
+    # depends_on:
+    #   - postgres
+    #   # - mailpit
+    #   # - redis
     command: /entrypoint
     networks:
       - afriauth_docker_network
