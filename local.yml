@@ -40,7 +40,7 @@ services:
   client:
     build:
       context: ./client
-      dockerfile: ./client/docker/Dockerfile
+      dockerfile: ./docker/Dockerfile
     container_name: client_container
     image: client_image
     ports:
