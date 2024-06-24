@@ -15,7 +15,7 @@ RUN npm install -g @angular/cli
 
 FROM base as node-run-stage
 
-COPY --from=node-build-stage /node_modules ./node_modules
+COPY --from=node-build-stage node_modules ./node_modules
 
 COPY . ${APP_HOME}
 
