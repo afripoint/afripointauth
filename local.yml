@@ -22,20 +22,20 @@ services:
     networks:
       - afriauth_docker_network
 
-  postgres:
-    build:
-      context: .
-      dockerfile: ./docker/local/postgres/Dockerfile
-    image: afriauth_prod_postgres
-    container_name: afriauth_prod_postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - afriauth_prod_postgres_data:/var/lib/postgresql/data
-    env_file:
-      - ./.envs/.env
-    networks:
-      - afriauth_docker_network
+  # postgres:
+  #   build:
+  #     context: .
+  #     dockerfile: ./docker/local/postgres/Dockerfile
+  #   image: afriauth_prod_postgres
+  #   container_name: afriauth_prod_postgres
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - afriauth_prod_postgres_data:/var/lib/postgresql/data
+  #   env_file:
+  #     - ./.envs/.env
+  #   networks:
+  #     - afriauth_docker_network
 
   client:
     build:
