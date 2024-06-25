@@ -2,7 +2,7 @@ FROM docker.io/node:latest as base
 
 FROM base as node-build-stage
 
-COPY package.json package-lock.json* ./
+COPY client/package.json client/package-lock.json* ./
 
 RUN npm ci
 
