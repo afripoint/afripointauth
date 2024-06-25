@@ -127,6 +127,7 @@ class EmailValidationView(viewsets.ViewSet):
         serializer = EmailValidationSerializer(data=request.data)
         if serializer.is_valid():
             email = serializer.validated_data["email"]
+            mfa_type = serializer.validated_data["type"]
             user = User.objects.filter(email=email).first()
             if user:
                 return Response(
@@ -134,15 +135,14 @@ class EmailValidationView(viewsets.ViewSet):
                     status=status.HTTP_400_BAD_REQUEST,
                 )
             otp = otp_generator.generate_otp()
-
             otp_settings = OTPSettings.objects.first()
             otp_live_time = otp_settings.otp_live_time if otp_settings else 300
-
             mfa = MFATable.objects.create(
                 userId=email,
                 mfa_code=otp,
                 mfa_category="registration",
                 mfa_duration=otp_live_time,
+                mfa_type=mfa_type,
             )
             # Calculate the OTP expiry time based on the current time and otp_live_time
             otp_expiring_time = timezone.now() + timezone.timedelta(

@@ -2,12 +2,14 @@ from datetime import timedelta
 from pathlib import Path
 from decouple import config
 from os import getenv, path
-import cloudinary
+from decouple import config
+
+# import cloudinary
 from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = (getenv("SECRET_KEY"),)
+SECRET_KEY = config("SECRET_KEY")
 
 DEBUG = True
 
@@ -43,9 +45,9 @@ INSTALLED_APPS = [
     "django_rest_passwordreset",
     "transactions",
     "django_cryptography",
-    "djcelery_email",
-    "cloudinary",
-    "django_celery_beat",
+    # "djcelery_email",
+    # "cloudinary",
+    # "django_celery_beat",
 ]
 
 MIDDLEWARE = [
@@ -108,20 +110,6 @@ WSGI_APPLICATION = "appauth.wsgi.application"
 #     },
 # }
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": getenv("POSTGRES_DB"),
-        "USER": getenv("POSTGRES_USER"),
-        "PASSWORD": getenv("POSTGRES_PASSWORD"),
-        "HOST": getenv("POSTGRES_HOST"),
-        "PORT": getenv("POSTGRES_PORT", 5432),
-        # "OPTIONS": {
-        #     "sslmode": "require",
-        # },
-    }
-}
-
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.postgresql",
@@ -129,12 +117,44 @@ DATABASES = {
 #         "USER": getenv("POSTGRES_USER"),
 #         "PASSWORD": getenv("POSTGRES_PASSWORD"),
 #         "HOST": getenv("POSTGRES_HOST"),
-#         "PORT": getenv("POSTGRES_PORT", 5432),
+#         "PORT": 5432,
 #         # "OPTIONS": {
 #         #     "sslmode": "require",
 #         # },
 #     }
 # }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "afriauthdb",
+#         "USER": "afriauthdb_owner",
+#         "PASSWORD": "ZfxjP54cLIdz",
+#         "HOST": "ep-silent-frost-a2griadk.eu-central-1.aws.neon.tech",
+#         "PORT": 5432,
+#         "OPTIONS": {
+#             "sslmode": "require",
+#         },
+#         "DISABLE_SERVER_SIDE_CURSORS": True,
+#     }
+# }
+
+# postgresql://afriauthdb_owner:ZfxjP54cLIdz@ep-silent-frost-a2griadk.eu-central-1.aws.neon.tech/afriauthdb?sslmode=require
+
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": config("POSTGRES_DB"),
+        "USER": config("POSTGRES_USER"),
+        "PASSWORD": config("POSTGRES_PASSWORD"),
+        "HOST": config("POSTGRES_HOST"),
+        "PORT": config("POSTGRES_PORT", 5432),
+        "OPTIONS": {
+            "sslmode": "require",
+        },
+    }
+}
 
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -168,13 +188,13 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-EMAIL_BACKEND = str(config("EMAIL_BACKEND"))
-EMAIL_HOST = str(config("EMAIL_HOST"))
-EMAIL_PORT = str(config("EMAIL_PORT"))
-EMAIL_HOST_USER = str(config("EMAIL_HOST_USER"))
-DEFAULT_FROM_EMAIL = str(config("DEFAULT_FROM_EMAIL"))
-EMAIL_HOST_PASSWORD = str(config("MAIL_HOST_PASSWORD"))
-EMAIL_USE_TLS = str(config("EMAIL_USE_TLS"))
+EMAIL_BACKEND = config("EMAIL_BACKEND")
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_PORT = config("EMAIL_PORT")
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
+EMAIL_HOST_PASSWORD = config("MAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = config("EMAIL_USE_TLS")
 
 
 AUTH_USER_MODEL = "users.CustomUser"
@@ -196,8 +216,8 @@ USE_TZ = True
 if USE_TZ:
     CELERY_TIMEZONE = TIME_ZONE
 
-CELERY_BROKER_URL = getenv("CELERY_BROKER_URL")
-CELERY_RESULT_BACKEND = getenv("CELERY_RESULT_BACKEND")
+CELERY_BROKER_URL = config("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = config("CELERY_RESULT_BACKEND")
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"

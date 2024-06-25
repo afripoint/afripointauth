@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from OTP.models import MFA_TYPE
+
 
 # Phone Serializers
 class PhoneNumberValidationSerializer(serializers.Serializer):
@@ -18,6 +20,7 @@ class PhoneNumberVerificationSerializer(serializers.Serializer):
 # Email Serializers
 class EmailValidationSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
+    type = serializers.ChoiceField(choices=MFA_TYPE, required=True)
 
 
 class EmailVerificationSerializer(serializers.Serializer):

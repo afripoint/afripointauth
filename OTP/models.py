@@ -9,6 +9,12 @@ MFA_CATEGORY = (
     ("transaction", "Transaction"),
 )
 
+MFA_TYPE = (
+    ("signup", "Sign Up"),
+    ("login", "Login"),
+    ("resetpassword", "Reset Password"),
+)
+
 
 class MFATable(models.Model):
     pkid = models.BigAutoField(primary_key=True, editable=False)
@@ -22,6 +28,8 @@ class MFATable(models.Model):
     otp_expiry = models.DateTimeField(blank=True, null=True)
     expired = models.BooleanField(default=False)
     userId = models.CharField(max_length=255, blank=True, null=True)
+    mfa_type = models.CharField(max_length=255, choices=MFA_TYPE, blank=True, null=True)
+
     verified = models.BooleanField(default=False)
 
     def __str__(self):

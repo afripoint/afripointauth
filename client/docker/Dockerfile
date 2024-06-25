@@ -1,14 +1,14 @@
-FROM docker.io/node:20.11-alpine3.18 as base
+FROM docker.io/node:latest as base
 
 FROM base as node-build-stage
 
-RUN apk add --no-cache libc6-compat
-
-COPY client/package.json client/package-lock.json* ./
+COPY package.json package-lock.json* ./
 
 RUN npm ci
 
 RUN npm install -g @angular/cli
+
+# RUN npm install @rollup/rollup-linux-x64-gnu
 
 FROM base as node-run-stage
 
