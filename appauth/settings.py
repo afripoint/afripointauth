@@ -372,6 +372,12 @@ SWAGGER_SETTINGS = {
     ],
 }
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://backend.onenairapay.com",
+    "https://onenairapay.com",
+    "https://backend.onenairapay.com/backoffice",
+]
+
 
 JAZZMIN_SETTINGS = {
     "site_title": "Afripoint Auth Admin",
