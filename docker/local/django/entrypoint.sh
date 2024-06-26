@@ -34,14 +34,14 @@ END
 
 #Command to start server
 
-set -o errexit
-
-set -o pipefail
-
-set -o nounset
 python manage.py makemigrations --no-input
 python manage.py migrate --no-input
 python manage.py collectstatic --no-input
+
+# Create superuser if it doesn't exist
+python create_superuser.py
+
+
 exec python manage.py runserver 0.0.0.0:8000
 
 exec "$@"
