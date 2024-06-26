@@ -35,7 +35,6 @@ class KYCModel(TimeStampedModel):
         choices=STATUS,
         blank=True,
         null=True,
-        unique=True,
         default="unverified",
     )
 
