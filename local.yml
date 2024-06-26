@@ -14,44 +14,44 @@ services:
     #   - "8000"
     env_file:
       - ./.envs/.env
-    # depends_on:
-    #   - postgres
+    depends_on:
+      - postgres
     #   # - mailpit
     #   # - redis
     command: /entrypoint
     networks:
       - afriauth_docker_network
 
-  # postgres:
-  #   build:
-  #     context: .
-  #     dockerfile: ./docker/local/postgres/Dockerfile
-  #   image: afriauth_prod_postgres
-  #   container_name: afriauth_prod_postgres
-  #   ports:
-  #     - "5432:5432"
-  #   volumes:
-  #     - afriauth_prod_postgres_data:/var/lib/postgresql/data
-  #   env_file:
-  #     - ./.envs/.env
-  #   networks:
-  #     - afriauth_docker_network
-
-  client:
+  postgres:
     build:
-      context: ./client
-      dockerfile: ./docker/Dockerfile
-    container_name: client_container
-    image: client_image
+      context: .
+      dockerfile: ./docker/local/postgres/Dockerfile
+    image: afriauth_web_postgres
+    container_name: afriauth_web_postgres_container
     ports:
-      - "4200:4200"
-    # expose:
-    #   - "3000"
+      - "5432:5432"
     volumes:
-      - ./client:/app
-      - /app/node_modules
+      - afriauth_web_postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.envs/.env
     networks:
       - afriauth_docker_network
+
+  # client:
+  #   build:
+  #     context: ./client
+  #     dockerfile: ./docker/Dockerfile
+  #   container_name: client_container
+  #   image: client_image
+  #   ports:
+  #     - "4200:4200"
+  #   # expose:
+  #   #   - "3000"
+  #   volumes:
+  #     - ./client:/app
+  #     - /app/node_modules
+  #   networks:
+  #     - afriauth_docker_network
 
   # mailpit:
   #   image: docker.io/axllent/mailpit:v1.15
@@ -141,6 +141,6 @@ networks:
     external: true
 
 volumes:
-  afriauth_prod_postgres_data: {}
+  afriauth_web_postgres_data: {}
   logs_store: {}
   node_modules: {}

@@ -82,7 +82,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            cd /root/server_config
+            cd /root/server_configuration
             git checkout testing
             git reset --hard HEAD
             git pull origin testing
