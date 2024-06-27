@@ -151,12 +151,15 @@ class EmailValidationView(viewsets.ViewSet):
             mfa.otp_expiry = otp_expiring_time
             mfa.save()
 
+            print("I got here 2")
+
             send_html_email(
                 "Your OTP",
                 render_to_string("emails/otp.html", {"otp": otp}),
                 settings.DEFAULT_FROM_EMAIL,
                 [email],
             )
+            print("I got here 2")
 
             return Response("OTP sent successfully.", status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

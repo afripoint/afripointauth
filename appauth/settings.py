@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     "customaccounts",
     "django_rest_passwordreset",
     "transactions",
-    "django_cryptography",
+    # "django_cryptography",
     # "djcelery_email",
     # "cloudinary",
     # "django_celery_beat",
@@ -150,9 +150,9 @@ DATABASES = {
         "PASSWORD": config("POSTGRES_PASSWORD"),
         "HOST": config("POSTGRES_HOST"),
         "PORT": config("POSTGRES_PORT", 5432),
-        # "OPTIONS": {
-        #     "sslmode": "require",
-        # },
+        "OPTIONS": {
+            "sslmode": "require",
+        },
     }
 }
 
@@ -418,6 +418,6 @@ JAZZMIN_SETTINGS = {
 }
 
 # SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
 # SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
