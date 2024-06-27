@@ -7,7 +7,12 @@ from kyc.models import KYCModel
 
 User = get_user_model()
 
-from .models import AccountTable, AccountTypeTable, get_default_account_name
+from .models import (
+    AccountName,
+    AccountTable,
+    AccountTypeTable,
+    get_default_account_name,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +27,6 @@ def create_default_account_name(sender, **kwargs):
 def create_user_account_type(sender, instance, created, **kwargs):
     if created:
         kyc = KYCModel.objects.get(user=instance)
-        acct_type = AccountTypeTable.objects.get(accountTypeName__name="wallet")
-        # full_name = instance.get_full_name
+        acct_name, _ = AccountName.objects.get_or_create(name="wallet")
+        acct_type, _ = AccountTypeTable.objects.get_or_create(accountTypeName=acct_name)
         AccountTable.objects.create(userId=instance, kycId=kyc, accountTypeId=acct_type)
