@@ -1,7 +1,15 @@
+import datetime
 import threading
 import http.client
 import json
 import random
+from django.conf import settings
+import requests
+import json
+import base64
+import bcrypt
+import secrets
+
 
 # from infobip_channels.sms.channel import SMSChannel
 from django.core.mail import EmailMessage
@@ -58,3 +66,64 @@ class UniqueOtpGenerator:
             if otp not in self.generated_otps:
                 self.generated_otps.add(otp)
                 return otp
+
+
+def generate_secret():
+    return secrets.token_urlsafe(30)
+
+
+def airtime_checksum(service_id, request_amount, recipient):
+    login_id = settings.LOGIN_ID
+    private_key = settings.PRIVATE_KEY
+    request_id = generate_secret()
+    concat_string = f"{login_id}|{request_id}|{service_id}|{request_amount}|{private_key}|{recipient}"
+    hashed = bcrypt.hashpw(concat_string.encode("utf-8"), bcrypt.gensalt())
+    checksum = base64.urlsafe_b64encode(hashed).decode("utf-8")
+
+    return checksum, request_id
+
+
+class CreditSwitch(object):
+    def __init__(self, base_url):
+        self.base_url = "http://176.58.99.160:9012/api/v1"
+        self.headers = {
+            "Content-Type": "application/json",
+        }
+
+    def make_request(self, endpoint, payload):
+        url = f"{self.base_url}/{endpoint}/"
+        response = requests.post(url, headers=self.headers, data=json.dumps(payload))
+        return response.json()
+
+    def purchase_airtime(self, service_id, amount, recipient):
+        checksum, request_id = airtime_checksum(service_id, amount, recipient)
+        date_now = datetime.datetime.utcnow().strftime("%d-%b-%Y %H:%M GMT")
+
+        payload = {
+            "loginId": settings.LOGIN_ID,
+            "key": settings.PUBLIC_KEY,
+            "requestId": request_id,
+            "serviceId": service_id,
+            "amount": str(amount),  # Convert Decimal to string
+            "recipient": recipient,
+            "date": date_now,
+            "checksum": checksum,
+        }
+
+        return self.make_request("purchase_airtime", payload)
+
+
+# afripoint = AfripointConsult()
+# response = afripoint.post("payments", params=json.dumps(params)).json()
+
+# print("Afripoint Consult: ", response)
+
+# if response["status"] == "success":
+#     afripoint_redirect_link = response["data"]["link"]
+#     return HttpResponse(
+#         status=204, headers={"HX-Redirect": afripoint_redirect_link}
+#     )
+# else:
+#     messages.add_message(
+#         request, messages.ERROR, "Payment gateway is not responding."
+#     )

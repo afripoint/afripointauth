@@ -15,8 +15,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-
-INSTALLED_APPS = [
+DJANGO_APPS = [
     "jazzmin",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -24,10 +23,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # custom
-    "pages",
-    "applogger",
-    # external
+]
+
+THIRD_PARTY_APPS = [
     "allauth",
     "rest_framework",
     "rest_framework.authtoken",
@@ -36,19 +34,28 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "drf_yasg",
-    "common",
-    "kyc",
-    "users",
     "corsheaders",
-    "OTP",
-    "customaccounts",
     "django_rest_passwordreset",
-    "transactions",
     # "django_cryptography",
     # "djcelery_email",
     # "cloudinary",
     # "django_celery_beat",
 ]
+
+LOCAL_APPS = [
+    "pages",
+    "applogger",
+    "common",
+    "kyc",
+    "users",
+    "OTP",
+    "customaccounts",
+    "transactions",
+    "bills.airtime",
+]
+
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -421,3 +428,8 @@ JAZZMIN_SETTINGS = {
 # SESSION_COOKIE_SECURE = True
 # CSRF_COOKIE_SECURE = True
 # SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+# Creditswitch
+LOGIN_ID = config("LOGIN_ID")
+PUBLIC_KEY = config("PUBLIC_KEY")
+PRIVATE_KEY = config("PRIVATE_KEY")
