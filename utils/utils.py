@@ -3,6 +3,7 @@ import threading
 import http.client
 import json
 import random
+import uuid
 from django.conf import settings
 import requests
 import json
@@ -68,14 +69,14 @@ class UniqueOtpGenerator:
                 return otp
 
 
-def generate_secret():
-    return secrets.token_urlsafe(30)
+def generate_random_id():
+    return str(uuid.uuid4())[:20].replace("-", "").lower()
 
 
 def airtime_checksum(service_id, request_amount, recipient):
     login_id = settings.LOGIN_ID
     private_key = settings.PRIVATE_KEY
-    request_id = generate_secret()
+    request_id = generate_random_id()
     concat_string = f"{login_id}|{request_id}|{service_id}|{request_amount}|{private_key}|{recipient}"
     hashed = bcrypt.hashpw(concat_string.encode("utf-8"), bcrypt.gensalt())
     checksum = base64.urlsafe_b64encode(hashed).decode("utf-8")
@@ -109,6 +110,10 @@ class CreditSwitch(object):
             "date": date_now,
             "checksum": checksum,
         }
+        print(
+            "payload",
+            payload["checksum"],
+        )
 
         return self.make_request("purchase_airtime", payload)
 
