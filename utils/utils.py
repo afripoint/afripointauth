@@ -83,22 +83,36 @@ def airtime_checksum(service_id, request_amount, recipient):
 
     return checksum, request_id
 
+def merchant_info_checksum():
+    login_id = settings.LOGIN_ID
+    private_key = settings.PRIVATE_KEY
+    concat_string = f"{login_id}|{private_key}"
+    hashed = bcrypt.hashpw(concat_string.encode("utf-8"), bcrypt.gensalt())
+    checksum = base64.urlsafe_b64encode(hashed).decode("utf-8")
+
+    return checksum
+
 
 class CreditSwitch(object):
-    def __init__(self, base_url):
+    def __init__(self):
         self.base_url = "http://176.58.99.160:9012/api/v1"
         self.headers = {
             "Content-Type": "application/json",
         }
 
-    def make_request(self, endpoint, payload):
+    def make_post_request(self, endpoint, payload):
         url = f"{self.base_url}/{endpoint}/"
         response = requests.post(url, headers=self.headers, data=json.dumps(payload))
+        return response.json()
+    
+    def make_get_request(self, endpoint, payload):
+        url = f"{self.base_url}/{endpoint}/"
+        response = requests.get(url, headers=self.headers, data=json.dumps(payload))
         return response.json()
 
     def purchase_airtime(self, service_id, amount, recipient):
         checksum, request_id = airtime_checksum(service_id, amount, recipient)
-        date_now = datetime.datetime.utcnow().strftime("%d-%b-%Y %H:%M GMT")
+        date_now = datetime.datetime.now().strftime("%d-%b-%Y %H:%M GMT")
 
         payload = {
             "loginId": settings.LOGIN_ID,
@@ -110,25 +124,75 @@ class CreditSwitch(object):
             "date": date_now,
             "checksum": checksum,
         }
-        print(
-            "payload",
-            payload["checksum"],
-        )
 
-        return self.make_request("purchase_airtime", payload)
+        return self.make_post_request("mvend", payload)
+    
+
+    def purchase_data(self, service_id, amount, recipient, product_id):
+        checksum, request_id = airtime_checksum(service_id, amount, recipient)
+        date_now = datetime.datetime.now().strftime("%d-%b-%Y %H:%M GMT")
+
+        payload = {
+            "loginId": settings.LOGIN_ID,
+            "key": settings.PUBLIC_KEY,
+            "requestId": request_id,
+            "serviceId": service_id,
+            "productId": product_id,
+            "amount": str(amount),  # Convert Decimal to string
+            "recipient": recipient,
+            "date": date_now,
+            "checksum": checksum,
+        }
+
+        return self.make_post_request("dvend", payload)
+    
+    def merchant_details(self):
+        checksum = merchant_info_checksum()
+        payload = {
+            "loginId": settings.LOGIN_ID,
+            "key": settings.PUBLIC_KEY,
+            "checksum": checksum,
+        }
+
+        return self.make_post_request("mdetails", payload)
+    
+
+    def transaction_status(self, service_id):
+        payload = {
+            "loginId": settings.LOGIN_ID,
+            "key": settings.PUBLIC_KEY,
+            "serviceId": service_id,
+            "requestId": "d777df15bdfe40f49"
+        }
+
+        return self.make_get_request("requery", payload)
+    
 
 
-# afripoint = AfripointConsult()
-# response = afripoint.post("payments", params=json.dumps(params)).json()
+    def data_plans(self, service_id):
 
-# print("Afripoint Consult: ", response)
+        payload = {
+            "loginId": settings.LOGIN_ID,
+            "key": settings.PUBLIC_KEY,
+            "serviceId": service_id,
+        }
 
-# if response["status"] == "success":
-#     afripoint_redirect_link = response["data"]["link"]
-#     return HttpResponse(
-#         status=204, headers={"HX-Redirect": afripoint_redirect_link}
-#     )
-# else:
-#     messages.add_message(
-#         request, messages.ERROR, "Payment gateway is not responding."
-#     )
+        return self.make_post_request("mdataplans", payload)
+    
+    def showmax(self):
+        payload = {
+            "loginId": settings.LOGIN_ID,
+            "key": settings.PUBLIC_KEY,
+        }
+
+        return self.make_get_request("showmax/packages/", payload)
+    
+
+    def startimes(self):
+        payload = {
+            "loginId": settings.LOGIN_ID,
+            "key": settings.PUBLIC_KEY,
+        }
+
+        return self.make_post_request("startimes/fetchProductList/", payload)
+
