@@ -28,5 +28,16 @@ class PurchaseDataSerializer(serializers.Serializer):
     recipient = serializers.CharField(max_length=15)
 
 
+class ShowMaxPaySerializer(serializers.Serializer):
+    service_id = serializers.CharField(max_length=10)
+    subscriptionType = serializers.CharField(max_length=20)
+    amount = serializers.DecimalField(
+        max_digits=10, decimal_places=2, coerce_to_string=False
+    )
+    customerNo = serializers.CharField(max_length=15)
+    invoicePeriod = serializers.CharField(max_length=15)
+    packageName = serializers.CharField(max_length=15)
+
+
 class ServiceIdSerializer(serializers.Serializer):
     service_id = serializers.CharField(max_length=10)

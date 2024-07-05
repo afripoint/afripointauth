@@ -2,99 +2,173 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+from bills.airtime.renderers import BillJSONRenderer
 from utils.utils import CreditSwitch, airtime_checksum
-
+from rest_framework.decorators import renderer_classes
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import PurchaseAirtimeSerializer, PurchaseDataSerializer, ServiceIdSerializer
-
+from .serializers import (
+    PurchaseAirtimeSerializer,
+    PurchaseDataSerializer,
+    ServiceIdSerializer,
+    ShowMaxPaySerializer,
+)
 
 
 class PurchaseAirtimeView(APIView):
     def post(self, request):
-        serializer = PurchaseAirtimeSerializer(data=request.data)
-        if serializer.is_valid():
-            service_id = serializer.validated_data["service_id"]
-            amount = serializer.validated_data["amount"]
-            recipient = serializer.validated_data["recipient"]
+        try:
+            serializer = PurchaseAirtimeSerializer(data=request.data)
+            if serializer.is_valid():
+                service_id = serializer.validated_data["service_id"]
+                amount = serializer.validated_data["amount"]
+                recipient = serializer.validated_data["recipient"]
 
-            credit_switch = CreditSwitch()
-            response = credit_switch.purchase_airtime(service_id, amount, recipient)
-            print("response", response)
-            return Response(response, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+                credit_switch = CreditSwitch()
+                response = credit_switch.purchase_airtime(service_id, amount, recipient)
+                print("response", response)
+                return Response(response, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
 
 
 class PurchaseDataView(APIView):
     def post(self, request):
-        serializer = PurchaseDataSerializer(data=request.data)
-        if serializer.is_valid():
-            service_id = serializer.validated_data["service_id"]
-            product_id = serializer.validated_data["product_id"]
-            amount = serializer.validated_data["amount"]
-            recipient = serializer.validated_data["recipient"]
+        try:
+            serializer = PurchaseDataSerializer(data=request.data)
+            if serializer.is_valid():
+                service_id = serializer.validated_data["service_id"]
+                product_id = serializer.validated_data["product_id"]
+                amount = serializer.validated_data["amount"]
+                recipient = serializer.validated_data["recipient"]
 
-            credit_switch = CreditSwitch()
-            response = credit_switch.purchase_data(service_id, amount, recipient, product_id )
-            print("response", response)
-            return Response(response, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+                credit_switch = CreditSwitch()
+                response = credit_switch.purchase_data(
+                    service_id, amount, recipient, product_id
+                )
+                print("response", response)
+                return Response(response, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
 
+
+@renderer_classes([BillJSONRenderer])
 class MerchantDetailsView(APIView):
     def post(self, request):
-        credit_switch = CreditSwitch()
-        response = credit_switch.merchant_details()
-        if response["statusCode"] == "00":
-            return Response( {"message": "Success", "data": response},  status=status.HTTP_200_OK)
-        return Response({"message": "Failed to retrieve merchant details"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            credit_switch = CreditSwitch()
+            response = credit_switch.merchant_details()
+            if response["statusCode"] == "00":
+                return Response(
+                    {"message": "Success", "data": response}, status=status.HTTP_200_OK
+                )
+            return Response(
+                {"message": "Failed to retrieve merchant details"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
 
 
+@renderer_classes([BillJSONRenderer])
 class TransactionStatusView(APIView):
     def get(self, request):
-        serializer = ServiceIdSerializer(data=request.query_params)
-        if serializer.is_valid():
-            service_id = serializer.validated_data["service_id"]
-            credit_switch = CreditSwitch()
-            response = credit_switch.transaction_status(service_id)
-            print("response", response)
-            return Response(response, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+        try:
+            serializer = ServiceIdSerializer(data=request.query_params)
+            if serializer.is_valid():
+                service_id = serializer.validated_data["service_id"]
+                credit_switch = CreditSwitch()
+                response = credit_switch.transaction_status(service_id)
+                print("response", response)
+                return Response(response, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
 
+
+@renderer_classes([BillJSONRenderer])
 class DataPlansView(APIView):
     def post(self, request):
-        serializer = ServiceIdSerializer(data=request.data)
-        if serializer.is_valid():
-            service_id = serializer.validated_data["service_id"]
-            credit_switch = CreditSwitch()
-            response = credit_switch.data_plans(service_id)
-            print("response", response)
-            return Response(response, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+        try:
+            serializer = ServiceIdSerializer(data=request.data)
+            if serializer.is_valid():
+                service_id = serializer.validated_data["service_id"]
+                credit_switch = CreditSwitch()
+                response = credit_switch.data_plans(service_id)
+                return Response(response, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
 
+
+@renderer_classes([BillJSONRenderer])
 class ShowmaxView(APIView):
     def get(self, request):
-        credit_switch = CreditSwitch()
-        response = credit_switch.showmax()
-        return Response(response, status=status.HTTP_200_OK)
-    
+        try:
+            credit_switch = CreditSwitch()
+            response = credit_switch.showmax()
+            return Response(response, status=status.HTTP_200_OK)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
 
 
+@renderer_classes([BillJSONRenderer])
 class StartimeView(APIView):
     def post(self, request):
-        credit_switch = CreditSwitch()
-        response = credit_switch.startimes()
-        return Response(response, status=status.HTTP_200_OK)
-    
-    
+        try:
+            credit_switch = CreditSwitch()
+            response = credit_switch.startimes()
+            return Response(response, status=status.HTTP_200_OK)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
 
 
+@renderer_classes([BillJSONRenderer])
+class ShowMaxPayView(APIView):
+    def post(self, request):
+        try:
+            serializer = ShowMaxPaySerializer(data=request.data)
+            if serializer.is_valid():
+                service_id = serializer.validated_data["service_id"]
+                amount = serializer.validated_data["amount"]
+                subscriptionType = serializer.validated_data["subscriptionType"]
+                customerNo = serializer.validated_data["customerNo"]
+                invoicePeriod = serializer.validated_data["invoicePeriod"]
+                packageName = serializer.validated_data["packageName"]
 
-
+                credit_switch = CreditSwitch()
+                response = credit_switch.showmax_recharge(
+                    service_id,
+                    amount,
+                    subscriptionType,
+                    customerNo,
+                    invoicePeriod,
+                    packageName,
+                )
+                print("response", response)
+                return Response(response, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
 
 
 # @csrf_exempt

@@ -83,6 +83,7 @@ def airtime_checksum(service_id, request_amount, recipient):
 
     return checksum, request_id
 
+
 def merchant_info_checksum():
     login_id = settings.LOGIN_ID
     private_key = settings.PRIVATE_KEY
@@ -104,7 +105,7 @@ class CreditSwitch(object):
         url = f"{self.base_url}/{endpoint}/"
         response = requests.post(url, headers=self.headers, data=json.dumps(payload))
         return response.json()
-    
+
     def make_get_request(self, endpoint, payload):
         url = f"{self.base_url}/{endpoint}/"
         response = requests.get(url, headers=self.headers, data=json.dumps(payload))
@@ -126,7 +127,6 @@ class CreditSwitch(object):
         }
 
         return self.make_post_request("mvend", payload)
-    
 
     def purchase_data(self, service_id, amount, recipient, product_id):
         checksum, request_id = airtime_checksum(service_id, amount, recipient)
@@ -145,7 +145,7 @@ class CreditSwitch(object):
         }
 
         return self.make_post_request("dvend", payload)
-    
+
     def merchant_details(self):
         checksum = merchant_info_checksum()
         payload = {
@@ -155,19 +155,16 @@ class CreditSwitch(object):
         }
 
         return self.make_post_request("mdetails", payload)
-    
 
     def transaction_status(self, service_id):
         payload = {
             "loginId": settings.LOGIN_ID,
             "key": settings.PUBLIC_KEY,
             "serviceId": service_id,
-            "requestId": "d777df15bdfe40f49"
+            "requestId": "d777df15bdfe40f49",
         }
 
         return self.make_get_request("requery", payload)
-    
-
 
     def data_plans(self, service_id):
 
@@ -178,7 +175,7 @@ class CreditSwitch(object):
         }
 
         return self.make_post_request("mdataplans", payload)
-    
+
     def showmax(self):
         payload = {
             "loginId": settings.LOGIN_ID,
@@ -186,7 +183,6 @@ class CreditSwitch(object):
         }
 
         return self.make_get_request("showmax/packages/", payload)
-    
 
     def startimes(self):
         payload = {
@@ -196,3 +192,26 @@ class CreditSwitch(object):
 
         return self.make_post_request("startimes/fetchProductList/", payload)
 
+    def showmax_recharge(
+        self,
+        service_id,
+        amount,
+        subscriptionType,
+        customerNo,
+        invoicePeriod,
+        packageName,
+    ):
+        request_id = generate_random_id()
+        payload = {
+            "loginId": settings.LOGIN_ID,
+            "key": settings.PUBLIC_KEY,
+            "requestId": request_id,
+            "serviceId": service_id,
+            "customerNo": customerNo,
+            "amount": str(amount),  # Convert Decimal to string
+            "subscriptionType": subscriptionType,
+            "invoicePeriod": invoicePeriod,
+            "packageName": packageName,
+        }
+
+        return self.make_post_request("showmax/pay", payload)
