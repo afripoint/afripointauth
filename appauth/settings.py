@@ -36,9 +36,7 @@ THIRD_PARTY_APPS = [
     "drf_yasg",
     "corsheaders",
     "django_rest_passwordreset",
-    # "django_cryptography",
     # "djcelery_email",
-    # "cloudinary",
     # "django_celery_beat",
 ]
 
@@ -51,7 +49,7 @@ LOCAL_APPS = [
     "OTP",
     "customaccounts",
     "transactions",
-    "bills.airtime",
+    "creditswitch.bills",
 ]
 
 

@@ -1,6 +1,8 @@
 # serializers.py
 from rest_framework import serializers
 
+from creditswitch.bills.models import CreditSwitchAirTimeService
+
 
 class PurchaseAirtimeSerializer(serializers.Serializer):
     service_id = serializers.CharField(max_length=10)
@@ -41,3 +43,20 @@ class ShowMaxPaySerializer(serializers.Serializer):
 
 class ServiceIdSerializer(serializers.Serializer):
     service_id = serializers.CharField(max_length=10)
+
+
+class CreditSwitchAirTimeServiceSerializer(serializers.ModelSerializer):
+    provider = serializers.SerializerMethodField(read_only=True)
+    code = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = CreditSwitchAirTimeService
+        fields = ["provider", "code"]
+
+    def get_provider(self, obj):
+        provider = obj.provider
+        return provider
+
+    def get_code(self, obj):
+        code = obj.code
+        return code

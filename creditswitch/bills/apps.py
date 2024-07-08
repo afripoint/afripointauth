@@ -4,5 +4,5 @@ from django.utils.translation import gettext_lazy as _
 
 class AirtimeConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "bills.airtime"
-    verbose_name = _("Airtime")
+    name = "creditswitch.bills"
+    verbose_name = _("CreditSwitch Bills")
