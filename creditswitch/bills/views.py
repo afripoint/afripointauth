@@ -2,7 +2,12 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-from creditswitch.bills.models import CreditSwitchAirTimeService
+from creditswitch.bills.models import (
+    CreditSwitchAirTimeService,
+    CreditSwitchDataService,
+    CreditSwitchEletricityService,
+    CreditSwitchShowmaxService,
+)
 from creditswitch.bills.renderers import BillJSONRenderer
 from utils.utils import CreditSwitch, airtime_checksum
 from rest_framework.decorators import renderer_classes
@@ -12,6 +17,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import (
     CreditSwitchAirTimeServiceSerializer,
+    CreditSwitchDataServiceSerializer,
+    CreditSwitchEletricitySerializer,
+    CreditSwitchShowmaxSerializer,
     PurchaseAirtimeSerializer,
     PurchaseDataSerializer,
     ServiceIdSerializer,
@@ -177,6 +185,21 @@ class ShowMaxPayView(APIView):
 class CreditSwitchAirTimeServiceView(ListAPIView):
     queryset = CreditSwitchAirTimeService.objects.all()
     serializer_class = CreditSwitchAirTimeServiceSerializer
+
+
+class CreditSwitchEletricityServiceView(ListAPIView):
+    queryset = CreditSwitchEletricityService.objects.all()
+    serializer_class = CreditSwitchEletricitySerializer
+
+
+class CreditSwitchDataServiceView(ListAPIView):
+    queryset = CreditSwitchDataService.objects.all()
+    serializer_class = CreditSwitchDataServiceSerializer
+
+
+class CreditSwitchShowmaxServiceView(ListAPIView):
+    queryset = CreditSwitchShowmaxService.objects.all()
+    serializer_class = CreditSwitchShowmaxSerializer
 
 
 # @csrf_exempt

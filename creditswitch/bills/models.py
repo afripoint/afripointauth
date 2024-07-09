@@ -95,3 +95,27 @@ class CreditSwitchAirTimeService(models.Model):
 
     def __str__(self):
         return f"{self.provider} - {self.code}"
+
+
+class CreditSwitchDataService(models.Model):
+    provider = models.CharField(max_length=50, choices=AIRTIME_PROVIDER)
+    code = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.provider} - {self.code}"
+
+
+class CreditSwitchEletricityService(models.Model):
+    provider = models.CharField(max_length=50, choices=AIRTIME_PROVIDER)
+    code = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.provider} - {self.code}"
+
+
+class CreditSwitchShowmaxService(models.Model):
+    provider = models.CharField(max_length=50, choices=AIRTIME_PROVIDER)
+    code = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.provider} - {self.code}"

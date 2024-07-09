@@ -1,6 +1,9 @@
 from django.urls import path
 from .views import (
     CreditSwitchAirTimeServiceView,
+    CreditSwitchDataServiceView,
+    CreditSwitchEletricityServiceView,
+    CreditSwitchShowmaxServiceView,
     DataPlansView,
     PurchaseAirtimeView,
     PurchaseDataView,
@@ -18,6 +21,21 @@ urlpatterns = [
         "airtime-services/",
         CreditSwitchAirTimeServiceView.as_view(),
         name="airtime-services",
+    ),
+    path(
+        "data-services/",
+        CreditSwitchDataServiceView.as_view(),
+        name="data-services",
+    ),
+    path(
+        "electricity-services/",
+        CreditSwitchEletricityServiceView.as_view(),
+        name="electricity-services",
+    ),
+    path(
+        "showmax-services/",
+        CreditSwitchShowmaxServiceView.as_view(),
+        name="showmax-services",
     ),
     path(
         "transaction-status/",

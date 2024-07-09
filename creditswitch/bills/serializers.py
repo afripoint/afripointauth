@@ -1,7 +1,12 @@
 # serializers.py
 from rest_framework import serializers
 
-from creditswitch.bills.models import CreditSwitchAirTimeService
+from creditswitch.bills.models import (
+    CreditSwitchAirTimeService,
+    CreditSwitchDataService,
+    CreditSwitchEletricityService,
+    CreditSwitchShowmaxService,
+)
 
 
 class PurchaseAirtimeSerializer(serializers.Serializer):
@@ -51,6 +56,57 @@ class CreditSwitchAirTimeServiceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CreditSwitchAirTimeService
+        fields = ["provider", "code"]
+
+    def get_provider(self, obj):
+        provider = obj.provider
+        return provider
+
+    def get_code(self, obj):
+        code = obj.code
+        return code
+
+
+class CreditSwitchDataServiceSerializer(serializers.ModelSerializer):
+    provider = serializers.SerializerMethodField(read_only=True)
+    code = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = CreditSwitchDataService
+        fields = ["provider", "code"]
+
+    def get_provider(self, obj):
+        provider = obj.provider
+        return provider
+
+    def get_code(self, obj):
+        code = obj.code
+        return code
+
+
+class CreditSwitchEletricitySerializer(serializers.ModelSerializer):
+    provider = serializers.SerializerMethodField(read_only=True)
+    code = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = CreditSwitchEletricityService
+        fields = ["provider", "code"]
+
+    def get_provider(self, obj):
+        provider = obj.provider
+        return provider
+
+    def get_code(self, obj):
+        code = obj.code
+        return code
+
+
+class CreditSwitchShowmaxSerializer(serializers.ModelSerializer):
+    provider = serializers.SerializerMethodField(read_only=True)
+    code = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = CreditSwitchShowmaxService
         fields = ["provider", "code"]
 
     def get_provider(self, obj):
