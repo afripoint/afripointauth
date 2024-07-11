@@ -1,5 +1,4 @@
 name: Afriauth CI
-
 on:
   push:
     branches: [ "main2" ]

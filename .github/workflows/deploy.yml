@@ -2,21 +2,18 @@ on:
   push:
     branches:
       - testing
-  pull_request:
-    branches:
-      - testing
+  # pull_request:
+  #   branches:
+  #     - testing
 
 name: Deploy backend-end service
-
 jobs:
   deploy:
     name: Deploy to Test Environment
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
 
       - name: Docker Build & Push Django Backend to Docker Hub
         uses: opspresso/action-docker@master
@@ -86,8 +83,6 @@ jobs:
             git checkout testing
             git reset --hard HEAD
             git pull origin testing
-            docker stack rm afripointauth
-            docker system prune
             docker stack deploy -c /root/server_configuration/docker-compose.yml afripointauth 
 
           
