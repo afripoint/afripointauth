@@ -135,7 +135,6 @@ services:
   #     - api
   #   networks:
   #     - afriauth_docker_network
-
 networks:
   afriauth_docker_network:
     external: true
