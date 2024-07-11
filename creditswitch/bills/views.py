@@ -48,6 +48,23 @@ class PurchaseAirtimeView(APIView):
             return JsonResponse({"error": str(e)}, status=500)
 
 
+@renderer_classes([BillJSONRenderer])
+class DataPlansView(APIView):
+    def post(self, request):
+        try:
+            serializer = ServiceIdSerializer(data=request.data)
+            if serializer.is_valid():
+                service_id = serializer.validated_data["service_id"]
+                credit_switch = CreditSwitch()
+                response = credit_switch.data_plans(service_id)
+                return Response(response, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+
 class PurchaseDataView(APIView):
     def post(self, request):
         try:
@@ -110,23 +127,6 @@ class TransactionStatusView(APIView):
 
 
 @renderer_classes([BillJSONRenderer])
-class DataPlansView(APIView):
-    def post(self, request):
-        try:
-            serializer = ServiceIdSerializer(data=request.data)
-            if serializer.is_valid():
-                service_id = serializer.validated_data["service_id"]
-                credit_switch = CreditSwitch()
-                response = credit_switch.data_plans(service_id)
-                return Response(response, status=status.HTTP_200_OK)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except json.JSONDecodeError:
-            return JsonResponse({"error": "Invalid JSON"}, status=400)
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
-
-
-@renderer_classes([BillJSONRenderer])
 class ShowmaxView(APIView):
     def get(self, request):
         try:
@@ -155,10 +155,9 @@ class StartimeView(APIView):
 @renderer_classes([BillJSONRenderer])
 class ShowMaxPayView(APIView):
     @swagger_auto_schema(
-        operation_summary="This is responsible for handling purchase",
+        operation_summary="This is responsible for handling purchase showmax",
         operation_description="""
-        This endpoint allows administrator to retrieve a user.
-        To access this endpoint, you must have certain privileges such as is_support priviledges and you must be authenticated.    
+            
         """,
     )
     def post(self, request):
@@ -208,55 +207,3 @@ class CreditSwitchDataServiceView(ListAPIView):
 class CreditSwitchShowmaxServiceView(ListAPIView):
     queryset = CreditSwitchShowmaxService.objects.all()
     serializer_class = CreditSwitchShowmaxSerializer
-
-
-# @csrf_exempt
-# def airtime_vend_request(request):
-#     if request.method == "POST":
-#         try:
-#             data = {
-#                 "login_id": 315474,
-#                 "request_id": "hjhabxhjXBXHxvAVX",
-#                 "service_id": "A04E",
-#                 "request_amount": 100,
-#                 "recipient": "08161177351",
-#             }
-
-#             # Extract the required fields from the request body
-#             login_id = data.get("login_id")
-#             request_id = data.get("request_id")
-#             service_id = data.get("service_id")
-#             request_amount = data.get("request_amount")
-#             recipient = data.get("recipient")
-
-#             if not all([request_id, service_id, request_amount, recipient]):
-#                 return JsonResponse({"error": "Missing required fields"}, status=400)
-
-#             # Generate checksum
-#             checksum = airtime_checksum(
-#                 login_id, request_id, service_id, request_amount, private_key, recipient
-#             )
-
-#             # Prepare the payload
-#             payload = {
-#                 "login_id": login_id,
-#                 "request_id": request_id,
-#                 "service_id": service_id,
-#                 "request_amount": request_amount,
-#                 "checksum": checksum,
-#                 "recipient": recipient,
-#             }
-
-#             # Initialize CreditSwitch and make the POST request
-#             cs = CreditSwitch()
-#             response = cs.post("airtime/mvend", params=json.dumps(payload))
-
-#             # Return the response from CreditSwitch
-#             return JsonResponse(response.json(), status=response.status_code)
-
-#         except json.JSONDecodeError:
-#             return JsonResponse({"error": "Invalid JSON"}, status=400)
-#         except Exception as e:
-#             return JsonResponse({"error": str(e)}, status=500)
-
-#     return JsonResponse({"error": "Invalid HTTP method"}, status=405)
