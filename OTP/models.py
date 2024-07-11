@@ -1,6 +1,8 @@
 from django.db import models
 import uuid
 from django.conf import settings
+from django.db import models
+from django.utils import timezone
 
 
 MFA_CATEGORY = (
@@ -34,10 +36,6 @@ class MFATable(models.Model):
 
     def __str__(self):
         return f"{self.userId}-{self.date_generated}-{self.mfa_code}"
-
-
-from django.db import models
-from django.utils import timezone
 
 
 class OTPSettings(models.Model):

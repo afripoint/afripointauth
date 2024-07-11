@@ -47,7 +47,8 @@ def infobip_send_sms(phone_number, message):
         }
     )
     headers = {
-        "Authorization": "App be84566f9b9482cf4a032e2fb5ff0329-54f2cfa2-dfec-4626-acb9-04c47c973c27",
+        # "Authorization": "App be84566f9b9482cf4a032e2fb5ff0329-54f2cfa2-dfec-4626-acb9-04c47c973c27",
+        "Authorization": "App 3df98d304005e2af8be66e75da70e9d1-3a6bfd6c-dc94-4200-bd34-0caaa778543c",
         "Content-Type": "application/json",
         "Accept": "application/json",
     }

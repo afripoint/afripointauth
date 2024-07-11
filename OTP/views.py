@@ -43,6 +43,7 @@ class PhoneNumberValidationView(viewsets.ViewSet):
         serializer = PhoneNumberValidationSerializer(data=request.data)
         if serializer.is_valid():
             phone_number = serializer.validated_data["phone_number"]
+            mfa_type = serializer.validated_data["type"]
             user = User.objects.filter(phone_number=phone_number).first()
             if user:
                 return Response(
@@ -59,6 +60,7 @@ class PhoneNumberValidationView(viewsets.ViewSet):
                 mfa_code=otp,
                 mfa_category="registration",
                 mfa_duration=otp_live_time,
+                mfa_type=mfa_type,
             )
             # Calculate the OTP expiry time based on the current time and otp_live_time
             otp_expiring_time = timezone.now() + timezone.timedelta(

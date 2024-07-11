@@ -10,6 +10,7 @@ class PhoneNumberValidationSerializer(serializers.Serializer):
     """
 
     phone_number = serializers.CharField(required=True)
+    type = serializers.ChoiceField(choices=MFA_TYPE, required=True)
 
 
 class PhoneNumberVerificationSerializer(serializers.Serializer):

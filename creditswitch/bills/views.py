@@ -8,6 +8,7 @@ from creditswitch.bills.models import (
     CreditSwitchEletricityService,
     CreditSwitchShowmaxService,
 )
+from drf_yasg.utils import swagger_auto_schema
 from creditswitch.bills.renderers import BillJSONRenderer
 from utils.utils import CreditSwitch, airtime_checksum
 from rest_framework.decorators import renderer_classes
@@ -153,6 +154,13 @@ class StartimeView(APIView):
 
 @renderer_classes([BillJSONRenderer])
 class ShowMaxPayView(APIView):
+    @swagger_auto_schema(
+        operation_summary="This is responsible for handling purchase",
+        operation_description="""
+        This endpoint allows administrator to retrieve a user.
+        To access this endpoint, you must have certain privileges such as is_support priviledges and you must be authenticated.    
+        """,
+    )
     def post(self, request):
         try:
             serializer = ShowMaxPaySerializer(data=request.data)
