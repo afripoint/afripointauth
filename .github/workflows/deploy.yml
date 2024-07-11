@@ -86,6 +86,8 @@ jobs:
             git checkout testing
             git reset --hard HEAD
             git pull origin testing
+            docker stack rm afripointauth
+            docker system prune
             docker stack deploy -c /root/server_configuration/docker-compose.yml afripointauth 
 
           
