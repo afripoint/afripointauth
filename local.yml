@@ -14,28 +14,28 @@ services:
     #   - "8000"
     env_file:
       - ./.envs/.env
-    depends_on:
-      - postgres
+    # depends_on:
+    #   - postgres
     #   # - mailpit
     #   # - redis
     command: /entrypoint
     networks:
       - afriauth_docker_network
 
-  postgres:
-    build:
-      context: .
-      dockerfile: ./docker/local/postgres/Dockerfile
-    image: afriauth_web_postgres
-    container_name: afriauth_web_postgres_container
-    ports:
-      - "5432:5432"
-    volumes:
-      - afriauth_web_postgres_data:/var/lib/postgresql/data
-    env_file:
-      - ./.envs/.env
-    networks:
-      - afriauth_docker_network
+  # postgres:
+  #   build:
+  #     context: .
+  #     dockerfile: ./docker/local/postgres/Dockerfile
+  #   image: afriauth_web_postgres
+  #   container_name: afriauth_web_postgres_container
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - afriauth_web_postgres_data:/var/lib/postgresql/data
+  #   env_file:
+  #     - ./.envs/.env
+  #   networks:
+  #     - afriauth_docker_network
 
   # client:
   #   build:
@@ -120,27 +120,27 @@ services:
   #     - "5555:5555"
   #   command: /start-flower
 
-  nginx:
-    build:
-      context: ./docker/local/nginx
-      dockerfile: Dockerfile
-    restart: always
-    container_name: afriauth_nginx
-    ports:
-      - "8080:80"
-    volumes:
-      - ./staticfiles:/app/staticfiles
-      - logs_store:/var/log/nginx
-    depends_on:
-      - api
-    networks:
-      - afriauth_docker_network
+  # nginx:
+  #   build:
+  #     context: ./docker/local/nginx
+  #     dockerfile: Dockerfile
+  #   restart: always
+  #   container_name: afriauth_nginx
+  #   ports:
+  #     - "8080:80"
+  #   volumes:
+  #     - ./staticfiles:/app/staticfiles
+  #     - logs_store:/var/log/nginx
+  #   depends_on:
+  #     - api
+  #   networks:
+  #     - afriauth_docker_network
 
 networks:
   afriauth_docker_network:
     external: true
 
 volumes:
-  afriauth_web_postgres_data: {}
+  # afriauth_web_postgres_data: {}
   logs_store: {}
-  node_modules: {}
+  # node_modules: {}
