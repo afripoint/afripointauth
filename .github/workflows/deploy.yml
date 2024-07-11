@@ -29,16 +29,16 @@ jobs:
           IMAGE_NAME: "afripoint/afriauth_backend"
           LATEST: "true"
 
-      - name: Docker Build & Push Client to Docker Hub
-        uses: opspresso/action-docker@master
-        with:
-          args: --docker
-        env:
-          USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          DOCKERFILE: "./client/docker/Dockerfile"
-          IMAGE_NAME: "afripoint/afriauth_client"
-          LATEST: "true"
+      # - name: Docker Build & Push Client to Docker Hub
+      #   uses: opspresso/action-docker@master
+      #   with:
+      #     args: --docker
+      #   env:
+      #     USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      #     PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      #     DOCKERFILE: "./client/docker/Dockerfile"
+      #     IMAGE_NAME: "afripoint/afriauth_client"
+      #     LATEST: "true"
 
 
       # - name: Docker Build & Push to Docker Hub

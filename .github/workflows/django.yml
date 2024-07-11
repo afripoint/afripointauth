@@ -2,7 +2,7 @@ name: Afriauth CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main2" ]
 
 concurrency:
   group: "main"
