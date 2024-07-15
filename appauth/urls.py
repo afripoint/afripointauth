@@ -56,7 +56,7 @@ urlpatterns = [
     path("backoffice/", admin.site.urls),
     path("customaccounts/", include("allauth.urls")),
     path("api/", include("dj_rest_auth.urls")),
-    path("bills/", include("creditswitch.bills.urls")),
+    path("biller/", include("creditswitch.bills.urls")),
     path("api/registration/", include("dj_rest_auth.registration.urls")),
     path("api/auth/user/", CustomUserAPIView.as_view(), name="user_details"),
     path("api/kyc/<str:user_id>", KYCAPIView.as_view(), name="kyc_api_view"),
