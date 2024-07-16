@@ -12,4 +12,4 @@ class BillJSONRenderer(JSONRenderer):
 
         if errors is not None:
             return super(BillJSONRenderer, self).render(data)
-        return json.dumps({"status_code": status_code, "bill": data})
+        return json.dumps({"status_code": status_code, "biller": data})

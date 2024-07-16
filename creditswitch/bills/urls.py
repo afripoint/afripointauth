@@ -5,6 +5,9 @@ from .views import (
     CreditSwitchEletricityServiceView,
     CreditSwitchShowmaxServiceView,
     DataPlansView,
+    MultichoiceProductAddonsView,
+    MultichoiceProductCodeView,
+    MultichoiceValidateCustomerView,
     PurchaseAirtimeView,
     PurchaseDataView,
     ShowmaxView,
@@ -47,4 +50,19 @@ urlpatterns = [
     path("showmax-packages/", ShowmaxView.as_view(), name="showmax-packages"),
     path("startimes/", StartimeView.as_view(), name="startimes"),
     path("showmax-subscribe/", ShowMaxPayView.as_view(), name="showmax-subscribe"),
+    path(
+        "multichoice-validate-customer/",
+        MultichoiceValidateCustomerView.as_view(),
+        name="multichoice-validate-customer",
+    ),
+    path(
+        "multichoice-products-code/",
+        MultichoiceProductCodeView.as_view(),
+        name="multichoice-product-code",
+    ),
+    path(
+        "multichoice-products-addons/",
+        MultichoiceProductAddonsView.as_view(),
+        name="multichoice-products-addons",
+    ),
 ]

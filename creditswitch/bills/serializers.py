@@ -50,6 +50,11 @@ class ServiceIdSerializer(serializers.Serializer):
     service_id = serializers.CharField(max_length=10)
 
 
+class MultichoiceValidateCustomerSerializer(serializers.Serializer):
+    service_id = serializers.CharField(max_length=15)
+    customer_no = serializers.CharField(max_length=25)
+
+
 class CreditSwitchAirTimeServiceSerializer(serializers.ModelSerializer):
     provider = serializers.SerializerMethodField(read_only=True)
     code = serializers.SerializerMethodField(read_only=True)

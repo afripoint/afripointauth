@@ -21,6 +21,7 @@ from .serializers import (
     CreditSwitchDataServiceSerializer,
     CreditSwitchEletricitySerializer,
     CreditSwitchShowmaxSerializer,
+    MultichoiceValidateCustomerSerializer,
     PurchaseAirtimeSerializer,
     PurchaseDataSerializer,
     ServiceIdSerializer,
@@ -207,3 +208,60 @@ class CreditSwitchDataServiceView(ListAPIView):
 class CreditSwitchShowmaxServiceView(ListAPIView):
     queryset = CreditSwitchShowmaxService.objects.all()
     serializer_class = CreditSwitchShowmaxSerializer
+
+
+@renderer_classes([BillJSONRenderer])
+class MultichoiceValidateCustomerView(APIView):
+    def post(self, request):
+        try:
+            serializer = MultichoiceValidateCustomerSerializer(data=request.data)
+            if serializer.is_valid():
+                service_id = serializer.validated_data["service_id"]
+                customer_no = serializer.validated_data["customer_no"]
+                credit_switch = CreditSwitch()
+                response = credit_switch.multichoice_validate_customer_number(
+                    customer_no, service_id
+                )
+                print("response", response)
+                return Response(response, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+
+@renderer_classes([BillJSONRenderer])
+class MultichoiceProductCodeView(APIView):
+    def post(self, request):
+        try:
+            serializer = ServiceIdSerializer(data=request.data)
+            if serializer.is_valid():
+                service_id = serializer.validated_data["service_id"]
+                credit_switch = CreditSwitch()
+                response = credit_switch.multichoice_product_codes(service_id)
+                print("response", response)
+                return Response(response, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+
+@renderer_classes([BillJSONRenderer])
+class MultichoiceProductAddonsView(APIView):
+    def post(self, request):
+        try:
+            serializer = ServiceIdSerializer(data=request.data)
+            if serializer.is_valid():
+                service_id = serializer.validated_data["service_id"]
+                credit_switch = CreditSwitch()
+                response = credit_switch.multichoice_product_codes(service_id)
+                print("response", response)
+                return Response(response, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)

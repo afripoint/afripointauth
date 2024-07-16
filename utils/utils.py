@@ -95,6 +95,26 @@ def merchant_info_checksum():
     return checksum
 
 
+def multichoice_validate_customer_checksum(customer_no):
+    login_id = settings.LOGIN_ID
+    private_key = settings.PRIVATE_KEY
+    concat_string = f"{login_id}|{private_key}|{customer_no}"
+    hashed = bcrypt.hashpw(concat_string.encode("utf-8"), bcrypt.gensalt())
+    checksum = base64.urlsafe_b64encode(hashed).decode("utf-8")
+
+    return checksum
+
+
+def multichoice_vend_checksum(customer_no, transactionref, amount):
+    login_id = settings.LOGIN_ID
+    private_key = settings.PRIVATE_KEY
+    concat_string = f"{login_id}|{private_key}|{customer_no}|{transactionref}|{amount}"
+    hashed = bcrypt.hashpw(concat_string.encode("utf-8"), bcrypt.gensalt())
+    checksum = base64.urlsafe_b64encode(hashed).decode("utf-8")
+
+    return checksum
+
+
 class CreditSwitch(object):
     def __init__(self):
         self.base_url = "http://176.58.99.160:9012/api/v1"
@@ -157,6 +177,19 @@ class CreditSwitch(object):
 
         return self.make_post_request("mdetails", payload)
 
+    def multichoice_validate_customer_number(self, customer_no, service_id):
+        checksum = multichoice_validate_customer_checksum(customer_no)
+
+        payload = {
+            "loginId": settings.LOGIN_ID,
+            "key": settings.PUBLIC_KEY,
+            "checksum": checksum,
+            "customerNo": customer_no,
+            "serviceId": service_id,
+        }
+
+        return self.make_post_request("cabletv/multichoice/validate", payload)
+
     def transaction_status(self, service_id):
         payload = {
             "loginId": settings.LOGIN_ID,
@@ -216,3 +249,23 @@ class CreditSwitch(object):
         }
 
         return self.make_post_request("showmax/pay", payload)
+
+    def multichoice_product_codes(self, service_id):
+
+        payload = {
+            "loginId": settings.LOGIN_ID,
+            "key": settings.PUBLIC_KEY,
+            "serviceId": service_id,
+        }
+
+        return self.make_post_request("cabletv/multichoice/fetchproducts", payload)
+
+    def multichoice_product_addons(self, service_id):
+
+        payload = {
+            "loginId": settings.LOGIN_ID,
+            "key": settings.PUBLIC_KEY,
+            "serviceId": service_id,
+        }
+
+        return self.make_post_request("cabletv/multichoice/productaddons", payload)
