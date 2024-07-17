@@ -381,6 +381,14 @@ CSRF_TRUSTED_ORIGINS = [
     "https://backend.onenairapay.com",
 ]
 
+# settings.py
+
+SECURE_SSL_REDIRECT = True  # Redirect all non-HTTPS requests to HTTPS
+SECURE_HSTS_SECONDS = 3600  # HTTP Strict Transport Security (HSTS)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 
 JAZZMIN_SETTINGS = {
     "site_title": "Afripoint Auth Admin",
