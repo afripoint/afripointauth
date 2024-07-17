@@ -9,6 +9,7 @@ from creditswitch.bills.models import (
     CreditSwitchShowmaxService,
 )
 from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from creditswitch.bills.renderers import BillJSONRenderer
 from utils.utils import CreditSwitch, airtime_checksum
 from rest_framework.decorators import renderer_classes
@@ -32,6 +33,13 @@ from .serializers import (
 
 
 class PurchaseAirtimeView(APIView):
+    @swagger_auto_schema(
+        request_body=PurchaseDataSerializer,
+        responses={201: openapi.Response("Created", PurchaseDataSerializer)},
+        operation_summary="Use this endpoint to handle airtime purchases",
+        operation_description="""
+        """,
+    )
     def post(self, request):
         try:
             serializer = PurchaseAirtimeSerializer(data=request.data)
@@ -53,6 +61,13 @@ class PurchaseAirtimeView(APIView):
 
 @renderer_classes([BillJSONRenderer])
 class DataPlansView(APIView):
+    @swagger_auto_schema(
+        request_body=ServiceIdSerializer,
+        responses={201: openapi.Response("Created", ServiceIdSerializer)},
+        operation_summary="Use this endpoint to get data plans",
+        operation_description="""
+        """,
+    )
     def post(self, request):
         try:
             serializer = ServiceIdSerializer(data=request.data)
@@ -69,6 +84,13 @@ class DataPlansView(APIView):
 
 
 class PurchaseDataView(APIView):
+    @swagger_auto_schema(
+        request_body=PurchaseDataSerializer,
+        responses={201: openapi.Response("Created", PurchaseDataSerializer)},
+        operation_summary="Use this endpoint to handle data bundle purchases",
+        operation_description="""
+        """,
+    )
     def post(self, request):
         try:
             serializer = PurchaseDataSerializer(data=request.data)
@@ -93,6 +115,11 @@ class PurchaseDataView(APIView):
 
 @renderer_classes([BillJSONRenderer])
 class MerchantDetailsView(APIView):
+    @swagger_auto_schema(
+        operation_summary="Use this endpoint to get Merchant details including merchant account balance on Creditswitch",
+        operation_description="""
+        """,
+    )
     def post(self, request):
         try:
             credit_switch = CreditSwitch()
@@ -144,6 +171,11 @@ class ShowmaxView(APIView):
 
 @renderer_classes([BillJSONRenderer])
 class StartimeView(APIView):
+    @swagger_auto_schema(
+        operation_summary="Use this endpoint to handle startime TV subscription",
+        operation_description="""
+        """,
+    )
     def post(self, request):
         try:
             credit_switch = CreditSwitch()
@@ -158,7 +190,11 @@ class StartimeView(APIView):
 @renderer_classes([BillJSONRenderer])
 class ShowMaxPayView(APIView):
     @swagger_auto_schema(
-        operation_summary="This is responsible for handling purchase showmax",
+        request_body=MultichoiceValidateCustomerSerializer,
+        responses={
+            201: openapi.Response("Created", MultichoiceValidateCustomerSerializer)
+        },
+        operation_summary="This is responsible for handling purchase of showmax packages",
         operation_description="""
             
         """,
@@ -214,6 +250,15 @@ class CreditSwitchShowmaxServiceView(ListAPIView):
 
 @renderer_classes([BillJSONRenderer])
 class MultichoiceValidateCustomerView(APIView):
+    @swagger_auto_schema(
+        request_body=MultichoiceValidateCustomerSerializer,
+        responses={
+            201: openapi.Response("Created", MultichoiceValidateCustomerSerializer)
+        },
+        operation_summary="Use this endpoint to handle Multichoice customer validation",
+        operation_description="""
+        """,
+    )
     def post(self, request):
         try:
             serializer = MultichoiceValidateCustomerSerializer(data=request.data)
@@ -235,6 +280,13 @@ class MultichoiceValidateCustomerView(APIView):
 
 @renderer_classes([BillJSONRenderer])
 class MultichoiceProductCodeView(APIView):
+    @swagger_auto_schema(
+        request_body=ServiceIdSerializer,
+        responses={201: openapi.Response("Created", ServiceIdSerializer)},
+        operation_summary="Use this endpoint to handle Multichoice product codes view",
+        operation_description="""
+        """,
+    )
     def post(self, request):
         try:
             serializer = ServiceIdSerializer(data=request.data)
@@ -253,6 +305,13 @@ class MultichoiceProductCodeView(APIView):
 
 @renderer_classes([BillJSONRenderer])
 class MultichoiceProductAddonsView(APIView):
+    @swagger_auto_schema(
+        request_body=ServiceIdSerializer,
+        responses={201: openapi.Response("Created", ServiceIdSerializer)},
+        operation_summary="Use this endpoint to handle Multichoice product addons",
+        operation_description="""
+        """,
+    )
     def post(self, request):
         try:
             serializer = ServiceIdSerializer(data=request.data)
@@ -271,6 +330,15 @@ class MultichoiceProductAddonsView(APIView):
 
 @renderer_classes([BillJSONRenderer])
 class ElectricityValidateRequestView(APIView):
+    @swagger_auto_schema(
+        request_body=ElectricityValidateRequestSerializer,
+        responses={
+            201: openapi.Response("Created", ElectricityValidateRequestSerializer)
+        },
+        operation_summary="Use this endpoint to handle validate electricity request ",
+        operation_description="""
+        """,
+    )
     def post(self, request):
         try:
             serializer = ElectricityValidateRequestSerializer(data=request.data)
@@ -293,6 +361,13 @@ class ElectricityValidateRequestView(APIView):
 
 @renderer_classes([BillJSONRenderer])
 class ElectricityPurchaseView(APIView):
+    @swagger_auto_schema(
+        request_body=ElectricityPurchaseSerializer,
+        responses={201: openapi.Response("Created", ElectricityPurchaseSerializer)},
+        operation_summary="Use this endpoint to handle electricity purchase",
+        operation_description="""
+        """,
+    )
     def post(self, request):
         try:
             serializer = ElectricityPurchaseSerializer(data=request.data)
