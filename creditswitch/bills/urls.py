@@ -5,6 +5,8 @@ from .views import (
     CreditSwitchEletricityServiceView,
     CreditSwitchShowmaxServiceView,
     DataPlansView,
+    ElectricityPurchaseView,
+    ElectricityValidateRequestView,
     MultichoiceProductAddonsView,
     MultichoiceProductCodeView,
     MultichoiceValidateCustomerView,
@@ -64,5 +66,15 @@ urlpatterns = [
         "multichoice-products-addons/",
         MultichoiceProductAddonsView.as_view(),
         name="multichoice-products-addons",
+    ),
+    path(
+        "electricity-validate-request/",
+        ElectricityValidateRequestView.as_view(),
+        name="electricity-validate-request",
+    ),
+    path(
+        "electricity-purchase/",
+        ElectricityPurchaseView.as_view(),
+        name="electricity-purchase",
     ),
 ]

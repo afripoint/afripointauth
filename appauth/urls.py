@@ -54,16 +54,16 @@ router.register("web", EmailVerificationView, basename="verfiy_otp")
 
 urlpatterns = [
     path("backoffice/", admin.site.urls),
-    path("customaccounts/", include("allauth.urls")),
     path("api/", include("dj_rest_auth.urls")),
     path("biller/", include("creditswitch.bills.urls")),
+    path("custom-accounts/", include("allauth.urls")),
     path("api/registration/", include("dj_rest_auth.registration.urls")),
     path("api/auth/user/", CustomUserAPIView.as_view(), name="user_details"),
     path("api/kyc/<str:user_id>", KYCAPIView.as_view(), name="kyc_api_view"),
-    path(
-        "api/password_reset/",
-        include("django_rest_passwordreset.urls", namespace="password_reset"),
-    ),
+    # path(
+    #     "api/password_reset/",
+    #     include("django_rest_passwordreset.urls", namespace="password_reset"),
+    # ),
     path(
         "swagger<format>/", schema_view.without_ui(cache_timeout=0), name="schema-json"
     ),

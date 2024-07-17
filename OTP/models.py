@@ -15,6 +15,7 @@ MFA_TYPE = (
     ("signup", "Sign Up"),
     ("login", "Login"),
     ("resetpassword", "Reset Password"),
+    ("forgotpassword", "Forgot Password"),
 )
 
 

@@ -115,6 +115,27 @@ def multichoice_vend_checksum(customer_no, transactionref, amount):
     return checksum
 
 
+def electricity_validate_request_checksum(service_id, customer_account_id):
+    login_id = settings.LOGIN_ID
+    private_key = settings.PRIVATE_KEY
+    concat_string = f"{login_id}|{service_id}|{private_key}|{customer_account_id}"
+    hashed = bcrypt.hashpw(concat_string.encode("utf-8"), bcrypt.gensalt())
+    checksum = base64.urlsafe_b64encode(hashed).decode("utf-8")
+
+    return checksum
+
+
+def electricity_purchase_checksum(service_id, customer_account_id, amount):
+    login_id = settings.LOGIN_ID
+    private_key = settings.PRIVATE_KEY
+    request_id = generate_random_id()
+    concat_string = f"{login_id}|{service_id}|{private_key}|{customer_account_id}|{request_id}|{amount}"
+    hashed = bcrypt.hashpw(concat_string.encode("utf-8"), bcrypt.gensalt())
+    checksum = base64.urlsafe_b64encode(hashed).decode("utf-8")
+
+    return checksum
+
+
 class CreditSwitch(object):
     def __init__(self):
         self.base_url = "http://176.58.99.160:9012/api/v1"
@@ -269,3 +290,58 @@ class CreditSwitch(object):
         }
 
         return self.make_post_request("cabletv/multichoice/productaddons", payload)
+
+    def electricity_validate_request(self, service_id, customer_account_id):
+        checksum = electricity_validate_request_checksum(
+            service_id, customer_account_id
+        )
+
+        payload = {
+            "loginId": settings.LOGIN_ID,
+            "key": settings.PUBLIC_KEY,
+            "checksum": checksum,
+            "customerAccountId": customer_account_id,
+            "serviceId": service_id,
+        }
+
+        return self.make_post_request("evalidate", payload)
+
+    def electricity_validate_request(self, service_id, customer_account_id):
+        checksum = electricity_validate_request_checksum(
+            service_id, customer_account_id
+        )
+
+        payload = {
+            "loginId": settings.LOGIN_ID,
+            "key": settings.PUBLIC_KEY,
+            "checksum": checksum,
+            "customerAccountId": customer_account_id,
+            "serviceId": service_id,
+        }
+
+        return self.make_post_request("evalidate", payload)
+
+    def electricity_purchase(
+        self, service_id, customer_account_id, amount, customer_name, customer_address
+    ):
+        checksum = electricity_purchase_checksum(
+            service_id,
+            customer_account_id,
+            amount,
+        )
+
+        request_id = generate_random_id()
+
+        payload = {
+            "loginId": settings.LOGIN_ID,
+            "key": settings.PUBLIC_KEY,
+            "checksum": checksum,
+            "customerAccountId": customer_account_id,
+            "serviceId": service_id,
+            "amount": amount,
+            "customerName": customer_name,
+            "customerAddress": customer_address,
+            "requestId": request_id,
+        }
+
+        return self.make_post_request("evend", payload)
