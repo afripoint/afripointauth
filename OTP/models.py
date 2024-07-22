@@ -5,33 +5,34 @@ from django.db import models
 from django.utils import timezone
 
 
-MFA_CATEGORY = (
-    ("registration", "Registration"),
-    ("login", "Login"),
-    ("transaction", "Transaction"),
-)
+# MFA_CATEGORY = (
+#     ("registration", "Registration"),
+#     ("login", "Login"),
+#     ("transaction", "Transaction"),
+# )
 
 MFA_TYPE = (
     ("signup", "Sign Up"),
     ("login", "Login"),
     ("resetpassword", "Reset Password"),
     ("forgotpassword", "Forgot Password"),
+    ("transaction", "Transactions"),
 )
 
 
 class MFATable(models.Model):
     pkid = models.BigAutoField(primary_key=True, editable=False)
     id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    mfa_code = models.CharField(max_length=255, blank=True, null=True)
+    mfa_code = models.CharField(max_length=255)
     date_generated = models.DateTimeField(auto_now_add=True)
     mfa_duration = models.PositiveBigIntegerField(blank=True, null=True)
-    mfa_category = models.CharField(
-        max_length=25, choices=MFA_CATEGORY, blank=True, null=True
-    )
+    # mfa_category = models.CharField(
+    #     max_length=25, choices=MFA_CATEGORY, blank=True, null=True
+    # )
     otp_expiry = models.DateTimeField(blank=True, null=True)
     expired = models.BooleanField(default=False)
     userId = models.CharField(max_length=255, blank=True, null=True)
-    mfa_type = models.CharField(max_length=255, choices=MFA_TYPE, blank=True, null=True)
+    mfa_type = models.CharField(max_length=255, choices=MFA_TYPE)
 
     verified = models.BooleanField(default=False)
 

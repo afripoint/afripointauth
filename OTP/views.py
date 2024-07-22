@@ -136,13 +136,14 @@ class EmailValidationView(viewsets.ViewSet):
                     {"error": "There is an existing account with this email "},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
+
             otp = otp_generator.generate_otp()
             otp_settings = OTPSettings.objects.first()
             otp_live_time = otp_settings.otp_live_time if otp_settings else 300
             mfa = MFATable.objects.create(
                 userId=email,
                 mfa_code=otp,
-                mfa_category="registration",
+                # mfa_category="registration",
                 mfa_duration=otp_live_time,
                 mfa_type=mfa_type,
             )
