@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
+from import_export.admin import ImportExportModelAdmin
+
 
 from users.models import CustomUser
 
@@ -83,4 +85,4 @@ class UserAdmin(BaseUserAdmin):
     search_fields = ["email", "phone_number"]
 
 
-admin.site.register(CustomUser)
+admin.site.register(CustomUser, ImportExportModelAdmin)
