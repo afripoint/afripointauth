@@ -79,10 +79,10 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            cd /root/server_configuration
-            git checkout testing
+            cd /root/onenaira/onenaira_server_configuration
+            git checkout main
             git reset --hard HEAD
-            git pull origin testing
-            docker stack deploy -c /root/server_configuration/docker-compose.yml afripointauth 
+            git pull origin main
+            docker stack deploy -c /root/onenaira/onenaira_server_configuration/docker-compose.yml afripointauth 
 
           
