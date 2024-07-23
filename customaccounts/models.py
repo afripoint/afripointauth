@@ -46,7 +46,7 @@ class AccountTable(models.Model):
     accountTypeId = models.ForeignKey(
         AccountTypeTable, on_delete=models.CASCADE, blank=True, null=True
     )
-    kycId = models.ForeignKey(KYCModel, on_delete=models.CASCADE, blank=True, null=True)
+    kycId = models.CharField(max_length=25, blank=True, null=True)
     kycStatus = models.BooleanField(default=False)
     createdBy = models.CharField(max_length=25, blank=True, null=True)
     dateCreated = models.DateField(auto_now_add=True)

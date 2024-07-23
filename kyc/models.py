@@ -27,9 +27,6 @@ class KYCModel(TimeStampedModel):
     user = models.OneToOneField(User, related_name="kyc", on_delete=models.CASCADE)
     bvn = models.CharField(_("BVN"), blank=True, null=True, unique=True, max_length=15)
     nin = models.CharField(_("NIN"), blank=True, null=True, unique=True, max_length=15)
-    # user_id = models.GeneratedField(
-    #     output_field=models.CharField(), expression=models.F("user_id"), db_persist=True
-    # )
     status = models.CharField(
         max_length=11,
         choices=STATUS,
