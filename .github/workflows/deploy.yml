@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - testing
+      - main
   # pull_request:
   #   branches:
   #     - testing
@@ -79,10 +79,10 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            cd /root/server_configuration
+            cd /root/onenaira/onenaira_server_configuration
             git checkout testing
             git reset --hard HEAD
             git pull origin testing
-            docker stack deploy -c /root/server_configuration/docker-compose.yml afripointauth 
+            docker stack deploy -c /root/onenaira/onenaira_server_configuration/docker-compose.yml afripointauth 
 
           
