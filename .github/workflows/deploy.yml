@@ -22,54 +22,9 @@ jobs:
         env:
           USERNAME: ${{ secrets.DOCKER_USERNAME }}
           PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          DOCKERFILE: "./docker/local/django/Dockerfile"
+          DOCKERFILE: "./docker/production/django/Dockerfile"
           IMAGE_NAME: "afripoint/afriauth_backend"
           LATEST: "true"
-
-      # - name: Docker Build & Push Client to Docker Hub
-      #   uses: opspresso/action-docker@master
-      #   with:
-      #     args: --docker
-      #   env:
-      #     USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      #     PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      #     DOCKERFILE: "./client/docker/Dockerfile"
-      #     IMAGE_NAME: "afripoint/afriauth_client"
-      #     LATEST: "true"
-
-
-      # - name: Docker Build & Push to Docker Hub
-      #   uses: opspresso/action-docker@master
-      #   with:
-      #     args: --docker
-      #   env:
-      #     USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      #     PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      #     DOCKERFILE: "./docker/local/postgres/Dockerfile"
-      #     IMAGE_NAME: "afripoint/afriauth_postgres"
-      #     LATEST: "true"
-
-      # - name: Celery Worker Build & Push to Docker Hub
-      #   uses: opspresso/action-docker@master
-      #   with:
-      #     args: --docker
-      #   env:
-      #     USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      #     PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      #     DOCKERFILE: "./docker/local/django/Dockerfile"
-      #     IMAGE_NAME: "afripoint/afriauth_celeryworker"
-      #     LATEST: "true"
-
-      # - name: Celery Beat Build & Push to Docker Hub
-      #   uses: opspresso/action-docker@master
-      #   with:
-      #     args: --docker
-      #   env:
-      #     USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      #     PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      #     DOCKERFILE: "./docker/local/django/Dockerfile"
-      #     IMAGE_NAME: "afripoint/afriauth_celerybeat"
-      #     LATEST: "true"
 
       - name: Deploy to server
         uses: appleboy/ssh-action@master
@@ -80,9 +35,9 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
             cd /root/onenaira/onenaira_server_configuration
-            git checkout testing
+            git checkout main
             git reset --hard HEAD
-            git pull origin testing
-            docker stack deploy -c /root/onenaira/onenaira_server_configuration/docker-compose.yml afripointauth 
+            git pull origin main
+            docker stack deploy -c /root/onenaira/onenaira_server_configuration/docker-compose.yml onenaira 
 
           
