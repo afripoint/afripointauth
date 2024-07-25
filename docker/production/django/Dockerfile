@@ -61,6 +61,8 @@ COPY --chown=django:django . ${APP_HOME}
 
 RUN chown django:django ${APP_HOME}
 
+COPY --chown=django:django ./create_superuser.py /app/create_superuser.py
+
 USER django
 
 ENTRYPOINT ["/entrypoint"]
