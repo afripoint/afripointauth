@@ -9,6 +9,7 @@ from .views import (
     ElectricityValidateRequestView,
     MultichoiceProductAddonsView,
     MultichoiceProductCodeView,
+    MultichoicePurchaseView,
     MultichoiceValidateCustomerView,
     PurchaseAirtimeView,
     PurchaseDataView,
@@ -66,6 +67,11 @@ urlpatterns = [
         "multichoice-products-addons/",
         MultichoiceProductAddonsView.as_view(),
         name="multichoice-products-addons",
+    ),
+    path(
+        "multichoice-products-purchase/",
+        MultichoicePurchaseView.as_view(),
+        name="multichoice-products-purchase",
     ),
     path(
         "electricity-validate-request/",

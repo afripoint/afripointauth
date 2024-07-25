@@ -24,6 +24,7 @@ from .serializers import (
     CreditSwitchShowmaxSerializer,
     ElectricityPurchaseSerializer,
     ElectricityValidateRequestSerializer,
+    MultichoicePurchaseSerializer,
     MultichoiceValidateCustomerSerializer,
     PurchaseAirtimeSerializer,
     PurchaseDataSerializer,
@@ -319,6 +320,43 @@ class MultichoiceProductAddonsView(APIView):
                 service_id = serializer.validated_data["service_id"]
                 credit_switch = CreditSwitch()
                 response = credit_switch.multichoice_product_codes(service_id)
+                print("response", response)
+                return Response(response, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+
+class MultichoicePurchaseView(APIView):
+    @swagger_auto_schema(
+        request_body=MultichoicePurchaseSerializer,
+        responses={201: openapi.Response("Created", MultichoicePurchaseSerializer)},
+        operation_summary="Use this endpoint to handle multichoice product purchases",
+        operation_description="""
+        """,
+    )
+    def post(self, request):
+        try:
+            serializer = MultichoicePurchaseSerializer(data=request.data)
+            if serializer.is_valid():
+                service_id = serializer.validated_data["service_id"]
+                amount = serializer.validated_data["amount"]
+                customer_name = serializer.validated_data["customer_name"]
+                customer_no = serializer.validated_data["customer_no"]
+                products_codes = serializer.validated_data["products_codes"]
+                invoice_period = serializer.validated_data["invoice_period"]
+
+                credit_switch = CreditSwitch()
+                response = credit_switch.purchase_multichoice_product(
+                    service_id,
+                    amount,
+                    customer_no,
+                    customer_name,
+                    products_codes,
+                    invoice_period,
+                )
                 print("response", response)
                 return Response(response, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

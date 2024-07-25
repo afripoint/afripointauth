@@ -68,6 +68,15 @@ class ElectricityPurchaseSerializer(serializers.Serializer):
     customer_address = serializers.CharField(max_length=25)
 
 
+class MultichoicePurchaseSerializer(serializers.Serializer):
+    service_id = serializers.CharField(max_length=15)
+    customer_no = serializers.CharField(max_length=25)
+    amount = serializers.CharField(max_length=25)
+    customer_name = serializers.CharField(max_length=25)
+    products_codes = serializers.CharField(max_length=25)
+    invoice_period = serializers.CharField(max_length=25)
+
+
 class CreditSwitchAirTimeServiceSerializer(serializers.ModelSerializer):
     provider = serializers.SerializerMethodField(read_only=True)
     code = serializers.SerializerMethodField(read_only=True)

@@ -105,14 +105,15 @@ def multichoice_validate_customer_checksum(customer_no):
     return checksum
 
 
-def multichoice_vend_checksum(customer_no, transactionref, amount):
+def multichoice_vend_checksum(customer_no, amount):
     login_id = settings.LOGIN_ID
     private_key = settings.PRIVATE_KEY
+    transactionref = generate_random_id()
     concat_string = f"{login_id}|{private_key}|{customer_no}|{transactionref}|{amount}"
     hashed = bcrypt.hashpw(concat_string.encode("utf-8"), bcrypt.gensalt())
     checksum = base64.urlsafe_b64encode(hashed).decode("utf-8")
 
-    return checksum
+    return checksum, transactionref
 
 
 def electricity_validate_request_checksum(service_id, customer_account_id):
@@ -197,6 +198,32 @@ class CreditSwitch(object):
         }
 
         return self.make_post_request("mdetails", payload)
+
+    def purchase_multichoice_product(
+        self,
+        service_id,
+        amount,
+        customer_no,
+        customer_name,
+        products_codes,
+        invoice_period,
+    ):
+        checksum, transactionref = multichoice_vend_checksum(customer_no, amount)
+
+        payload = {
+            "loginId": settings.LOGIN_ID,
+            "key": settings.PUBLIC_KEY,
+            "transactionRef": transactionref,
+            "serviceId": service_id,
+            "customerNo": customer_no,
+            "amount": str(amount),  # Convert Decimal to string
+            "customerName": customer_name,
+            "productsCodes": products_codes,
+            "checksum": checksum,
+            "invoicePeriod": invoice_period,
+        }
+
+        return self.make_post_request("cabletv/multichoice/vend", payload)
 
     def multichoice_validate_customer_number(self, customer_no, service_id):
         checksum = multichoice_validate_customer_checksum(customer_no)
