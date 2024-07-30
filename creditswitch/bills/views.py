@@ -40,6 +40,7 @@ class PurchaseAirtimeView(APIView):
         operation_summary="Use this endpoint to handle airtime purchases",
         operation_description="""
         """,
+        tags=["Airtime"],
     )
     def post(self, request):
         try:
@@ -68,6 +69,7 @@ class DataPlansView(APIView):
         operation_summary="Use this endpoint to get data plans",
         operation_description="""
         """,
+        tags=["Data"],
     )
     def post(self, request):
         try:
@@ -91,6 +93,7 @@ class PurchaseDataView(APIView):
         operation_summary="Use this endpoint to handle data bundle purchases",
         operation_description="""
         """,
+        tags=["Data"],
     )
     def post(self, request):
         try:
@@ -120,6 +123,7 @@ class MerchantDetailsView(APIView):
         operation_summary="Use this endpoint to get Merchant details including merchant account balance on Creditswitch",
         operation_description="""
         """,
+        tags=["Merchant"],
     )
     def post(self, request):
         try:
@@ -141,6 +145,12 @@ class MerchantDetailsView(APIView):
 
 @renderer_classes([BillJSONRenderer])
 class TransactionStatusView(APIView):
+    @swagger_auto_schema(
+        operation_summary="Use this endpoint to view transactions status",
+        operation_description="""
+        """,
+        tags=["Transaction"],
+    )
     def get(self, request):
         try:
             serializer = ServiceIdSerializer(data=request.query_params)
@@ -159,6 +169,12 @@ class TransactionStatusView(APIView):
 
 @renderer_classes([BillJSONRenderer])
 class ShowmaxView(APIView):
+    @swagger_auto_schema(
+        operation_summary="Use this endpoint for Showmax services",
+        operation_description="""
+        """,
+        tags=["Multichoice"],
+    )
     def get(self, request):
         try:
             credit_switch = CreditSwitch()
@@ -176,6 +192,7 @@ class StartimeView(APIView):
         operation_summary="Use this endpoint to handle startime TV subscription",
         operation_description="""
         """,
+        tags=["Startimes"],
     )
     def post(self, request):
         try:
@@ -199,6 +216,7 @@ class ShowMaxPayView(APIView):
         operation_description="""
             
         """,
+        tags=["Multichoice"],
     )
     def post(self, request):
         try:
@@ -233,20 +251,36 @@ class CreditSwitchAirTimeServiceView(ListAPIView):
     queryset = CreditSwitchAirTimeService.objects.all()
     serializer_class = CreditSwitchAirTimeServiceSerializer
 
+    @swagger_auto_schema(tags=["Airtime"])
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
 
 class CreditSwitchEletricityServiceView(ListAPIView):
     queryset = CreditSwitchEletricityService.objects.all()
     serializer_class = CreditSwitchEletricitySerializer
+
+    @swagger_auto_schema(tags=["Electricity"])
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
 
 class CreditSwitchDataServiceView(ListAPIView):
     queryset = CreditSwitchDataService.objects.all()
     serializer_class = CreditSwitchDataServiceSerializer
 
+    @swagger_auto_schema(tags=["Data"])
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
 
 class CreditSwitchShowmaxServiceView(ListAPIView):
     queryset = CreditSwitchShowmaxService.objects.all()
     serializer_class = CreditSwitchShowmaxSerializer
+
+    @swagger_auto_schema(tags=["Multichoice"])
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
 
 @renderer_classes([BillJSONRenderer])
@@ -259,6 +293,7 @@ class MultichoiceValidateCustomerView(APIView):
         operation_summary="Use this endpoint to handle Multichoice customer validation",
         operation_description="""
         """,
+        tags=["Multichoice"],
     )
     def post(self, request):
         try:
@@ -287,6 +322,7 @@ class MultichoiceProductCodeView(APIView):
         operation_summary="Use this endpoint to handle Multichoice product codes view",
         operation_description="""
         """,
+        tags=["Multichoice"],
     )
     def post(self, request):
         try:
@@ -312,6 +348,7 @@ class MultichoiceProductAddonsView(APIView):
         operation_summary="Use this endpoint to handle Multichoice product addons",
         operation_description="""
         """,
+        tags=["Multichoice"],
     )
     def post(self, request):
         try:
@@ -336,6 +373,7 @@ class MultichoicePurchaseView(APIView):
         operation_summary="Use this endpoint to handle multichoice product purchases",
         operation_description="""
         """,
+        tags=["Multichoice"],
     )
     def post(self, request):
         try:
@@ -376,6 +414,7 @@ class ElectricityValidateRequestView(APIView):
         operation_summary="Use this endpoint to handle validate electricity request ",
         operation_description="""
         """,
+        tags=["Electricity"],
     )
     def post(self, request):
         try:
@@ -405,6 +444,7 @@ class ElectricityPurchaseView(APIView):
         operation_summary="Use this endpoint to handle electricity purchase",
         operation_description="""
         """,
+        tags=["Electricity"],
     )
     def post(self, request):
         try:

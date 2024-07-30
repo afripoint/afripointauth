@@ -25,7 +25,7 @@ class KYCAPIView(APIView):
         print("DATA", serializer.data)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(request_body=KYCSerializer)
+    @swagger_auto_schema(request_body=KYCSerializer, tags=["KYC"])
     def put(self, request, user_id):
         item = self.get_object(user_id)
         if not item:

@@ -37,7 +37,7 @@ class PhoneNumberValidationView(viewsets.ViewSet):
     permission_classes = [AllowAny]
     renderer_classes = [PhoneNumberJSONRenderer]
 
-    @swagger_auto_schema(request_body=PhoneNumberValidationSerializer)
+    @swagger_auto_schema(request_body=PhoneNumberValidationSerializer, tags=["OTP"])
     @action(detail=False, methods=["post"])
     def send_otp(self, request):
         serializer = PhoneNumberValidationSerializer(data=request.data)
@@ -82,7 +82,7 @@ class PhoneNumberVerificationView(viewsets.ViewSet):
     permission_classes = [AllowAny]
     renderer_classes = [JSONRenderer, BrowsableAPIRenderer]
 
-    @swagger_auto_schema(request_body=PhoneNumberVerificationSerializer)
+    @swagger_auto_schema(request_body=PhoneNumberVerificationSerializer, tags=["OTP"])
     @action(detail=False, methods=["post"])
     def verifyOtp(self, request):
         serializer = PhoneNumberVerificationSerializer(data=request.data)
@@ -123,7 +123,7 @@ class EmailValidationView(viewsets.ViewSet):
 
     permission_classes = [AllowAny]
 
-    @swagger_auto_schema(request_body=EmailValidationSerializer)
+    @swagger_auto_schema(request_body=EmailValidationSerializer, tags=["OTP"])
     @action(detail=False, methods=["post"])
     def send_email_otp(self, request):
         serializer = EmailValidationSerializer(data=request.data)
@@ -172,7 +172,7 @@ class EmailVerificationView(viewsets.ViewSet):
 
     permission_classes = [AllowAny]
 
-    @swagger_auto_schema(request_body=EmailVerificationSerializer)
+    @swagger_auto_schema(request_body=EmailVerificationSerializer, tags=["OTP"])
     @action(detail=False, methods=["post"])
     def verify_email_otp(self, request):
         serializer = EmailVerificationSerializer(data=request.data)

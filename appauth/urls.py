@@ -61,10 +61,6 @@ urlpatterns = [
     path("api/registration/", include("dj_rest_auth.registration.urls")),
     path("api/auth/user/", CustomUserAPIView.as_view(), name="user_details"),
     path("api/kyc/<str:user_id>", KYCAPIView.as_view(), name="kyc_api_view"),
-    # path(
-    #     "api/password_reset/",
-    #     include("django_rest_passwordreset.urls", namespace="password_reset"),
-    # ),
     path(
         "swagger<format>/", schema_view.without_ui(cache_timeout=0), name="schema-json"
     ),
@@ -92,16 +88,6 @@ urlpatterns = [
         AccountActivityView.as_view(),
         name="acount_activities",
     ),
-    # path(
-    #     "api/transaction-status/",
-    #     TransactionStatusList.as_view(),
-    #     name="transactionstatus-list",
-    # ),
-    # path(
-    #     "api/transaction-status/<int:pk>/",
-    #     TransactionStatusDetail.as_view(),
-    #     name="transactionstatus-detail",
-    # ),
     path("api/transactions/", TransactionList.as_view(), name="transaction-list"),
     path(
         "api/transactions/<int:pk>/",
@@ -124,8 +110,6 @@ urlpatterns = [
         name="transactiondetails-list",
     ),
 ]
-
-# urlpatterns += router.urls
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
