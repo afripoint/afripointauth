@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - main33
+      - main
   # pull_request:
   #   branches:
   #     - testing
