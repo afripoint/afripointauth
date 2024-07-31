@@ -1,4 +1,5 @@
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
 
 from creditswitch.bills.models import (
     CreditSwitchAirTimeService,
@@ -7,7 +8,7 @@ from creditswitch.bills.models import (
     CreditSwitchShowmaxService,
 )
 
-admin.site.register(CreditSwitchAirTimeService)
-admin.site.register(CreditSwitchDataService)
-admin.site.register(CreditSwitchEletricityService)
-admin.site.register(CreditSwitchShowmaxService)
+admin.site.register(CreditSwitchAirTimeService, ImportExportModelAdmin)
+admin.site.register(CreditSwitchDataService, ImportExportModelAdmin)
+admin.site.register(CreditSwitchEletricityService, ImportExportModelAdmin)
+admin.site.register(CreditSwitchShowmaxService, ImportExportModelAdmin)

@@ -18,14 +18,14 @@ AIRTIME_PROVIDER = (
 )
 
 
-# DATA = (
-#     ("D01D", "Airtel"),
-#     ("D02D", "9-Mobile"),
-#     ("D03D", "Globacom"),
-#     ("D04D", "Mtn"),
-#     ("D05D", "Smile"),
-#     ("D06D", "NTEL"),
-# )
+DATA = (
+    ("D01D", "Airtel"),
+    ("D02D", "9-Mobile"),
+    ("D03D", "Globacom"),
+    ("D04D", "Mtn"),
+    ("D05D", "Smile"),
+    ("D06D", "NTEL"),
+)
 
 # AIRTIME = (
 #     ("A01E", "Airtel"),
@@ -34,26 +34,26 @@ AIRTIME_PROVIDER = (
 #     ("A04E", "Mtn"),
 # )
 
-# ELECTRICITY = (
-#     ("E01E", "Ikeja Electric Disco (Prepaid Accounts)"),
-#     ("E02E", "Ikeja Electric Disco (Post Accounts)"),
-#     ("E03E", "Ibadan Electric Disco (Prepaid Accounts)"),
-#     ("E04E", "Ibadan Electric Disco (Postpaid Accounts)"),
-#     ("E05E", "Eko Electric Disco (Prepaid Accounts)"),
-#     ("E06E", "Eko Electric Disco (Postpaid Accounts)"),
-#     ("E07E", "Abuja Electric Disco (Prepaid Accounts)"),
-#     ("E08E", "Abuja Electric Disco (Postpaid Accounts)"),
-#     ("E09E", "Port Harcourt Electric Disco (Prepaid Accounts)"),
-#     ("E10E", "Port Harcourt Electric Disco (Postpaid Accounts)"),
-#     ("E11E", "Kaduna Electric Disco (Prepaid Accounts)"),
-#     ("E12E", "Kaduna Electric Disco (Postpaid Accounts)"),
-#     ("E13E", "Jos Electric Disco (Prepaid Accounts)"),
-#     ("E14E", "Jos Electric Disco (Postpaid Accounts)"),
-#     ("E15E", "Enugu Electric Disco (Prepaid Accounts)"),
-#     ("E16E", "Enugu Electric Disco (Postpaid Accounts)"),
-#     ("E17E", "Kano Electric Disco (Prepaid Accounts)"),
-#     ("E18E", "Kano Electric Disco (Postpaid Accounts)"),
-# )
+ELECTRICITY = (
+    ("E01E", "Ikeja Electric Disco (Prepaid Accounts)"),
+    ("E02E", "Ikeja Electric Disco (Post Accounts)"),
+    ("E03E", "Ibadan Electric Disco (Prepaid Accounts)"),
+    ("E04E", "Ibadan Electric Disco (Postpaid Accounts)"),
+    ("E05E", "Eko Electric Disco (Prepaid Accounts)"),
+    ("E06E", "Eko Electric Disco (Postpaid Accounts)"),
+    ("E07E", "Abuja Electric Disco (Prepaid Accounts)"),
+    ("E08E", "Abuja Electric Disco (Postpaid Accounts)"),
+    ("E09E", "Port Harcourt Electric Disco (Prepaid Accounts)"),
+    ("E10E", "Port Harcourt Electric Disco (Postpaid Accounts)"),
+    ("E11E", "Kaduna Electric Disco (Prepaid Accounts)"),
+    ("E12E", "Kaduna Electric Disco (Postpaid Accounts)"),
+    ("E13E", "Jos Electric Disco (Prepaid Accounts)"),
+    ("E14E", "Jos Electric Disco (Postpaid Accounts)"),
+    ("E15E", "Enugu Electric Disco (Prepaid Accounts)"),
+    ("E16E", "Enugu Electric Disco (Postpaid Accounts)"),
+    ("E17E", "Kano Electric Disco (Prepaid Accounts)"),
+    ("E18E", "Kano Electric Disco (Postpaid Accounts)"),
+)
 
 # LOGICALPINS = (
 #     ("P01N", "Airtel"),
@@ -69,7 +69,7 @@ AIRTIME_PROVIDER = (
 
 # INSURANCE = (("INS0", "Insurance"),)
 
-# SHOWMAX = (("S0MX", "Showmax"),)
+SHOWMAX = (("S0MX", "Showmax"),)
 
 
 # class CreditSwitchService(models.Model):
@@ -98,7 +98,7 @@ class CreditSwitchAirTimeService(models.Model):
 
 
 class CreditSwitchDataService(models.Model):
-    provider = models.CharField(max_length=50, choices=AIRTIME_PROVIDER)
+    provider = models.CharField(max_length=50, choices=DATA)
     code = models.CharField(max_length=50)
 
     def __str__(self):
@@ -106,7 +106,7 @@ class CreditSwitchDataService(models.Model):
 
 
 class CreditSwitchEletricityService(models.Model):
-    provider = models.CharField(max_length=50, choices=AIRTIME_PROVIDER)
+    provider = models.CharField(max_length=50, choices=ELECTRICITY)
     code = models.CharField(max_length=50)
 
     def __str__(self):
@@ -114,7 +114,7 @@ class CreditSwitchEletricityService(models.Model):
 
 
 class CreditSwitchShowmaxService(models.Model):
-    provider = models.CharField(max_length=50, choices=AIRTIME_PROVIDER)
+    provider = models.CharField(max_length=50, choices=SHOWMAX)
     code = models.CharField(max_length=50)
 
     def __str__(self):
