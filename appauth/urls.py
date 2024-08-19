@@ -14,6 +14,12 @@ from customaccounts.views import (
     AccountTypeViewSet,
     AccountView,
 )
+from dojah.views import (
+    BVNLookupView,
+    KYCPhoneNumberView,
+    NINLookupView,
+    VirtualNINLookupView,
+)
 from kyc.views import KYCAPIView
 from users.views import CustomUserAPIView
 from rest_framework.routers import DefaultRouter, SimpleRouter
@@ -108,6 +114,26 @@ urlpatterns = [
         "api/transaction-details/",
         TransactionDetailsList.as_view(),
         name="transactiondetails-list",
+    ),
+    path(
+        "kyc/verify-phone-number/",
+        KYCPhoneNumberView.as_view(),
+        name="very-phone-number",
+    ),
+    path(
+        "kyc/lookup-nin/",
+        NINLookupView.as_view(),
+        name="lookup-nin",
+    ),
+    path(
+        "kyc/lookup-virtual-nin/",
+        VirtualNINLookupView.as_view(),
+        name="lookup-virtual-nin",
+    ),
+    path(
+        "kyc/lookup-bvn/",
+        BVNLookupView.as_view(),
+        name="lookup-bvn",
     ),
 ]
 

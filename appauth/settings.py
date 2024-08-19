@@ -51,6 +51,7 @@ LOCAL_APPS = [
     "customaccounts",
     "transactions",
     "creditswitch.bills",
+    "dojah",
 ]
 
 
@@ -311,6 +312,10 @@ ACCOUNT_UNIQUE_EMAIL = True
 MIN_PASSWORD_LENGTH = 3
 
 D7_NETWORK_SECRET_KEY = str(config("D7_NETWORK_SECRET_KEY"))
+
+
+DOJAH_SECRET_KEY = config("DOJAH_SECRET_KEY")
+DOJAH_APP_ID = config("DOJAH_APP_ID")
 
 
 LOGGING = {

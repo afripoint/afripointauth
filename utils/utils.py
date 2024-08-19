@@ -372,3 +372,53 @@ class CreditSwitch(object):
         }
 
         return self.make_post_request("evend", payload)
+
+
+# Dojah API integration
+class Dojah(object):
+    def __init__(self):
+        self.url = "https://sandbox.dojah.io"
+        self.secret_key = settings.DOJAH_SECRET_KEY
+        self.app_id = settings.DOJAH_APP_ID
+
+        self.headers = {
+            "Authorization": f"{self.secret_key}",
+            "AppId": f"{self.app_id}",
+        }
+
+    def get(self, path="", **params):
+        return requests.get(f"{self.url}{path}", params=params, headers=self.headers)
+
+    def post(self, path="", **params):
+        return requests.post(f"{self.url}{path}", data=params, headers=self.headers)
+
+    def phone_verification(self, endpoint, phone_number):
+        # Prepare the request
+        response = self.get(endpoint, phone_number=phone_number)
+        if response.status_code == 200:
+            return response.json()  # Return the JSON response directly as a dict
+        else:
+            response.raise_for_status()
+
+    def lookup_nin(self, endpoint, nin):
+        # Prepare the request
+        response = self.get(endpoint, nin=nin)
+        if response.status_code == 200:
+            return response.json()  # Return the JSON response directly as a dict
+        else:
+            response.raise_for_status()
+
+    def lookup_vnin(self, endpoint, vnin):
+        # Prepare the request
+        response = self.get(endpoint, vnin=vnin)
+        if response.status_code == 200:
+            return response.json()  # Return the JSON response directly as a dict
+        else:
+            response.raise_for_status()
+
+    def lookup_bvn(self, endpoint, bvn):
+        response = self.get(endpoint, bvn=bvn)
+        if response.status_code == 200:
+            return response.json()  # Return the JSON response directly as a dict
+        else:
+            response.raise_for_status()
