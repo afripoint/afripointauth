@@ -19,3 +19,7 @@ class VitualNINSerializer(serializers.Serializer):
 
 class BVNSerializer(serializers.Serializer):
     bvn = serializers.CharField(max_length=30)
+
+
+class DriverLicenseSerializer(serializers.Serializer):
+    driver_license = serializers.CharField(max_length=30)

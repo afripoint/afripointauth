@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from dojah.serializsers import (
     BVNSerializer,
+    DriverLicenseSerializer,
     NINSerializer,
     PhoneNumberSerializer,
     VitualNINSerializer,
@@ -75,7 +76,7 @@ class VirtualNINLookupView(APIView):
 
 class BVNLookupView(APIView):
     @swagger_auto_schema(
-        operation_summary="Use this endpoint to lookup virtual BVN",
+        operation_summary="Use this endpoint to lookup  BVN",
         operation_description="""
         """,
         tags=["KYC"],
@@ -92,27 +93,20 @@ class BVNLookupView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# from rest_framework.views import APIView
-# from rest_framework.response import Response
-# from rest_framework import status
-# import json
-
-# class PhoneNumberVerificationView(APIView):
-#     def post(self, request):
-#         try:
-#             phone_number = request.query_params.get("phone_number")
-
-#             if not phone_number:
-#                 return Response({"error": "Phone number is required"}, status=status.HTTP_400_BAD_REQUEST)
-
-#             dojah = Dojah()
-#             response = dojah.phone_verification(phone_number, method='post')
-
-#             return Response(response, status=status.HTTP_200_OK)
-#         except json.JSONDecodeError:
-#             return Response({"error": "Invalid JSON"}, status=status.HTTP_400_BAD_REQUEST)
-#         except Exception as e:
-#             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-# Create your views here.
+class DriverLicenseView(APIView):
+    @swagger_auto_schema(
+        operation_summary="Use this endpoint to lookup drivers license",
+        operation_description="""
+        """,
+        tags=["KYC"],
+    )
+    def get(self, request):
+        serializer = DriverLicenseSerializer(data=request.query_params)
+        if serializer.is_valid():
+            driver_license = serializer.validated_data.get("driver_license")
+            dojah = Dojah()
+            response_data = dojah.driver_license_lookup(
+                "/api/v1/kyc/dl", driver_license
+            )
+            return Response(response_data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

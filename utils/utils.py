@@ -422,3 +422,10 @@ class Dojah(object):
             return response.json()  # Return the JSON response directly as a dict
         else:
             response.raise_for_status()
+
+    def driver_license_lookup(self, endpoint, driver_licence_number):
+        response = self.get(endpoint, driver_licence_number=driver_licence_number)
+        if response.status_code == 200:
+            return response.json()  # Return the JSON response directly as a dict
+        else:
+            response.raise_for_status()

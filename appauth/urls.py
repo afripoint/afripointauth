@@ -16,6 +16,7 @@ from customaccounts.views import (
 )
 from dojah.views import (
     BVNLookupView,
+    DriverLicenseView,
     KYCPhoneNumberView,
     NINLookupView,
     VirtualNINLookupView,
@@ -134,6 +135,11 @@ urlpatterns = [
         "kyc/lookup-bvn/",
         BVNLookupView.as_view(),
         name="lookup-bvn",
+    ),
+    path(
+        "kyc/lookup-driver-license/",
+        DriverLicenseView.as_view(),
+        name="lookup-bvn-driver-license",
     ),
 ]
 
