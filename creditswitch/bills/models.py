@@ -83,7 +83,7 @@ ELECTRICITY = (
     ),
 )
 
-ELECTRICITY = (
+ELECTRICITY_CODE = (
     ("E01E", "E01E - Ikeja Electric Disco (Prepaid Accounts)"),
     ("E02E", "E02E - Ikeja Electric Disco (Post Accounts)"),
     ("E03E", "E03E - Ibadan Electric Disco (Prepaid Accounts)"),
@@ -125,7 +125,7 @@ class CreditSwitchDataService(models.Model):
 
 class CreditSwitchEletricityService(models.Model):
     provider = models.CharField(max_length=50, choices=ELECTRICITY)
-    code = models.CharField(max_length=50)
+    code = models.CharField(max_length=50, choices=ELECTRICITY_CODE)
 
     def __str__(self):
         return f"{self.provider} - {self.code}"
