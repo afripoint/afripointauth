@@ -90,31 +90,31 @@ TEMPLATES = [
 WSGI_APPLICATION = "appauth.wsgi.application"
 
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "USER": "postgres",
-        "NAME": "afriauthdb",
-        "PASSWORD": "afripoint",
-        "HOST": "localhost",
-        "PORT": 5432,
-    },
-}
-
-
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": config("POSTGRES_DB"),
-#         "USER": config("POSTGRES_USER"),
-#         "PASSWORD": config("POSTGRES_PASSWORD"),
-#         "HOST": config("POSTGRES_HOST"),
-#         "PORT": config("POSTGRES_PORT", 5432),
-#         "OPTIONS": {
-#             "sslmode": "require",
-#         },
-#     }
+#         "USER": "postgres",
+#         "NAME": "afriauthdb",
+#         "PASSWORD": "afripoint",
+#         "HOST": "localhost",
+#         "PORT": 5432,
+#     },
 # }
+
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": config("POSTGRES_DB"),
+        "USER": config("POSTGRES_USER"),
+        "PASSWORD": config("POSTGRES_PASSWORD"),
+        "HOST": config("POSTGRES_HOST"),
+        "PORT": config("POSTGRES_PORT", 5432),
+        "OPTIONS": {
+            "sslmode": "require",
+        },
+    }
+}
 
 
 CORS_ORIGIN_ALLOW_ALL = True
