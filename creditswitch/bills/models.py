@@ -7,6 +7,13 @@ AIRTIME_PROVIDER = (
     ("Globacom", "Globacom"),
 )
 
+AIRTIME_CODE = (
+    ("A01E", "A01E - Airtel"),
+    ("A02E", "A02E - 9-Mobile"),
+    ("A03E", "A03E - Globacom"),
+    ("A04E", "A04E - MTN"),
+)
+
 DATA = (
     ("Airtel", "Airtel"),
     ("9-Mobile", "9-Mobile"),
@@ -14,6 +21,15 @@ DATA = (
     ("Globacom", "Globacom"),
     ("Smile", "Smile"),
     ("NTEL", "NTEL"),
+)
+
+DATA_CODE = (
+    ("D01D", "D01D - Airtel"),
+    ("D02D", "D02D - 9-Mobile"),
+    ("D03D", "	D03D - Globacom"),
+    ("D04D", "D04D - Globacom"),
+    ("D05D", "D05D - Smile"),
+    ("D06D", "D06D - NTEL"),
 )
 
 
@@ -109,7 +125,7 @@ SHOWMAX = (("S0MX", "Showmax"),)
 
 class CreditSwitchAirTimeService(models.Model):
     provider = models.CharField(max_length=50, choices=AIRTIME_PROVIDER)
-    code = models.CharField(max_length=50)
+    code = models.CharField(max_length=50, choices=AIRTIME_CODE)
 
     def __str__(self):
         return f"{self.provider} - {self.code}"
@@ -117,7 +133,7 @@ class CreditSwitchAirTimeService(models.Model):
 
 class CreditSwitchDataService(models.Model):
     provider = models.CharField(max_length=50, choices=DATA)
-    code = models.CharField(max_length=50)
+    code = models.CharField(max_length=50, choices=DATA_CODE)
 
     def __str__(self):
         return f"{self.provider} - {self.code}"
