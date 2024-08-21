@@ -7,7 +7,6 @@ AIRTIME_PROVIDER = (
     ("Globacom", "Globacom"),
 )
 
-
 DATA = (
     ("Airtel", "Airtel"),
     ("9-Mobile", "9-Mobile"),
@@ -82,6 +81,27 @@ ELECTRICITY = (
         "Kano Electric Disco (Postpaid Accounts)",
         "Kano Electric Disco (Postpaid Accounts)",
     ),
+)
+
+ELECTRICITY = (
+    ("E01E", "E01E - Ikeja Electric Disco (Prepaid Accounts)"),
+    ("E02E", "E02E - Ikeja Electric Disco (Post Accounts)"),
+    ("E03E", "E03E - Ibadan Electric Disco (Prepaid Accounts)"),
+    ("E04E", "E04E - Ibadan Electric Disco (Postpaid Accounts)"),
+    ("E05E", "E05E - Eko Electric Disco (Prepaid Accounts)"),
+    ("E06E", "E06E - Eko Electric Disco (Postpaid Accounts)"),
+    ("E07E", "E07E - Abuja Electric Disco (Prepaid Accounts)"),
+    ("E08E", "E08E - Abuja Electric Disco (Postpaid Accounts)"),
+    ("E09E", "E09E - Port Harcourt Electric Disco (Prepaid Accounts)"),
+    ("E10E", "E10E - Port Harcourt Electric Disco (Postpaid Accounts)"),
+    ("E11E", "E11E - Kaduna Electric Disco (Prepaid Accounts)"),
+    ("E12E", "E12E - Kaduna Electric Disco (Postpaid Accounts)"),
+    ("E13E", "E13E - Jos Electric Disco (Prepaid Accounts)"),
+    ("E14E", "E14E - Jos Electric Disco (Postpaid Accounts)"),
+    ("E15E", "E15E - Enugu Electric Disco (Prepaid Accounts)"),
+    ("E16E", "E16E - Enugu Electric Disco (Postpaid Accounts)"),
+    ("E17E", "E17E - Kano Electric Disco (Prepaid Accounts)"),
+    ("E18E", "E18E - Kano Electric Disco (Postpaid Accounts)"),
 )
 
 SHOWMAX = (("S0MX", "Showmax"),)
