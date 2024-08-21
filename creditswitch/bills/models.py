@@ -18,7 +18,7 @@ DATA = (
     ("Airtel", "Airtel"),
     ("9-Mobile", "9-Mobile"),
     ("Globacom", "Globacom"),
-    ("Globacom", "Globacom"),
+    ("Globacom", "MTN"),
     ("Smile", "Smile"),
     ("NTEL", "NTEL"),
 )
@@ -27,7 +27,7 @@ DATA_CODE = (
     ("D01D", "D01D - Airtel"),
     ("D02D", "D02D - 9-Mobile"),
     ("D03D", "	D03D - Globacom"),
-    ("D04D", "D04D - Globacom"),
+    ("D04D", "D04D - MTN"),
     ("D05D", "D05D - Smile"),
     ("D06D", "D06D - NTEL"),
 )
