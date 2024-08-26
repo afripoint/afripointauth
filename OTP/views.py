@@ -21,7 +21,7 @@ from drf_yasg.utils import swagger_auto_schema
 
 
 # client = Client(api_token=settings.D7_NETWORK_SECRET_KEY)
-from utils.utils import infobip_send_sms, send_html_email
+from utils.utils import send_html_email
 from utils.utils import UniqueOtpGenerator
 
 otp_generator = UniqueOtpGenerator()
@@ -69,7 +69,7 @@ class PhoneNumberValidationView(viewsets.ViewSet):
             mfa.otp_expiry = otp_expiring_time
             mfa.save()
 
-            infobip_send_sms(phone_number, f"Your OTP is {otp}")
+            # infobip_send_sms(phone_number, f"Your OTP is {otp}")
             return Response("OTP sent successfully.", status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

@@ -10,6 +10,8 @@ import json
 import base64
 import bcrypt
 import secrets
+from decouple import config
+from django.core.mail import get_connection
 
 
 # from infobip_channels.sms.channel import SMSChannel
@@ -27,35 +29,56 @@ class EmailThread(threading.Thread):
         self.email.send()
 
 
-def send_html_email(subject, body, from_email=None, to_email=None):
-    email = EmailMessage(subject, body, from_email, to_email)
-    email.content_subtype = "html"
-    EmailThread(email).start()
+def send_html_email(subject, body, from_email=None, to_email=None, **kwargs):
+    if kwargs:
+        fields_values = "<br>".join(
+            [f"{field}: {value}" for field, value in kwargs.items()]
+        )
+        body += "<br><br>" + fields_values
+
+    try:
+        connection = get_connection(
+            host=config("RESEND_SMTP_HOST"),
+            port=config("RESEND_SMTP_PORT"),
+            username=config("RESEND_SMTP_USERNAME"),
+            password=config("RESEND_SMTP_PASSWORD"),
+            use_tls=True,
+        )
+        email = EmailMessage(subject, body, from_email, to_email, connection=connection)
+        email.content_subtype = "html"
+        EmailThread(email).start()
+    except Exception as e:
+        print(f"Error setting up email connection or sending email: {e}")
 
 
-def infobip_send_sms(phone_number, message):
-    conn = http.client.HTTPSConnection("432n2n.api.infobip.com")
-    payload = json.dumps(
-        {
-            "messages": [
-                {
-                    "destinations": [{"to": phone_number}],
-                    "from": "ServiceSMS",
-                    "text": message,
-                }
-            ]
-        }
-    )
-    headers = {
-        # "Authorization": "App be84566f9b9482cf4a032e2fb5ff0329-54f2cfa2-dfec-4626-acb9-04c47c973c27",
-        "Authorization": "App 3df98d304005e2af8be66e75da70e9d1-3a6bfd6c-dc94-4200-bd34-0caaa778543c",
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-    }
-    conn.request("POST", "/sms/2/text/advanced", payload, headers)
-    res = conn.getresponse()
-    data = res.read()
-    print(data.decode("utf-8"))
+# def send_html_email(subject, body, from_email=None, to_email=None):
+#     email = EmailMessage(subject, body, from_email, to_email)
+#     email.content_subtype = "html"
+#     EmailThread(email).start()
+
+# def infobip_send_sms(phone_number, message):
+#     conn = http.client.HTTPSConnection("432n2n.api.infobip.com")
+#     payload = json.dumps(
+#         {
+#             "messages": [
+#                 {
+#                     "destinations": [{"to": phone_number}],
+#                     "from": "ServiceSMS",
+#                     "text": message,
+#                 }
+#             ]
+#         }
+#     )
+# headers = {
+#     # "Authorization": "App be84566f9b9482cf4a032e2fb5ff0329-54f2cfa2-dfec-4626-acb9-04c47c973c27",
+#     "Authorization": "App 3df98d304005e2af8be66e75da70e9d1-3a6bfd6c-dc94-4200-bd34-0caaa778543c",
+#     "Content-Type": "application/json",
+#     "Accept": "application/json",
+# }
+# conn.request("POST", "/sms/2/text/advanced", payload, headers)
+# res = conn.getresponse()
+# data = res.read()
+# print(data.decode("utf-8"))
 
 
 class UniqueOtpGenerator:
