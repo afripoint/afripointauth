@@ -101,6 +101,8 @@ WSGI_APPLICATION = "appauth.wsgi.application"
 #     },
 # }
 
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
+
 
 DATABASES = {
     "default": {
