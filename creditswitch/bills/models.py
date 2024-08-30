@@ -153,3 +153,10 @@ class CreditSwitchShowmaxService(models.Model):
 
     def __str__(self):
         return f"{self.provider} - {self.code}"
+
+
+class ServiceProviders(models.Model):
+    name = models.CharField(max_length=150)
+
+    def __str__(self):
+        return f"{self.name}"

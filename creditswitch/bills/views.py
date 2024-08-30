@@ -7,6 +7,7 @@ from creditswitch.bills.models import (
     CreditSwitchDataService,
     CreditSwitchEletricityService,
     CreditSwitchShowmaxService,
+    ServiceProviders,
 )
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
@@ -29,6 +30,7 @@ from .serializers import (
     PurchaseAirtimeSerializer,
     PurchaseDataSerializer,
     ServiceIdSerializer,
+    ServiceProviderSerializer,
     ShowMaxPaySerializer,
 )
 
@@ -259,6 +261,15 @@ class CreditSwitchAirTimeServiceView(ListAPIView):
 class CreditSwitchEletricityServiceView(ListAPIView):
     queryset = CreditSwitchEletricityService.objects.all()
     serializer_class = CreditSwitchEletricitySerializer
+
+    @swagger_auto_schema(tags=["Electricity"])
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+
+class ServiceProvidersView(ListAPIView):
+    queryset = ServiceProviders.objects.all()
+    serializer_class = ServiceProviderSerializer
 
     @swagger_auto_schema(tags=["Electricity"])
     def get(self, request, *args, **kwargs):

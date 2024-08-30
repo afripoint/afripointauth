@@ -13,6 +13,7 @@ from .views import (
     MultichoiceValidateCustomerView,
     PurchaseAirtimeView,
     PurchaseDataView,
+    ServiceProvidersView,
     ShowmaxView,
     StartimeView,
     TransactionStatusView,
@@ -82,5 +83,10 @@ urlpatterns = [
         "electricity-purchase/",
         ElectricityPurchaseView.as_view(),
         name="electricity-purchase",
+    ),
+    path(
+        "service-providers/",
+        ServiceProvidersView.as_view(),
+        name="service-providers",
     ),
 ]

@@ -6,6 +6,7 @@ from creditswitch.bills.models import (
     CreditSwitchDataService,
     CreditSwitchEletricityService,
     CreditSwitchShowmaxService,
+    ServiceProviders,
 )
 
 
@@ -143,3 +144,9 @@ class CreditSwitchShowmaxSerializer(serializers.ModelSerializer):
     def get_code(self, obj):
         code = obj.code
         return code
+
+
+class ServiceProviderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ServiceProviders
+        fields = ["name"]
